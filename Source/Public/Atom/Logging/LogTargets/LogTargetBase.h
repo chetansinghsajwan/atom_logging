@@ -7,8 +7,10 @@ namespace Atom::Logging::Internal
     /// Base class for LogTargets with base functionality like formatting, thread safety and
     /// level filtering.
     ///
-    /// @TODO Add thread safety.
-    /// @TODO Make default log and flush level global.
+    /// # To Do
+    ///
+    /// - Add thread safety.
+    /// - Make default log and flush level global.
     /// --------------------------------------------------------------------------------------------
     class LogTargetBase: public LogTarget
     {
@@ -17,7 +19,9 @@ namespace Atom::Logging::Internal
         /// # Default Constructor
         /// ----------------------------------------------------------------------------------------
         LogTargetBase():
-            _logLevel(ELogLevel::Debug), _flushLevel(ELogLevel::Info), _hasWritten(false),
+            _logLevel(ELogLevel::Debug),
+            _flushLevel(ELogLevel::Info),
+            _hasWritten(false),
             _alwaysFlush(false)
         {}
 
@@ -29,7 +33,7 @@ namespace Atom::Logging::Internal
         {
             if (CheckLogLevel(logMsg.lvl))
             {
-                // TODO: Add chrono support for Atom.Fmt.
+                // To Do: Add chrono support for Atom.Fmt.
                 // Str result = StrFmter().Fmt("[{}] [{}] {}: {}\n",
                 //     logMsg.time, logMsg.lvl, logMsg.loggerName, logMsg.msg);
 
