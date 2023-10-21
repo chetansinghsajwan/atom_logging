@@ -1,5 +1,6 @@
 #pragma once
-#include "fmt/chrono.h" // TODO: Remove this
+// To Do: Remove this.
+#include "fmt/chrono.h"
 
 #include "Internal/Core.h"
 
@@ -18,7 +19,9 @@ namespace Atom::Logging
         Warn,
         Error,
         Fatal,
-        OFF ///< Used to indicate logging is off.
+
+        /// Used to indicate logging is off.
+        OFF
     };
 
     /// --------------------------------------------------------------------------------------------

@@ -244,7 +244,9 @@ namespace Atom::Logging::Private
         ///
         /// @THREAD_SAFETY NONE
         ///
-        /// @TODO Make ThreadSafe.
+        /// # To Do
+        ///
+        /// - Make ThreadSafe.
         /// ----------------------------------------------------------------------------------------
         auto iter() const -> TIter
         {
@@ -256,7 +258,9 @@ namespace Atom::Logging::Private
         ///
         /// @THREAD_SAFETY NONE
         ///
-        /// @TODO Make ThreadSafe.
+        /// # To Do
+        ///
+        /// - Make ThreadSafe.
         /// ----------------------------------------------------------------------------------------
         auto iterEnd() const -> TIterEnd
         {

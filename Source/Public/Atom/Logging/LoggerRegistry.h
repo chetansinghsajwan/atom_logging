@@ -26,6 +26,7 @@ namespace Atom::Logging
     /// --------------------------------------------------------------------------------------------
     class LoggerRegistry
     {
+    public:
         using TContainer = UnorderedMap<Str, LoggerPtr>;
         using TIter = typename TContainer::const_iterator;
         using TIterEnd = typename TContainer::const_iterator;
