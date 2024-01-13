@@ -9,13 +9,6 @@
     let
         system = "x86_64-linux";
         pkgs = nixpkgs.legacyPackages.${system};
-
-        atom-core = pkgs.fetchFromGitHub {
-            owner = "shifu-dev";
-            repo = "Atom.Core";
-            rev = "dev";
-            sha256 = "sha256-XuGBLoVDY6NxVcTD0cYzX71bMV2opQ77FRlvdtgHAHE";
-        };
     in
     {
         devShells.${system}.default = pkgs.mkShell {
@@ -24,12 +17,10 @@
                 cmake
                 gnumake
                 ninja
-		catch2
+		        gcc13
+		        clang_17
+		        clang-tools_17
             ];
-
-            env = {
-                "ATOM_CORE" = atom-core;
-            };
         };
     };
 }

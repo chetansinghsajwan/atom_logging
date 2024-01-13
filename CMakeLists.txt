@@ -1,8 +1,23 @@
 cmake_minimum_required(VERSION 3.5)
-project(Atom.Logging VERSION 0.1.0 LANGUAGES CXX C)
+project(Atom.Logging VERSION 0.1.0 LANGUAGES CXX)
 
-include("$env{ATOM_CORE}/CMakeLists.txt")
-find_package(catch2 REQUIRED)
+include(FetchContent)
+
+FetchContent_Declare(
+    atom-core
+    GIT_REPOSITORY "https://github.com/shifu-dev/Atom.Core.git"
+    GIT_TAG        "dev"
+    GIT_SHALLOW    true
+)
+
+FetchContent_Declare(
+    catch2
+    GIT_REPOSITORY "https://github.com/catchorg/Catch2.git"
+    GIT_TAG        "v3.5.1"
+    GIT_SHALLOW    true
+)
+
+FetchContent_MakeAvailable(atom-core catch2)
 
 # --------------------------------------------------------------------------------------------------
 # C++ Global config
