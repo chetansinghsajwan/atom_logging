@@ -10,7 +10,7 @@ namespace Atom::Logging
         /// ----------------------------------------------------------------------------------------
         /// Get the name of the logger.
         /// ----------------------------------------------------------------------------------------
-        virtual auto Name() const -> StrView abstract;
+        virtual auto Name() const -> StringView = 0;
 
         /// ----------------------------------------------------------------------------------------
         /// Calls Log(ELogLevel::Trace, msg, fwd(args)...).
@@ -79,7 +79,7 @@ namespace Atom::Logging
         {
             if (CheckLogLevel(lvl))
             {
-                Str formattedMsg = StrFmter().Fmt(msg, fwd(args)...);
+                String formattedMsg = StringFmter().Fmt(msg, fwd(args)...);
                 LogMsg logMsg{
                     .msg = formattedMsg,
                     .loggerName = Name(),
@@ -96,21 +96,21 @@ namespace Atom::Logging
         ///
         /// Logs the LogMsg object.
         /// ----------------------------------------------------------------------------------------
-        virtual auto Log(LogMsg& logMsg) -> void abstract;
+        virtual auto Log(LogMsg& logMsg) -> void = 0;
 
         /// ----------------------------------------------------------------------------------------
         /// Pure virtual function.
         ///
         /// Flushes the logs of this logger.
         /// ----------------------------------------------------------------------------------------
-        virtual auto Flush() -> void abstract;
+        virtual auto Flush() -> void = 0;
 
         /// ----------------------------------------------------------------------------------------
         /// Pure virtual function.
         ///
         /// Check if the message should be passed for logging.
         /// ----------------------------------------------------------------------------------------
-        virtual auto CheckLogLevel(ELogLevel lvl) const -> bool abstract;
+        virtual auto CheckLogLevel(ELogLevel lvl) const -> bool = 0;
     };
 
     /// --------------------------------------------------------------------------------------------
@@ -122,9 +122,10 @@ namespace Atom::Logging
     /// --------------------------------------------------------------------------------------------
     ///
     /// --------------------------------------------------------------------------------------------
-    template <RDerivedFrom<Logger> TLogger>
-    LoggerPtr MAKE_LOGGER(auto&&... args)
+    template <typename TLogger, typename... TArgs>
+    LoggerPtr MAKE_LOGGER(TArgs&&... args)
+        requires RDerivedFrom<TLogger, Logger>
     {
-        return MakeShared<TLogger>(fwd(args)...);
+        return MakeShared<TLogger>(forward<TArgs>(args)...);
     }
 }

@@ -18,7 +18,7 @@ namespace Atom::Logging::Private
         requires RLockable<TLockable>
     class MultiLogTargetTemplate: public LogTarget
     {
-        using _TContainer = DynArr<LogTargetPtr>;
+        using _TContainer = DynamicArray<LogTargetPtr>;
 
     public:
         using TElem = LogTargetPtr;
@@ -288,7 +288,7 @@ namespace Atom::Logging::Private
         /// ----------------------------------------------------------------------------------------
         auto _AddTarget(LogTargetPtr target) -> bool
         {
-            debug_expects(target != nullptr);
+            Contracts::DebugExpects(target != nullptr);
 
             _targets.emplaceBack(mov(target));
             return true;
@@ -333,9 +333,9 @@ namespace Atom::Logging::Private
         /// ----------------------------------------------------------------------------------------
         auto _RemoveTarget(LogTargetPtr target) -> bool
         {
-            debug_expects(target != nullptr);
+            Contracts::DebugExpects(target != nullptr);
 
-            for (auto it = _targets.iter(); not it.equals(_targets.iterEnd()); it.next())
+            for (auto it = _targets.iter(); not it.eq(_targets.iterEnd()); it.next())
             {
                 if (it.value() == target)
                 {
@@ -367,7 +367,7 @@ namespace Atom::Logging::Private
                 if (target == nullptr)
                     continue;
 
-                for (auto it = _targets.iter(); it.equals(_targets.iterEnd()); it.next())
+                for (auto it = _targets.iter(); it.eq(_targets.iterEnd()); it.next())
                 {
                     if (it.value() == target)
                     {
@@ -392,7 +392,7 @@ namespace Atom::Logging::Private
         /// ----------------------------------------------------------------------------------------
         auto _HasTarget(const LogTargetPtr& target) const -> bool
         {
-            debug_expects(target != nullptr);
+            Contracts::DebugExpects(target != nullptr);
 
             return _targets.contains(target);
         }

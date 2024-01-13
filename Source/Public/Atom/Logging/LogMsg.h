@@ -33,12 +33,12 @@ namespace Atom::Logging
         /// ----------------------------------------------------------------------------------------
         /// Message of the log.
         /// ----------------------------------------------------------------------------------------
-        StrView msg;
+        StringView msg;
 
         /// ----------------------------------------------------------------------------------------
         /// Name of the logger through which this message was logged.
         /// ----------------------------------------------------------------------------------------
-        StrView loggerName;
+        StringView loggerName;
 
         /// ----------------------------------------------------------------------------------------
         /// Level of this message.
@@ -58,24 +58,24 @@ namespace Atom::Logging
 namespace Atom
 {
     template <>
-    class StrViewConverter<Logging::ELogLevel>
+    class StringViewConverter<Logging::ELogLevel>
     {
     public:
-        constexpr auto Convert(Logging::ELogLevel lvl) -> StrView
+        constexpr auto Convert(Logging::ELogLevel lvl) -> StringView
         {
             switch (lvl)
             {
-                case Logging::ELogLevel::Trace: return "Trace"; break;
-                case Logging::ELogLevel::Debug: return "Debug"; break;
-                case Logging::ELogLevel::Info:  return "Info"; break;
-                case Logging::ELogLevel::Warn:  return "Warn"; break;
-                case Logging::ELogLevel::Error: return "Error"; break;
-                case Logging::ELogLevel::Fatal: return "Fatal"; break;
-                case Logging::ELogLevel::OFF:   return "OFF"; break;
-                default:                        return "UNKNOWN";
+                case Logging::ELogLevel::Trace: return MakeRange("Trace"); break;
+                case Logging::ELogLevel::Debug: return MakeRange("Debug"); break;
+                case Logging::ELogLevel::Info:  return MakeRange("Info"); break;
+                case Logging::ELogLevel::Warn:  return MakeRange("Warn"); break;
+                case Logging::ELogLevel::Error: return MakeRange("Error"); break;
+                case Logging::ELogLevel::Fatal: return MakeRange("Fatal"); break;
+                case Logging::ELogLevel::OFF:   return MakeRange("OFF"); break;
+                default:                        return MakeRange("UNKNOWN");
             }
         }
     };
 
-    static_assert(RStrFmtArgFmtable<Logging::ELogLevel>, "ELogLevel is not formattable.");
+    static_assert(RStringFmtArgFmtable<Logging::ELogLevel>, "ELogLevel is not formattable.");
 }

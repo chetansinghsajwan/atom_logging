@@ -18,11 +18,11 @@ namespace Atom::Logging::Internal
         /// ----------------------------------------------------------------------------------------
         /// # Default Constructor
         /// ----------------------------------------------------------------------------------------
-        LogTargetBase():
-            _logLevel(ELogLevel::Debug),
-            _flushLevel(ELogLevel::Info),
-            _hasWritten(false),
-            _alwaysFlush(false)
+        LogTargetBase()
+            : _logLevel(ELogLevel::Debug)
+            , _flushLevel(ELogLevel::Info)
+            , _hasWritten(false)
+            , _alwaysFlush(false)
         {}
 
     public:
@@ -34,11 +34,13 @@ namespace Atom::Logging::Internal
             if (CheckLogLevel(logMsg.lvl))
             {
                 // To Do: Add chrono support for Atom.Fmt.
-                // Str result = StrFmter().Fmt("[{}] [{}] {}: {}\n",
+                // String result = StringFmter().Fmt("[{}] [{}] {}: {}\n",
                 //     logMsg.time, logMsg.lvl, logMsg.loggerName, logMsg.msg);
 
-                Str result =
-                    StrFmter().Fmt("[{}] {}: {}\n", logMsg.lvl, logMsg.loggerName, logMsg.msg);
+                // String result = StringFmter().Fmt(
+                //     "[{}] {}: {}\n", logMsg.lvl, logMsg.loggerName, logMsg.msg);
+
+                String result;
 
                 _hasWritten = true;
                 _Write(logMsg, result);
@@ -140,12 +142,12 @@ namespace Atom::Logging::Internal
         /// @PARAM[IN] logMsg Log message object passed for logging.
         /// @PARAM[IN] formattedMsg Formatted message generated from {logMsg}.
         /// ----------------------------------------------------------------------------------------
-        virtual auto _Write(const LogMsg& logMsg, StrView formattedMsg) -> void abstract;
+        virtual auto _Write(const LogMsg& logMsg, StringView formattedMsg) -> void = 0;
 
         /// ----------------------------------------------------------------------------------------
         /// Flush implementation.
         /// ----------------------------------------------------------------------------------------
-        virtual auto _Flush() -> void abstract;
+        virtual auto _Flush() -> void = 0;
 
     protected:
         /// ----------------------------------------------------------------------------------------
