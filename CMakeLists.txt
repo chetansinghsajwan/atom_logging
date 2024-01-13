@@ -1,11 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(Atom.Logging VERSION 0.1.0 LANGUAGES CXX C)
 
-include(CMake/CPM.cmake)
-set(CPM_SOURCE_CACHE "${CMAKE_SOURCE_DIR}/Build/CPMCache")
-
-CPMAddPackage("gh:shifu-dev/Atom.Core#dev")
-CPMAddPackage("gh:catchorg/Catch2@3.4.0")
+include("$env{ATOM_CORE}/CMakeLists.txt")
+find_package(catch2 REQUIRED)
 
 # --------------------------------------------------------------------------------------------------
 # C++ Global config
