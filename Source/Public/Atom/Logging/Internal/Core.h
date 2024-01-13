@@ -4,8 +4,8 @@
 namespace Atom
 {
     template <typename... TArgs>
-    using LogStr = FmtStr<TArgs...>;
+    using LogStr = FmtString<TArgs...>;
 
     template <typename T>
-    concept RLogArg = requires(T arg) { requires RConvertibleTo<T, StrView>; };
+    concept RLogArg = requires(T arg) { requires RConvertibleTo<T, StringView>; };
 }

@@ -5,15 +5,17 @@
 #include "Atom/Logging/NullLogger.h"
 
 namespace Atom::Logging
-{    
+{
     class LoggerRegistrationErr: public Err
     {
     public:
-        constexpr LoggerRegistrationErr(StrView msg, StrView key):  
-            Err(msg.data()), key{ key } {}
+        constexpr LoggerRegistrationErr(StringView msg, StringView key)
+            : Err{ StdStringView((const char*)msg.data().unwrap(), msg.count().unwrap()) }
+            , key{ key }
+        {}
 
     public:
-        StrView key;
+        StringView key;
     };
 
     /// --------------------------------------------------------------------------------------------
@@ -27,14 +29,14 @@ namespace Atom::Logging
     class LoggerRegistry
     {
     public:
-        using TContainer = UnorderedMap<Str, LoggerPtr>;
+        using TContainer = UnorderedMap<String, LoggerPtr>;
         using TIter = typename TContainer::const_iterator;
         using TIterEnd = typename TContainer::const_iterator;
 
     public:
         LoggerRegistry()
         {
-            SetDefaultLogger(GET_LOGGER_FACTORY().CreateLogger("DefaultLogger"));
+            SetDefaultLogger(GET_LOGGER_FACTORY().CreateLogger(MakeRange("DefaultLogger")));
         }
 
     public:
@@ -46,17 +48,17 @@ namespace Atom::Logging
         /// ----------------------------------------------------------------------------------------
         auto RegisterLogger(LoggerPtr logger) -> Result<void, LoggerRegistrationErr>
         {
-            debug_expects(logger != nullptr, "Cannot register null Logger.");
+            Contracts::DebugExpects(logger != nullptr, "Cannot register null Logger.");
 
-            StrView key = logger->Name();
-            debug_expects(not key.isEmpty(), "Cannot register logger with null key.");
+            StringView key = logger->Name();
+            Contracts::DebugExpects(not key.isEmpty(), "Cannot register logger with null key.");
 
             if (_hasLogger(key))
             {
-                return LoggerRegistrationErr{ "Logger already registered.", key };
+                return LoggerRegistrationErr(MakeRange("Logger already registered."), key);
             }
 
-            _registerLogger(logger, Str(key));
+            _registerLogger(logger, String(key));
             return Success();
         }
 
@@ -69,36 +71,36 @@ namespace Atom::Logging
         ///
         /// # Parameters
         /// - `logger`: Logger to register.
-        /// - `key`: Str used as key to register logger.
+        /// - `key`: String used as key to register logger.
         /// ----------------------------------------------------------------------------------------
-        auto RegisterLogger(LoggerPtr logger, StrView key) -> Result<void, LoggerRegistrationErr>
+        auto RegisterLogger(LoggerPtr logger, StringView key) -> Result<void, LoggerRegistrationErr>
         {
-            debug_expects(logger != nullptr, "Cannot register null Logger.");
-            debug_expects(not key.isEmpty(), "Cannot register logger with null key.");
+            Contracts::DebugExpects(logger != nullptr, "Cannot register null Logger.");
+            Contracts::DebugExpects(not key.isEmpty(), "Cannot register logger with null key.");
 
             if (_hasLogger(key))
             {
-                return LoggerRegistrationErr{ "Logger already registered.", key };
+                return LoggerRegistrationErr(MakeRange("Logger already registered."), key);
             }
 
-            _registerLogger(logger, Str(key));
+            _registerLogger(logger, String(key));
             return Success();
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Overload for void RegisterLogger(LoggerPtr logger, StrView key) for performance.
+        /// Overload for void RegisterLogger(LoggerPtr logger, StringView key) for performance.
         ///
         /// # Parameters
-        /// - `key`: RValue reference to Str, to avoid allocating memory to store the key.
+        /// - `key`: RValue reference to String, to avoid allocating memory to store the key.
         /// ----------------------------------------------------------------------------------------
-        auto RegisterLogger(LoggerPtr logger, Str&& key) -> Result<void, LoggerRegistrationErr>
+        auto RegisterLogger(LoggerPtr logger, String&& key) -> Result<void, LoggerRegistrationErr>
         {
-            debug_expects(logger != nullptr, "Cannot register null Logger.");
-            debug_expects(not key.isEmpty(), "Cannot register logger with null key.");
+            Contracts::DebugExpects(logger != nullptr, "Cannot register null Logger.");
+            Contracts::DebugExpects(not key.isEmpty(), "Cannot register logger with null key.");
 
             if (_hasLogger(key))
             {
-                return LoggerRegistrationErr{ "Logger already registered.", key };
+                return LoggerRegistrationErr(MakeRange("Logger already registered."), key);
             }
 
             _registerLogger(logger, mov(key));
@@ -111,12 +113,12 @@ namespace Atom::Logging
         /// ----------------------------------------------------------------------------------------
         auto ForceRegisterLogger(LoggerPtr logger)
         {
-            debug_expects(logger != nullptr, "Cannot register null Logger.");
+            Contracts::DebugExpects(logger != nullptr, "Cannot register null Logger.");
 
-            StrView key = logger->Name();
-            debug_expects(not key.isEmpty(), "Cannot register logger with null key.");
+            StringView key = logger->Name();
+            Contracts::DebugExpects(not key.isEmpty(), "Cannot register logger with null key.");
 
-            _forceRegisterLogger(logger, Str(key));
+            _forceRegisterLogger(logger, String(key));
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -125,26 +127,26 @@ namespace Atom::Logging
         ///
         /// # Parameters
         /// - `logger`: Logger to register.
-        /// - `key`: Str used as key to register logger.
+        /// - `key`: String used as key to register logger.
         /// ----------------------------------------------------------------------------------------
-        auto ForceRegisterLogger(LoggerPtr logger, StrView key)
+        auto ForceRegisterLogger(LoggerPtr logger, StringView key)
         {
-            debug_expects(logger != nullptr, "Cannot register null Logger.");
-            debug_expects(not key.isEmpty(), "Cannot register logger with null key.");
+            Contracts::DebugExpects(logger != nullptr, "Cannot register null Logger.");
+            Contracts::DebugExpects(not key.isEmpty(), "Cannot register logger with null key.");
 
-            _forceRegisterLogger(logger, Str(key));
+            _forceRegisterLogger(logger, String(key));
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Overload for void ForceRegisterLogger(LoggerPtr logger, StrView key) for performance.
+        /// Overload for void ForceRegisterLogger(LoggerPtr logger, StringView key) for performance.
         ///
         /// # Parameters
-        /// - `key`: RValue reference to Str, to avoid allocating memory to store the key.
+        /// - `key`: RValue reference to String, to avoid allocating memory to store the key.
         /// ----------------------------------------------------------------------------------------
-        auto ForceRegisterLogger(LoggerPtr logger, Str&& key)
+        auto ForceRegisterLogger(LoggerPtr logger, String&& key)
         {
-            debug_expects(logger != nullptr, "Cannot register null Logger.");
-            debug_expects(not key.isEmpty(), "Cannot register logger with null key.");
+            Contracts::DebugExpects(logger != nullptr, "Cannot register null Logger.");
+            Contracts::DebugExpects(not key.isEmpty(), "Cannot register logger with null key.");
 
             _forceRegisterLogger(logger, mov(key));
         }
@@ -160,14 +162,14 @@ namespace Atom::Logging
             if (logger == nullptr)
                 return false;
 
-            StrView key = logger->Name();
+            StringView key = logger->Name();
             if (key.isEmpty())
                 return false;
 
             if (_hasLogger(key))
                 return false;
 
-            _registerLogger(logger, Str(key));
+            _registerLogger(logger, String(key));
             return true;
         }
 
@@ -176,9 +178,9 @@ namespace Atom::Logging
         ///
         /// # Parameters
         /// - `logger`: Logger to register.
-        /// - `key`: Str used as key to register logger.
+        /// - `key`: String used as key to register logger.
         /// ----------------------------------------------------------------------------------------
-        auto TryRegisterLogger(LoggerPtr logger, StrView key) -> bool
+        auto TryRegisterLogger(LoggerPtr logger, StringView key) -> bool
         {
             if (logger == nullptr)
                 return false;
@@ -189,18 +191,18 @@ namespace Atom::Logging
             if (_hasLogger(key))
                 return false;
 
-            _registerLogger(logger, Str(key));
+            _registerLogger(logger, String(key));
             return true;
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Overload for bool TryRegisterLogger(LoggerPtr logger, StrView key) for
+        /// Overload for bool TryRegisterLogger(LoggerPtr logger, StringView key) for
         /// performance.
         ///
         /// # Parameters
-        /// - `key`: RValue reference to Str, to avoid allocating memory to store the key.
+        /// - `key`: RValue reference to String, to avoid allocating memory to store the key.
         /// ----------------------------------------------------------------------------------------
-        auto TryRegisterLogger(LoggerPtr logger, Str&& key) -> bool
+        auto TryRegisterLogger(LoggerPtr logger, String&& key) -> bool
         {
             if (logger == nullptr)
                 return false;
@@ -218,9 +220,9 @@ namespace Atom::Logging
         /// ----------------------------------------------------------------------------------------
         /// Unregisters the logger registered with key {key}.
         /// ----------------------------------------------------------------------------------------
-        auto UnregisterLogger(StrView key) -> bool
+        auto UnregisterLogger(StringView key) -> bool
         {
-            debug_expects(not key.isEmpty(), "Cannot access logger with null key.");
+            Contracts::DebugExpects(not key.isEmpty(), "Cannot access logger with null key.");
 
             return _UnregisterLogger(key) != nullptr;
         }
@@ -238,13 +240,13 @@ namespace Atom::Logging
         ///
         /// # Parameters
         /// - `key`: Key used to register the logger.
-        /// 
+        ///
         /// # Retuns
         /// Logger registered with key {key}. If no logger was registered returns nullptr.
         /// ----------------------------------------------------------------------------------------
-        auto UnregisterAndGetLogger(StrView key) -> LoggerPtr
+        auto UnregisterAndGetLogger(StringView key) -> LoggerPtr
         {
-            debug_expects(not key.isEmpty(), "Cannot access logger with null key.");
+            Contracts::DebugExpects(not key.isEmpty(), "Cannot access logger with null key.");
 
             return _UnregisterLogger(key);
         }
@@ -252,7 +254,7 @@ namespace Atom::Logging
         /// ----------------------------------------------------------------------------------------
         /// Get the logger registered with key {key}.
         /// ----------------------------------------------------------------------------------------
-        auto GetLogger(StrView key) const -> LoggerPtr
+        auto GetLogger(StringView key) const -> LoggerPtr
         {
             for (auto pair : _loggers)
             {
@@ -268,7 +270,7 @@ namespace Atom::Logging
         /// ----------------------------------------------------------------------------------------
         /// Checks if a logger for key {key} is registered.
         /// ----------------------------------------------------------------------------------------
-        auto HasLogger(StrView key) const -> bool
+        auto HasLogger(StringView key) const -> bool
         {
             return _hasLogger(key);
         }
@@ -334,24 +336,23 @@ namespace Atom::Logging
         ////////////////////////////////////////////////////////////////////////////////////////////
 
     protected:
-        auto _registerLogger(LoggerPtr logger, Str key) -> void
+        auto _registerLogger(LoggerPtr logger, String key) -> void
         {
-            debug_expects(logger != nullptr);
-            debug_expects(!key.isEmpty());
+            Contracts::DebugExpects(logger != nullptr);
+            Contracts::DebugExpects(!key.isEmpty());
 
             _loggers.insert({ mov(key), mov(logger) });
         }
 
-        auto _forceRegisterLogger(LoggerPtr logger, Str key) -> void
+        auto _forceRegisterLogger(LoggerPtr logger, String key) -> void
         {
-            debug_expects(logger != nullptr);
-            debug_expects(!key.isEmpty());
+            Contracts::DebugExpects(logger != nullptr);
+            Contracts::DebugExpects(!key.isEmpty());
 
             _loggers.insert_or_assign(mov(key), mov(logger));
         }
 
-
-        auto _UnregisterLogger(StrView key) -> LoggerPtr
+        auto _UnregisterLogger(StringView key) -> LoggerPtr
         {
             auto it = _getLoggerIter(key);
             if (it == iterEnd())
@@ -367,7 +368,7 @@ namespace Atom::Logging
         /// ----------------------------------------------------------------------------------------
         ///
         /// ----------------------------------------------------------------------------------------
-        auto _hasLogger(StrView key) const -> bool
+        auto _hasLogger(StringView key) const -> bool
         {
             for (auto pair : _loggers)
             {
@@ -380,7 +381,7 @@ namespace Atom::Logging
             return false;
         }
 
-        auto _getLoggerIter(StrView key) const -> TIter
+        auto _getLoggerIter(StringView key) const -> TIter
         {
             auto it = iter();
             for (; it != iterEnd(); it++)

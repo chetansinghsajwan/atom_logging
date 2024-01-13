@@ -55,7 +55,7 @@ namespace Atom::Logging
         ///
         /// If {ShouldLogAsError(logMsg.lvl) == true}, writes the message to stderr else to stdout.
         /// ----------------------------------------------------------------------------------------
-        virtual auto _Write(const LogMsg& logMsg, StrView formattedMsg) -> void override final
+        virtual auto _Write(const LogMsg& logMsg, StringView formattedMsg) -> void override final
         {
             FILE* file = _stdout;
 
@@ -64,7 +64,7 @@ namespace Atom::Logging
                 file = _stderr;
             }
 
-            ::fwrite(formattedMsg.data(), sizeof(char), formattedMsg.count(), file);
+            ::fwrite(formattedMsg.data().unwrap(), sizeof(char), formattedMsg.count(), file);
         }
 
         /// ----------------------------------------------------------------------------------------

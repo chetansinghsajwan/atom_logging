@@ -24,7 +24,7 @@ namespace Atom::Logging::Internal
         ///
         /// @PARAM[IN] name Name of this logger.
         /// ----------------------------------------------------------------------------------------
-        explicit SimpleLoggerTemplate(Str name)
+        explicit SimpleLoggerTemplate(String name)
             : _name(mov(name))
             , targets()
         {}
@@ -37,7 +37,7 @@ namespace Atom::Logging::Internal
         /// @PARAM[IN] targets LogTarget objects to add.
         /// ----------------------------------------------------------------------------------------
         template <typename TRange>
-        SimpleLoggerTemplate(Str name, const TRange& targets)
+        SimpleLoggerTemplate(String name, const TRange& targets)
             requires(RRangeOf<TRange, LogTargetPtr>)
             : _name(mov(name))
             , targets(targets)
@@ -49,7 +49,7 @@ namespace Atom::Logging::Internal
         ///
         /// @THREAD_SAFETY SAFE
         /// ----------------------------------------------------------------------------------------
-        auto Name() const -> StrView override final
+        auto Name() const -> StringView override final
         {
             return _name;
         }
@@ -146,7 +146,7 @@ namespace Atom::Logging::Internal
         /// ----------------------------------------------------------------------------------------
         /// Name of this logger.
         /// ----------------------------------------------------------------------------------------
-        const Str _name;
+        const String _name;
 
         /// ----------------------------------------------------------------------------------------
         /// ELogLevel used to filter logs.
