@@ -23,7 +23,7 @@ namespace Atom::Logging
         /// ----------------------------------------------------------------------------------------
         constexpr virtual auto Name() const -> StringView override
         {
-            return s_name;
+            return _Name;
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -55,8 +55,9 @@ namespace Atom::Logging
         /// ----------------------------------------------------------------------------------------
         /// Name of the NullLogger.
         /// ----------------------------------------------------------------------------------------
-        static constexpr StringView s_name = MakeRange("NullLogger");
+        static const StringView _Name;
     };
 
     inline LoggerPtr NullLogger::Instance = MakeShared<NullLogger>();
+    inline const StringView NullLogger::_Name = MakeRange("NullLogger");
 }
