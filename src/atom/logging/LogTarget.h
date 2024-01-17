@@ -1,6 +1,6 @@
 #pragma once
 // import atom.core;
-#include "Atom/Logging/LogMsg.h"
+#include "atom/logging/LogMsg.h"
 
 namespace Atom::Logging
 {

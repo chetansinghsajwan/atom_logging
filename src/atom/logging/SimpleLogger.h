@@ -1,7 +1,7 @@
 #pragma once
-#include "Atom/Logging/LogTarget.h"
-#include "Atom/Logging/LogTargets/MultiLogTarget.h"
-#include "Atom/Logging/Logger.h"
+#include "atom/logging/LogTarget.h"
+#include "atom/logging/LogTargets/MultiLogTarget.h"
+#include "atom/logging/Logger.h"
 
 namespace Atom::Logging::Internal
 {

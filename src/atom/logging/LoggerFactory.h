@@ -1,6 +1,6 @@
 #pragma once
-#include "Atom/Logging/Logger.h"
-#include "Atom/Logging/SimpleLogger.h"
+#include "atom/logging/Logger.h"
+#include "atom/logging/SimpleLogger.h"
 
 namespace Atom::Logging
 {

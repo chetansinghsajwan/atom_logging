@@ -1,15 +1,15 @@
 #pragma once
 // import atom.core;
-#include "Atom/Logging/Logger.h"
-#include "Atom/Logging/LoggerFactory.h"
-#include "Atom/Logging/NullLogger.h"
+#include "atom/logging/Logger.h"
+#include "atom/logging/LoggerFactory.h"
+#include "atom/logging/NullLogger.h"
 
 namespace Atom::Logging
 {
     class LoggerRegistrationErr: public Err
     {
     public:
-        constexpr LoggerRegistrationErr(StringView msg, StringView key)
+        constexpr LoggerRegistrationErr(string_view msg, StringView key)
             : Err{ StdStringView((const char*)msg.data().unwrap(), msg.count().unwrap()) }
             , key{ key }
         {}
