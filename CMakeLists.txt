@@ -1,6 +1,3 @@
-set(CMAKE_CXX_COMPILER "clang++")
-set(CMAKE_C_COMPILER "clang")
-
 cmake_minimum_required(VERSION 3.5)
 project(Atom.Logging VERSION 0.1.0 LANGUAGES CXX)
 
