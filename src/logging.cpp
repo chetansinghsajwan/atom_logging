@@ -6,5 +6,5 @@ import atom.core;
 
 export
 {
-#include "Atom/Logging.h"
+#include "atom/logging.h"
 }

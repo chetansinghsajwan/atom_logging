@@ -1,76 +1,76 @@
 #pragma once
-#include "atom/logging/LogTargets/LogTargetBase.h"
+#include "atom/logging/log_targets/log_target_base.h"
 
-namespace Atom::Logging
+namespace atom::logging
 {
     /// --------------------------------------------------------------------------------------------
-    /// ConsoleLogTarget logs to console using stdout and stderr.
+    /// console_log_target logs to console using stdout and stderr.
     /// --------------------------------------------------------------------------------------------
-    class ConsoleLogTarget: public Internal::LogTargetBase
+    class console_log_target: public internal::log_target_base
     {
     public:
         /// ----------------------------------------------------------------------------------------
-        /// Default constructs the ConsoleLogTarget.
+        /// default constructs the console_log_target.
         ///
-        /// ErrorLogLevel is set to ELogLevel::Error.
+        /// error_log_level is set to log_level::error.
         /// ----------------------------------------------------------------------------------------
-        ConsoleLogTarget()
+        console_log_target()
             : _stdout(stdout)
             , _stderr(stderr)
-            , _errLogLevel(ELogLevel::Error)
+            , _err_log_level(log_level::error)
         {}
 
     public:
         /// ----------------------------------------------------------------------------------------
-        /// Retuns the ELogLevel specified for error logging.
+        /// retuns the log_level specified for error logging.
         /// ----------------------------------------------------------------------------------------
-        auto GetErrLogLevel() const -> ELogLevel
+        auto get_err_log_level() const -> log_level
         {
-            return _errLogLevel;
+            return _err_log_level;
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Sets the ELogLevel specified for error logging.
+        /// sets the log_level specified for error logging.
         ///
-        /// Logs of same or above level are written to stderr.
+        /// logs of same or above level are written to stderr.
         /// ----------------------------------------------------------------------------------------
-        auto SetErrLogLevel(ELogLevel lvl)
+        auto set_err_log_level(log_level lvl)
         {
-            _errLogLevel = lvl;
+            _err_log_level = lvl;
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Checks if ELogLevel should be written to stderr.
+        /// checks if log_level should be written to stderr.
         ///
-        /// @RETURNS `true` if {lvl >= GetErrLogLevel()}, else `false`.
+        /// @returns `true` if {lvl >= get_err_log_level()}, else `false`.
         /// ----------------------------------------------------------------------------------------
-        auto ShouldLogAsError(ELogLevel lvl) const -> bool
+        auto should_log_as_error(log_level lvl) const -> bool
         {
-            return lvl >= _errLogLevel;
+            return lvl >= _err_log_level;
         }
 
     protected:
         /// ----------------------------------------------------------------------------------------
-        /// Writes the formatted message to stdout or stderr based on log level.
+        /// writes the formatted message to stdout or stderr based on log level.
         ///
-        /// If {ShouldLogAsError(logMsg.lvl) == true}, writes the message to stderr else to stdout.
+        /// if {should_log_as_error(log_msg.lvl) == true}, writes the message to stderr else to stdout.
         /// ----------------------------------------------------------------------------------------
-        virtual auto _Write(const LogMsg& logMsg, StringView formattedMsg) -> void override final
+        virtual auto _write(const log_msg& log_msg, string_view formatted_msg) -> void override final
         {
             FILE* file = _stdout;
 
-            if (ShouldLogAsError(logMsg.lvl))
+            if (should_log_as_error(log_msg.lvl))
             {
                 file = _stderr;
             }
 
-            ::fwrite(formattedMsg.data().unwrap(), sizeof(char), formattedMsg.count(), file);
+            ::fwrite(formatted_msg.data().unwrap(), sizeof(char), formatted_msg.count(), file);
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Flushes both stdout and stderr.
+        /// flushes both stdout and stderr.
         /// ----------------------------------------------------------------------------------------
-        virtual auto _Flush() -> void override final
+        virtual auto _flush() -> void override final
         {
             fflush(_stdout);
             fflush(_stderr);
@@ -78,18 +78,18 @@ namespace Atom::Logging
 
     protected:
         /// ----------------------------------------------------------------------------------------
-        /// FILE* to stdout.
+        /// file* to stdout.
         /// ----------------------------------------------------------------------------------------
         FILE* _stdout;
 
         /// ----------------------------------------------------------------------------------------
-        /// FILE* to stderr.
+        /// file* to stderr.
         /// ----------------------------------------------------------------------------------------
         FILE* _stderr;
 
         /// ----------------------------------------------------------------------------------------
-        /// ErrorLogLevel used to check if the message should be logged to stderr or stdout.
+        /// error_log_level used to check if the message should be logged to stderr or stdout.
         /// ----------------------------------------------------------------------------------------
-        ELogLevel _errLogLevel;
+        log_level _err_log_level;
     };
 }

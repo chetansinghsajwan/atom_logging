@@ -1,175 +1,175 @@
 #pragma once
-#include "atom/logging/LogTarget.h"
+#include "atom/logging/log_target.h"
 
-namespace Atom::Logging::Internal
+namespace atom::logging::internal
 {
     /// --------------------------------------------------------------------------------------------
-    /// Base class for LogTargets with base functionality like formatting, thread safety and
+    /// base class for log_targets with base functionality like formatting, thread safety and
     /// level filtering.
     ///
-    /// # To Do
+    /// # to do
     ///
-    /// - Add thread safety.
-    /// - Make default log and flush level global.
+    /// - add thread safety.
+    /// - make default log and flush level global.
     /// --------------------------------------------------------------------------------------------
-    class LogTargetBase: public LogTarget
+    class log_target_base: public log_target
     {
     public:
         /// ----------------------------------------------------------------------------------------
-        /// # Default Constructor
+        /// # default constructor
         /// ----------------------------------------------------------------------------------------
-        LogTargetBase()
-            : _logLevel(ELogLevel::Debug)
-            , _flushLevel(ELogLevel::Info)
-            , _hasWritten(false)
-            , _alwaysFlush(false)
+        log_target_base()
+            : _log_level(log_level::debug)
+            , _flush_level(log_level::info)
+            , _has_written(false)
+            , _always_flush(false)
         {}
 
     public:
         /// ----------------------------------------------------------------------------------------
-        /// Filters and Formats the LogMsg and passes it to write.
+        /// filters and formats the log_msg and passes it to write.
         /// ----------------------------------------------------------------------------------------
-        virtual auto Write(const LogMsg& logMsg) -> void override final
+        virtual auto write(const log_msg& log_msg) -> void override final
         {
-            if (CheckLogLevel(logMsg.lvl))
+            if (check_log_level(log_msg.lvl))
             {
-                // To Do: Add chrono support for Atom.Fmt.
-                // String result = StringFmter().Fmt("[{}] [{}] {}: {}\n",
-                //     logMsg.time, logMsg.lvl, logMsg.loggerName, logMsg.msg);
+                // to do: add chrono support for atom.fmt.
+                // string result = string_fmter().fmt("[{}] [{}] {}: {}\n",
+                //     log_msg.time, log_msg.lvl, log_msg.logger_name, log_msg.msg);
 
-                // String result = StringFmter().Fmt(
-                //     "[{}] {}: {}\n", logMsg.lvl, logMsg.loggerName, logMsg.msg);
+                // string result = string_fmter().fmt(
+                //     "[{}] {}: {}\n", log_msg.lvl, log_msg.logger_name, log_msg.msg);
 
-                String result;
+                string result;
 
-                _hasWritten = true;
-                _Write(logMsg, result);
+                _has_written = true;
+                _write(log_msg, result);
 
-                if (CheckFlushLevel(logMsg.lvl))
+                if (check_flush_level(log_msg.lvl))
                 {
-                    _Flush();
+                    _flush();
                 }
             }
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Flushes if `[`ShouldFlush()`] == true`.
+        /// flushes if `[`should_flush()`] == true`.
         /// ----------------------------------------------------------------------------------------
-        virtual auto Flush() -> void override final
+        virtual auto flush() -> void override final
         {
-            if (ShouldFlush())
+            if (should_flush())
             {
-                _Flush();
+                _flush();
             }
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Get the log level.
+        /// get the log level.
         /// ----------------------------------------------------------------------------------------
-        auto GetLogLevel() const -> ELogLevel
+        auto get_log_level() const -> log_level
         {
-            return _logLevel;
+            return _log_level;
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Sets the log level.
+        /// sets the log level.
         /// ----------------------------------------------------------------------------------------
-        auto SetLogLevel(ELogLevel lvl)
+        auto set_log_level(log_level lvl)
         {
-            _logLevel = lvl;
+            _log_level = lvl;
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Checks if we should log the message of specified level.
+        /// checks if we should log the message of specified level.
         /// ----------------------------------------------------------------------------------------
-        auto CheckLogLevel(ELogLevel lvl) const -> bool
+        auto check_log_level(log_level lvl) const -> bool
         {
-            if (lvl == ELogLevel::OFF)
+            if (lvl == log_level::off)
                 return false;
-            if (lvl < _logLevel)
-                return false;
-
-            return true;
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// Gets the flush level.
-        /// ----------------------------------------------------------------------------------------
-        auto GetFlushLevel() const -> ELogLevel
-        {
-            return _flushLevel;
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// Sets the flush level.
-        /// ----------------------------------------------------------------------------------------
-        auto SetFlushLevel(ELogLevel lvl)
-        {
-            _flushLevel = lvl;
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// Checks if should flush after logging the message of specified level.
-        /// It also asks [`ShouldFlush()`].
-        /// ----------------------------------------------------------------------------------------
-        auto CheckFlushLevel(ELogLevel lvl) const -> bool
-        {
-            if (!_hasWritten)
-                return false;
-            if (lvl == ELogLevel::OFF)
-                return false;
-            if (lvl < _flushLevel)
+            if (lvl < _log_level)
                 return false;
 
             return true;
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Checks if we should flush.
+        /// gets the flush level.
+        /// ----------------------------------------------------------------------------------------
+        auto get_flush_level() const -> log_level
+        {
+            return _flush_level;
+        }
+
+        /// ----------------------------------------------------------------------------------------
+        /// sets the flush level.
+        /// ----------------------------------------------------------------------------------------
+        auto set_flush_level(log_level lvl)
+        {
+            _flush_level = lvl;
+        }
+
+        /// ----------------------------------------------------------------------------------------
+        /// checks if should flush after logging the message of specified level.
+        /// it also asks [`should_flush()`].
+        /// ----------------------------------------------------------------------------------------
+        auto check_flush_level(log_level lvl) const -> bool
+        {
+            if (!_has_written)
+                return false;
+            if (lvl == log_level::off)
+                return false;
+            if (lvl < _flush_level)
+                return false;
+
+            return true;
+        }
+
+        /// ----------------------------------------------------------------------------------------
+        /// checks if we should flush.
         ///
-        /// # Returns
+        /// # returns
         /// `true` if there has been a log since last flush, else `false`.
         /// ----------------------------------------------------------------------------------------
-        auto ShouldFlush() const -> bool
+        auto should_flush() const -> bool
         {
-            return _alwaysFlush || _hasWritten;
+            return _always_flush || _has_written;
         }
 
     protected:
         /// ----------------------------------------------------------------------------------------
-        /// Write implementation.
+        /// write implementation.
         ///
-        /// @PARAM[IN] logMsg Log message object passed for logging.
-        /// @PARAM[IN] formattedMsg Formatted message generated from {logMsg}.
+        /// @param[in] log_msg log message object passed for logging.
+        /// @param[in] formatted_msg formatted message generated from {log_msg}.
         /// ----------------------------------------------------------------------------------------
-        virtual auto _Write(const LogMsg& logMsg, StringView formattedMsg) -> void = 0;
+        virtual auto _write(const log_msg& log_msg, string_view formatted_msg) -> void = 0;
 
         /// ----------------------------------------------------------------------------------------
-        /// Flush implementation.
+        /// flush implementation.
         /// ----------------------------------------------------------------------------------------
-        virtual auto _Flush() -> void = 0;
+        virtual auto _flush() -> void = 0;
 
     protected:
         /// ----------------------------------------------------------------------------------------
-        /// Log Level used to filter log messages.
+        /// log level used to filter log messages.
         /// ----------------------------------------------------------------------------------------
-        ELogLevel _logLevel;
+        log_level _log_level;
 
         /// ----------------------------------------------------------------------------------------
-        /// Flush level used to check if to call flush after logging.
+        /// flush level used to check if to call flush after logging.
         /// ----------------------------------------------------------------------------------------
-        ELogLevel _flushLevel;
+        log_level _flush_level;
 
         /// ----------------------------------------------------------------------------------------
-        /// Value used to check if there has been any write since last flush.
+        /// value used to check if there has been any write since last flush.
         /// ----------------------------------------------------------------------------------------
-        bool _hasWritten;
+        bool _has_written;
 
         /// ----------------------------------------------------------------------------------------
-        /// If true always calls underlying flush _Flush(), even if not necessary.
-        /// This doesn't override CheckFlushLevel(ELogLevel lvl) check. It only affects
-        /// ShouldFlush().
+        /// if true always calls underlying flush _flush(), even if not necessary.
+        /// this doesn't override check_flush_level(log_level lvl) check. it only affects
+        /// should_flush().
         /// ----------------------------------------------------------------------------------------
-        bool _alwaysFlush;
+        bool _always_flush;
     };
 }

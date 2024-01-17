@@ -1,167 +1,167 @@
 #pragma once
-#include "atom/logging/LogTarget.h"
-#include "atom/logging/LogTargets/MultiLogTarget.h"
-#include "atom/logging/Logger.h"
+#include "atom/logging/log_target.h"
+#include "atom/logging/log_targets/multi_log_target.h"
+#include "atom/logging/logger.h"
 
-namespace Atom::Logging::Internal
+namespace atom::logging::internal
 {
     /// --------------------------------------------------------------------------------------------
-    /// --- DOC_TEMPLATE
+    /// --- doc_template
     /// --------------------------------------------------------------------------------------------
-    /// Basic Logger object.
+    /// basic logger object.
     ///
-    /// @THREAD_SAFETY SAFE
+    /// @thread_safety safe
     /// --------------------------------------------------------------------------------------------
-    template <bool ST>
-    class SimpleLoggerTemplate: public Logger
+    template <bool st>
+    class simple_logger_template: public logger
     {
-        using MultiLogTarget = TTI::TConditional<ST, MultiLogTargetST, MultiLogTargetMT>;
-        using AtomicLogLevel = TTI::TConditional<ST, ELogLevel, Atomic<ELogLevel>>;
+        using multi_log_target = tti::tconditional<st, multi_log_target_st, multi_log_target_mt>;
+        using atomic_log_level = tti::tconditional<st, log_level, atomic<log_level>>;
 
     public:
         /// ----------------------------------------------------------------------------------------
-        /// DefaultConstructor.
+        /// default_constructor.
         ///
-        /// @PARAM[IN] name Name of this logger.
+        /// @param[in] name name of this logger.
         /// ----------------------------------------------------------------------------------------
-        explicit SimpleLoggerTemplate(String name)
+        explicit simple_logger_template(string name)
             : _name(mov(name))
             , targets()
         {}
 
         /// ----------------------------------------------------------------------------------------
-        /// Constructs and adds LogTarget objects.
-        /// Constructs {targets(targets)}.
+        /// constructs and adds log_target objects.
+        /// constructs {targets(targets)}.
         ///
-        /// @PARAM[IN] name Name of this logger.
-        /// @PARAM[IN] targets LogTarget objects to add.
+        /// @param[in] name name of this logger.
+        /// @param[in] targets log_target objects to add.
         /// ----------------------------------------------------------------------------------------
-        template <typename TRange>
-        SimpleLoggerTemplate(String name, const TRange& targets)
-            requires(RRangeOf<TRange, LogTargetPtr>)
+        template <typename trange>
+        simple_logger_template(string name, const trange& targets)
+            requires(rrange_of<trange, log_target_ptr>)
             : _name(mov(name))
             , targets(targets)
         {}
 
     public:
         /// ----------------------------------------------------------------------------------------
-        /// Get the name of this Logger.
+        /// get the name of this logger.
         ///
-        /// @THREAD_SAFETY SAFE
+        /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
-        auto Name() const -> StringView override final
+        auto name() const -> string_view override final
         {
             return _name;
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Writes to all LogTarget objects.
+        /// writes to all log_target objects.
         ///
-        /// @THREAD_SAFETY SAFE
+        /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
-        auto Log(LogMsg& logMsg) -> void override
+        auto log(log_msg& log_msg) -> void override
         {
-            targets.Write(logMsg);
+            targets.write(log_msg);
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Flushes all LogTarget objects.
+        /// flushes all log_target objects.
         ///
-        /// @THREAD_SAFETY SAFE
+        /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
-        auto Flush() -> void override
+        auto flush() -> void override
         {
-            targets.Flush();
+            targets.flush();
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Set log level.
+        /// set log level.
         ///
-        /// @THREAD_SAFETY SAFE
+        /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
-        auto SetLogLevel(ELogLevel lvl)
+        auto set_log_level(log_level lvl)
         {
-            _logLevel = lvl;
+            _log_level = lvl;
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Get log level.
+        /// get log level.
         ///
-        /// @THREAD_SAFETY SAFE
+        /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
-        auto GetLogLevel(ELogLevel lvl) -> ELogLevel
+        auto get_log_level(log_level lvl) -> log_level
         {
-            return _logLevel;
+            return _log_level;
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Checks if Log of level {lvl} should be logged.
+        /// checks if log of level {lvl} should be logged.
         ///
-        /// @THREAD_SAFETY SAFE
+        /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
-        auto CheckLogLevel(ELogLevel lvl) const -> bool override final
+        auto check_log_level(log_level lvl) const -> bool override final
         {
-            return lvl != ELogLevel::OFF && lvl >= _logLevel;
+            return lvl != log_level::off && lvl >= _log_level;
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Set flush level.
+        /// set flush level.
         ///
-        /// @THREAD_SAFETY SAFE
+        /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
-        auto SetFlushLevel(ELogLevel lvl)
+        auto set_flush_level(log_level lvl)
         {
-            _flushLevel = lvl;
+            _flush_level = lvl;
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Get flush level.
+        /// get flush level.
         ///
-        /// @THREAD_SAFETY SAFE
+        /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
-        auto GetFlushLevel() const -> ELogLevel
+        auto get_flush_level() const -> log_level
         {
-            return _flushLevel;
+            return _flush_level;
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Checks if Log of level {lvl} should be flushed.
+        /// checks if log of level {lvl} should be flushed.
         ///
-        /// @THREAD_SAFETY SAFE
+        /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
-        auto CheckFlushLevel(ELogLevel lvl) const -> bool
+        auto check_flush_level(log_level lvl) const -> bool
         {
-            return lvl != ELogLevel::OFF && lvl >= _flushLevel;
+            return lvl != log_level::off && lvl >= _flush_level;
         }
 
     public:
         /// ----------------------------------------------------------------------------------------
-        /// The object used to manage LogTarget objects. Accessing it is thread safe.
+        /// the object used to manage log_target objects. accessing it is thread safe.
         ///
-        /// @THREAD_SAFETY SAFE
+        /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
-        MultiLogTarget targets;
+        multi_log_target targets;
 
     protected:
         /// ----------------------------------------------------------------------------------------
-        /// Name of this logger.
+        /// name of this logger.
         /// ----------------------------------------------------------------------------------------
-        const String _name;
+        const string _name;
 
         /// ----------------------------------------------------------------------------------------
-        /// ELogLevel used to filter logs.
+        /// log_level used to filter logs.
         /// ----------------------------------------------------------------------------------------
-        AtomicLogLevel _logLevel;
+        atomic_log_level _log_level;
 
         /// ----------------------------------------------------------------------------------------
-        /// ELogLevel used to filter flush after logs.
+        /// log_level used to filter flush after logs.
         /// ----------------------------------------------------------------------------------------
-        AtomicLogLevel _flushLevel;
+        atomic_log_level _flush_level;
     };
 }
 
-namespace Atom::Logging
+namespace atom::logging
 {
-    using SimpleLoggerST = Internal::SimpleLoggerTemplate<true>;
-    using SimpleLoggerMT = Internal::SimpleLoggerTemplate<false>;
+    using simple_logger_st = internal::simple_logger_template<true>;
+    using simple_logger_mt = internal::simple_logger_template<false>;
 }

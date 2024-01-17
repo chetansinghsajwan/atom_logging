@@ -1,29 +1,29 @@
 #pragma once
 // import atom.core;
-#include "atom/logging/LogMsg.h"
+#include "atom/logging/log_msg.h"
 
-namespace Atom::Logging
+namespace atom::logging
 {
     /// --------------------------------------------------------------------------------------------
-    /// Abstract class defining a log target (like a file, console, network).
+    /// abstract class defining a log target (like a file, console, network).
     /// --------------------------------------------------------------------------------------------
-    class LogTarget
+    class log_target
     {
     public:
         /// ----------------------------------------------------------------------------------------
-        /// Writes the message into underlying target.
+        /// writes the message into underlying target.
         /// ----------------------------------------------------------------------------------------
-        virtual auto Write(const LogMsg& logMsg) -> void = 0;
+        virtual auto write(const log_msg& log_msg) -> void = 0;
 
         /// ----------------------------------------------------------------------------------------
-        /// If storing messages in a buffer, flushes it.
+        /// if storing messages in a buffer, flushes it.
         /// ----------------------------------------------------------------------------------------
-        virtual auto Flush() -> void = 0;
+        virtual auto flush() -> void = 0;
     };
 
     /// --------------------------------------------------------------------------------------------
-    /// Ptr type used to manage LogTarget in this logging api. It's recommended to use this
-    /// to type to store LogTarget instance. This keeps compatibility with the logging api.
+    /// ptr type used to manage log_target in this logging api. it's recommended to use this
+    /// to type to store log_target instance. this keeps compatibility with the logging api.
     /// --------------------------------------------------------------------------------------------
-    using LogTargetPtr = SharedPtr<LogTarget>;
+    using log_target_ptr = shared_ptr<log_target>;
 }

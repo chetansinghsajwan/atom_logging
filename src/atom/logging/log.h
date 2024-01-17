@@ -1,189 +1,189 @@
 #pragma once
-#include "atom/logging/LoggerRegistry.h"
+#include "atom/logging/logger_registry.h"
 
-namespace Atom::Logging
+namespace atom::logging
 {
-    inline LoggerPtr GET_ROOT_LOGGER()
+    inline logger_ptr get_root_logger()
     {
-        return GET_REGISTRY().GetDefaultLogger();
+        return get_registry().get_default_logger();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////
-    //// Runtime Logging
+    //// runtime logging
     ////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     /// ----------------------------------------------------------------------------------------
-    /// Checks if RootLogger should log.
+    /// checks if root_logger should log.
     ///
-    /// @PARAM[IN] lvl ELogLevel to check against.
+    /// @param[in] lvl log_level to check against.
     /// ----------------------------------------------------------------------------------------
-    inline auto CHECK_LOG_LEVEL(ELogLevel lvl) -> bool
+    inline auto check_log_level(log_level lvl) -> bool
     {
-        return GET_ROOT_LOGGER()->CheckLogLevel(lvl);
+        return get_root_logger()->check_log_level(lvl);
     }
 
     /// ----------------------------------------------------------------------------------------
-    /// Calls Log on GET_ROOT_LOGGER().
+    /// calls log on get_root_logger().
     /// ----------------------------------------------------------------------------------------
-    template <RLogArg... TArgs>
-    inline auto LOG(ELogLevel lvl, LogStr<TArgs...> msg, TArgs&&... args)
+    template <rlog_arg... targs>
+    inline auto log(log_level lvl, log_str<targs...> msg, targs&&... args)
     {
-        GET_ROOT_LOGGER()->Log(lvl, msg, fwd(args)...);
+        get_root_logger()->log(lvl, msg, fwd(args)...);
     }
 
     /// --------------------------------------------------------------------------------------------
-    /// Calls LOG(ELogLevel::Trace, msg, fwd(args)...).
+    /// calls log(log_level::trace, msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <RLogArg... TArgs>
-    inline auto LOG_TRACE(LogStr<TArgs...> msg, TArgs&&... args)
+    template <rlog_arg... targs>
+    inline auto log_trace(log_str<targs...> msg, targs&&... args)
     {
-        LOG(ELogLevel::Trace, msg, fwd(args)...);
+        log(log_level::trace, msg, fwd(args)...);
     }
 
     /// --------------------------------------------------------------------------------------------
-    /// Calls LOG(ELogLevel::Debug, msg, fwd(args)...).
+    /// calls log(log_level::debug, msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <RLogArg... TArgs>
-    inline auto LOG_DEBUG(LogStr<TArgs...> msg, TArgs&&... args)
+    template <rlog_arg... targs>
+    inline auto log_debug(log_str<targs...> msg, targs&&... args)
     {
-        LOG(ELogLevel::Debug, msg, fwd(args)...);
+        log(log_level::debug, msg, fwd(args)...);
     }
 
     /// --------------------------------------------------------------------------------------------
-    /// Calls LOG(ELogLevel::Info, msg, fwd(args)...).
+    /// calls log(log_level::info, msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <RLogArg... TArgs>
-    inline auto LOG_INFO(LogStr<TArgs...> msg, TArgs&&... args)
+    template <rlog_arg... targs>
+    inline auto log_info(log_str<targs...> msg, targs&&... args)
     {
-        LOG(ELogLevel::Info, msg, fwd(args)...);
+        log(log_level::info, msg, fwd(args)...);
     }
 
     /// --------------------------------------------------------------------------------------------
-    /// Calls LOG(ELogLevel::Warn, msg, fwd(args)...).
+    /// calls log(log_level::warn, msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <RLogArg... TArgs>
-    inline auto LOG_WARN(LogStr<TArgs...> msg, TArgs&&... args)
+    template <rlog_arg... targs>
+    inline auto log_warn(log_str<targs...> msg, targs&&... args)
     {
-        LOG(ELogLevel::Warn, msg, fwd(args)...);
+        log(log_level::warn, msg, fwd(args)...);
     }
 
     /// --------------------------------------------------------------------------------------------
-    /// Calls LOG(ELogLevel::Error, msg, fwd(args)...).
+    /// calls log(log_level::error, msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <RLogArg... TArgs>
-    inline auto LOG_ERROR(LogStr<TArgs...> msg, TArgs&&... args)
+    template <rlog_arg... targs>
+    inline auto log_error(log_str<targs...> msg, targs&&... args)
     {
-        LOG(ELogLevel::Error, msg, fwd(args)...);
+        log(log_level::error, msg, fwd(args)...);
     }
 
     /// --------------------------------------------------------------------------------------------
-    /// Calls LOG(ELogLevel::Fatal, msg, fwd(args)...).
+    /// calls log(log_level::fatal, msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <RLogArg... TArgs>
-    inline auto LOG_FATAL(LogStr<TArgs...> msg, TArgs&&... args)
+    template <rlog_arg... targs>
+    inline auto log_fatal(log_str<targs...> msg, targs&&... args)
     {
-        LOG(ELogLevel::Fatal, msg, fwd(args)...);
+        log(log_level::fatal, msg, fwd(args)...);
     }
 
-    inline auto FLUSH_LOGS()
+    inline auto flush_logs()
     {
-        GET_ROOT_LOGGER()->Flush();
+        get_root_logger()->flush();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////
-    //// Static Logging
-    //// Logging is checked at compile time and hopefully removed at runtime.
+    //// static logging
+    //// logging is checked at compile time and hopefully removed at runtime.
     ////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     /// --------------------------------------------------------------------------------------------
-    /// # To Do
+    /// # to do
     ///
-    /// - Add this as option.
+    /// - add this as option.
     /// --------------------------------------------------------------------------------------------
-    constexpr ELogLevel STATIC_LOG_LEVEL = ELogLevel::Debug;
+    constexpr log_level static_log_level = log_level::debug;
 
     /// --------------------------------------------------------------------------------------------
-    /// Checks at compile time if message of specified level {lvl} should be logged.
+    /// checks at compile time if message of specified level {lvl} should be logged.
     ///
-    /// @TPARAM[IN] lvl ELogLevel of the msg to check for.
+    /// @tparam[in] lvl log_level of the msg to check for.
     /// --------------------------------------------------------------------------------------------
-    template <ELogLevel lvl>
-    constexpr auto STATIC_CHECK_LOG_LEVEL() -> bool
+    template <log_level lvl>
+    constexpr auto static_check_log_level() -> bool
     {
-        return lvl >= STATIC_LOG_LEVEL && lvl != ELogLevel::OFF;
+        return lvl >= static_log_level && lvl != log_level::off;
     }
 
     /// --------------------------------------------------------------------------------------------
-    /// Checks at compile time if message should be logged. If not it's just an empty function
+    /// checks at compile time if message should be logged. if not it's just an empty function
     /// and hopefully compiler will optimize it away, however it's yet to check.
     ///
-    /// This is done to afn the use of macros. But if this approach fails we may fallback to
+    /// this is done to afn the use of macros. but if this approach fails we may fallback to
     /// macros.
     /// --------------------------------------------------------------------------------------------
-    template <ELogLevel lvl, RLogArg... TArgs>
-    inline auto STATIC_LOG(LogStr<TArgs...> msg, TArgs&&... args)
+    template <log_level lvl, rlog_arg... targs>
+    inline auto static_log(log_str<targs...> msg, targs&&... args)
     {
-        if constexpr (STATIC_CHECK_LOG_LEVEL<lvl>())
+        if constexpr (static_check_log_level<lvl>())
         {
-            LOG(lvl, msg, fwd(args)...);
+            log(lvl, msg, fwd(args)...);
         }
     }
 
     /// --------------------------------------------------------------------------------------------
-    /// Calls STATIC_LOG<ELogLevel::Trace>(msg, fwd(args)...).
+    /// calls static_log<log_level::trace>(msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <RLogArg... TArgs>
-    inline auto STATIC_LOG_TRACE(LogStr<TArgs...> msg, TArgs&&... args)
+    template <rlog_arg... targs>
+    inline auto static_log_trace(log_str<targs...> msg, targs&&... args)
     {
-        STATIC_LOG<ELogLevel::Trace>(msg, fwd(args)...);
+        static_log<log_level::trace>(msg, fwd(args)...);
     }
 
     /// --------------------------------------------------------------------------------------------
-    /// Calls STATIC_LOG<ELogLevel::Debug>(msg, fwd(args)...).
+    /// calls static_log<log_level::debug>(msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <RLogArg... TArgs>
-    inline auto STATIC_LOG_DEBUG(LogStr<TArgs...> msg, TArgs&&... args)
+    template <rlog_arg... targs>
+    inline auto static_log_debug(log_str<targs...> msg, targs&&... args)
     {
-        STATIC_LOG<ELogLevel::Debug>(msg, fwd(args)...);
+        static_log<log_level::debug>(msg, fwd(args)...);
     }
 
     /// --------------------------------------------------------------------------------------------
-    /// Calls STATIC_LOG<ELogLevel::Info>(msg, fwd(args)...).
+    /// calls static_log<log_level::info>(msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <RLogArg... TArgs>
-    inline auto STATIC_LOG_INFO(LogStr<TArgs...> msg, TArgs&&... args)
+    template <rlog_arg... targs>
+    inline auto static_log_info(log_str<targs...> msg, targs&&... args)
     {
-        STATIC_LOG<ELogLevel::Info>(msg, fwd(args)...);
+        static_log<log_level::info>(msg, fwd(args)...);
     }
 
     /// --------------------------------------------------------------------------------------------
-    /// Calls STATIC_LOG<ELogLevel::Warn>(msg, fwd(args)...).
+    /// calls static_log<log_level::warn>(msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <RLogArg... TArgs>
-    inline auto STATIC_LOG_WARN(LogStr<TArgs...> msg, TArgs&&... args)
+    template <rlog_arg... targs>
+    inline auto static_log_warn(log_str<targs...> msg, targs&&... args)
     {
-        STATIC_LOG<ELogLevel::Warn>(msg, fwd(args)...);
+        static_log<log_level::warn>(msg, fwd(args)...);
     }
 
     /// --------------------------------------------------------------------------------------------
-    /// Calls STATIC_LOG<ELogLevel::Error>(msg, fwd(args)...).
+    /// calls static_log<log_level::error>(msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <RLogArg... TArgs>
-    inline auto STATIC_LOG_ERROR(LogStr<TArgs...> msg, TArgs&&... args)
+    template <rlog_arg... targs>
+    inline auto static_log_error(log_str<targs...> msg, targs&&... args)
     {
-        STATIC_LOG<ELogLevel::Error>(msg, fwd(args)...);
+        static_log<log_level::error>(msg, fwd(args)...);
     }
 
     /// --------------------------------------------------------------------------------------------
-    /// Calls STATIC_LOG<ELogLevel::Fatal>(msg, fwd(args)...).
+    /// calls static_log<log_level::fatal>(msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <RLogArg... TArgs>
-    inline auto STATIC_LOG_FATAL(LogStr<TArgs...> msg, TArgs&&... args)
+    template <rlog_arg... targs>
+    inline auto static_log_fatal(log_str<targs...> msg, targs&&... args)
     {
-        STATIC_LOG<ELogLevel::Fatal>(msg, fwd(args)...);
+        static_log<log_level::fatal>(msg, fwd(args)...);
     }
 }

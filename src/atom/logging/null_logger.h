@@ -1,63 +1,63 @@
 #pragma once
-#include "atom/logging/Logger.h"
+#include "atom/logging/logger.h"
 
-namespace Atom::Logging
+namespace atom::logging
 {
     /// --------------------------------------------------------------------------------------------
-    /// NullLogger is used in cases where it's not appropriate to return nullptr.
+    /// null_logger is used in cases where it's not appropriate to return nullptr.
     ///
-    /// NullLogger is stateless and doesn't do anything except refusing every log request.
-    /// Damn rude nigga!.
+    /// null_logger is stateless and doesn't do anything except refusing every log request.
+    /// damn rude nigga!.
     /// --------------------------------------------------------------------------------------------
-    class NullLogger final: public Logger
+    class null_logger final: public logger
     {
     public:
         /// ----------------------------------------------------------------------------------------
-        /// Default constructs NullLogger.
+        /// default constructs null_logger.
         /// ----------------------------------------------------------------------------------------
-        constexpr NullLogger() {}
+        constexpr null_logger() {}
 
     public:
         /// ----------------------------------------------------------------------------------------
-        /// Returns name of the NullLogger.
+        /// returns name of the null_logger.
         /// ----------------------------------------------------------------------------------------
-        constexpr virtual auto Name() const -> StringView override
+        constexpr virtual auto name() const -> string_view override
         {
-            return _Name;
+            return _name;
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// Does nothing.
+        /// does nothing.
         /// ----------------------------------------------------------------------------------------
-        constexpr virtual auto Log(LogMsg& logMsg) -> void override {}
+        constexpr virtual auto log(log_msg& log_msg) -> void override {}
 
         /// ----------------------------------------------------------------------------------------
-        /// Does nothing.
+        /// does nothing.
         /// ----------------------------------------------------------------------------------------
-        constexpr virtual auto Flush() -> void override {}
+        constexpr virtual auto flush() -> void override {}
 
         /// ----------------------------------------------------------------------------------------
-        /// Always returns false to avoid constructing log msg.
+        /// always returns false to avoid constructing log msg.
         /// ----------------------------------------------------------------------------------------
-        constexpr virtual auto CheckLogLevel(ELogLevel lvl) const -> bool override
+        constexpr virtual auto check_log_level(log_level lvl) const -> bool override
         {
             return false;
         }
 
     public:
         /// ----------------------------------------------------------------------------------------
-        /// Static instance of this type because this type is stateless.
-        /// It's recommended to use this instead of creating one each time.
+        /// static instance of this type because this type is stateless.
+        /// it's recommended to use this instead of creating one each time.
         /// ----------------------------------------------------------------------------------------
-        static LoggerPtr Instance;
+        static logger_ptr instance;
 
     private:
         /// ----------------------------------------------------------------------------------------
-        /// Name of the NullLogger.
+        /// name of the null_logger.
         /// ----------------------------------------------------------------------------------------
-        static const StringView _Name;
+        static const string_view _name;
     };
 
-    inline LoggerPtr NullLogger::Instance = MakeShared<NullLogger>();
-    inline const StringView NullLogger::_Name = MakeRange("NullLogger");
+    inline logger_ptr null_logger::instance = make_shared<null_logger>();
+    inline const string_view null_logger::_name = make_range("null_logger");
 }
