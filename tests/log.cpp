@@ -1,29 +1,31 @@
+import atom.core;
 import atom.logging;
 #include "catch2/catch_test_macros.hpp"
+#include "catch2/benchmark/catch_benchmark.hpp"
 
-using namespace Atom::Logging;
+using namespace atom::logging;
 
-TEST_CASE("STATIC_LOG", "[Implementation]")
+TEST_CASE("static_log", "[implementation]")
 {
-    BENCHMARK("LOG")
+    BENCHMARK("log")
     {
-        LOG_TRACE("HOLLA! This is an error.");
+        log_trace("holla! this is an error.");
         return 0;
     };
 
-    BENCHMARK("STATIC_LOG - Optimized")
+    BENCHMARK("static_log - optimized")
     {
-        STATIC_LOG_TRACE("HOLLA! This is trace.");
+        static_log_trace("holla! this is trace.");
         return 0;
     };
 
-    BENCHMARK("STATIC_LOG - NotOptimized")
+    BENCHMARK("static_log - not_optimized")
     {
-        STATIC_LOG_ERROR("HOLLA! This is error.");
+        static_log_error("holla! this is error.");
         return 0;
     };
 
-    BENCHMARK("EMPTY")
+    BENCHMARK("empty")
     {
         return 0;
     };

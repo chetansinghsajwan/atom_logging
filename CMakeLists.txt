@@ -1,3 +1,6 @@
+set(CMAKE_CXX_COMPILER "clang++")
+set(CMAKE_C_COMPILER "clang")
+
 cmake_minimum_required(VERSION 3.5)
 project(Atom.Logging VERSION 0.1.0 LANGUAGES CXX)
 
@@ -21,6 +24,9 @@ FetchContent_MakeAvailable(atom-core catch2)
 FetchContent_GetProperties(atom-core)
 
 include("${atom-core_SOURCE_DIR}/cmake/enable_modules.cmake")
+enable_testing()
+set(CMAKE_CXX_STANDARD "23")
+set(CMAKE_CXX_STANDARD_REQUIRED "TRUE")
 
 # --------------------------------------------------------------------------------------------------
 # Atom.Logging
