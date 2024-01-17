@@ -1,5 +1,5 @@
 #pragma once
-#include "Atom/Logging/LoggerRegistry.h"
+#include "atom/logging/LoggerRegistry.h"
 
 namespace Atom::Logging
 {

@@ -1,5 +1,5 @@
 #pragma once
-#include "Atom/Logging/LogTargets/LogTargetBase.h"
+#include "atom/logging/LogTargets/LogTargetBase.h"
 
 namespace Atom::Logging
 {

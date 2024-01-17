@@ -20,38 +20,30 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(atom-core catch2)
 FetchContent_GetProperties(atom-core)
 
-include("${atom-core_SOURCE_DIR}/CMake/enable-modules.cmake")
-
-# --------------------------------------------------------------------------------------------------
-# C++ Global config
-# --------------------------------------------------------------------------------------------------
-set(CMAKE_CXX_STANDARD "23")
-set(CMAKE_CXX_STANDARD_REQUIRED "ON")
-enable_testing()
+include("${atom-core_SOURCE_DIR}/cmake/enable_modules.cmake")
 
 # --------------------------------------------------------------------------------------------------
 # Atom.Logging
 # --------------------------------------------------------------------------------------------------
 
-add_library(Atom.Logging STATIC)
-target_sources(Atom.Logging PUBLIC
+add_library(atom.logging STATIC)
+target_sources(atom.logging PUBLIC
     FILE_SET modules TYPE CXX_MODULES FILES
-    "Source/Private/Logging.cpp")
-target_include_directories(Atom.Logging PRIVATE "Source/Private/")
-target_include_directories(Atom.Logging PUBLIC "Source/Public/")
+    "src/logging.cpp")
+target_include_directories(atom.logging PRIVATE "src/")
 
-target_link_libraries(Atom.Logging PUBLIC Atom.Core)
+target_link_libraries(atom.logging PUBLIC atom.core)
 
 # --------------------------------------------------------------------------------------------------
 # Atom.Logging Tests
 # --------------------------------------------------------------------------------------------------
 
-file(GLOB_RECURSE TEST_SOURCES "Source/Tests/**.cpp")
+file(GLOB_RECURSE test_sources "tests/*.cpp")
 
-add_executable(Atom.Logging.Tests ${TEST_SOURCES})
-target_include_directories(Atom.Logging.Tests PUBLIC "Source/Tests/")
+add_executable(atom.logging.tests "${test_sources}")
+target_include_directories(atom.logging.tests PUBLIC "tests/")
 
-target_link_libraries(Atom.Logging.Tests PUBLIC Atom.Logging)
-target_link_libraries(Atom.Logging.Tests PUBLIC Catch2::Catch2WithMain)
+target_link_libraries(atom.logging.tests PUBLIC atom.logging)
+target_link_libraries(atom.logging.tests PUBLIC Catch2::Catch2WithMain)
 
-add_test(Atom.Logging.Tests Atom.Logging.Tests)
+add_test(atom.logging.tests atom.logging.tests)
