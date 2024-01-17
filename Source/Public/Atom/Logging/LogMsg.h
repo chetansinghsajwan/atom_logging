@@ -1,10 +1,10 @@
 #pragma once
 // To Do: Remove this.
-#include "fmt/chrono.h"
+// #include "fmt/chrono.h"
 
 #include "Internal/Core.h"
 
-#include "Atom/CoreAll.h"
+// import atom.core;
 
 namespace Atom::Logging
 {

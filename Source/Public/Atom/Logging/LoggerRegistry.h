@@ -1,5 +1,5 @@
 #pragma once
-#include "Atom/CoreAll.h"
+// import atom.core;
 #include "Atom/Logging/Logger.h"
 #include "Atom/Logging/LoggerFactory.h"
 #include "Atom/Logging/NullLogger.h"

@@ -18,6 +18,9 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(atom-core catch2)
+FetchContent_GetProperties(atom-core)
+
+include("${atom-core_SOURCE_DIR}/CMake/enable-modules.cmake")
 
 # --------------------------------------------------------------------------------------------------
 # C++ Global config
@@ -30,10 +33,10 @@ enable_testing()
 # Atom.Logging
 # --------------------------------------------------------------------------------------------------
 
-file(GLOB_RECURSE SOURCES "Source/Private/**.cpp"
-    "Source/Private/**.h" "Source/Public/**.h")
-
-add_library(Atom.Logging STATIC ${SOURCES})
+add_library(Atom.Logging STATIC)
+target_sources(Atom.Logging PUBLIC
+    FILE_SET modules TYPE CXX_MODULES FILES
+    "Source/Private/Logging.cpp")
 target_include_directories(Atom.Logging PRIVATE "Source/Private/")
 target_include_directories(Atom.Logging PUBLIC "Source/Public/")
 
