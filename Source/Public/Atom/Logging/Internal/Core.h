@@ -1,5 +1,5 @@
 #pragma once
-#include "Atom/CoreAll.h"
+// import atom.core;
 
 namespace Atom
 {
