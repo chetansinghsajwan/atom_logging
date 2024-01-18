@@ -4,8 +4,8 @@ project(Atom.Logging VERSION 0.1.0 LANGUAGES CXX)
 include(FetchContent)
 
 FetchContent_Declare(
-    atom-core
-    GIT_REPOSITORY "https://github.com/shifu-dev/Atom.Core.git"
+    atom_core
+    GIT_REPOSITORY "https://github.com/shifu-dev/atom.core.git"
     GIT_TAG        "dev"
     GIT_SHALLOW    true
 )
@@ -17,10 +17,10 @@ FetchContent_Declare(
     GIT_SHALLOW    true
 )
 
-FetchContent_MakeAvailable(atom-core catch2)
-FetchContent_GetProperties(atom-core)
+FetchContent_MakeAvailable(atom_core catch2)
+FetchContent_GetProperties(atom_core)
 
-include("${atom-core_SOURCE_DIR}/cmake/enable_modules.cmake")
+include("${atom_core_SOURCE_DIR}/cmake/enable_modules.cmake")
 enable_testing()
 set(CMAKE_CXX_STANDARD "23")
 set(CMAKE_CXX_STANDARD_REQUIRED "TRUE")
