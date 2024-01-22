@@ -1,12 +1,17 @@
-#pragma once
-#include "atom/logging/log_targets/log_target_base.h"
+module;
+#include <stdio.h>
+
+export module atom.logging:console_log_target;
+import :basic_log_target;
+import :log_msg;
+import atom.core;
 
 namespace atom::logging
 {
     /// --------------------------------------------------------------------------------------------
     /// console_log_target logs to console using stdout and stderr.
     /// --------------------------------------------------------------------------------------------
-    class console_log_target: public internal::log_target_base
+    export class console_log_target: public basic_log_target
     {
     public:
         /// ----------------------------------------------------------------------------------------
