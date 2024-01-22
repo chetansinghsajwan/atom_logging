@@ -1,6 +1,7 @@
-#pragma once
-
-// import atom.core;
+export module atom.logging:multi_log_target;
+import :log_target;
+import :log_msg;
+import atom.core;
 
 namespace atom::logging
 {
@@ -339,7 +340,7 @@ namespace atom::logging
         {
             contracts::debug_expects(target != nullptr);
 
-            for (auto it = _targets.iter(); not it.eq(_targets.iter_end()); it.next())
+            for (auto it = _targets.iter(); not it.is_eq(_targets.iter_end()); it.next())
             {
                 if (it.value() == target)
                 {
@@ -371,7 +372,7 @@ namespace atom::logging
                 if (target == nullptr)
                     continue;
 
-                for (auto it = _targets.iter(); it.eq(_targets.iter_end()); it.next())
+                for (auto it = _targets.iter(); it.is_eq(_targets.iter_end()); it.next())
                 {
                     if (it.value() == target)
                     {
@@ -438,12 +439,6 @@ namespace atom::logging
         tlockable _lock;
     };
 
-    using multi_log_target_st = _multi_log_target_template<null_lockable>;
-    using multi_log_target_mt = _multi_log_target_template<simple_mutex>;
-
-    static_assert(rfwd_range_of<multi_log_target_st, log_target_ptr>,
-        "{multi_log_target_st} does not meet {rfwd_range} requirements.");
-
-    static_assert(rfwd_range_of<multi_log_target_mt, log_target_ptr>,
-        "{multi_log_target_mt} does not meet {rfwd_range} requirements.");
+    export using multi_log_target_st = _multi_log_target_template<null_lockable>;
+    export using multi_log_target_mt = _multi_log_target_template<simple_mutex>;
 }

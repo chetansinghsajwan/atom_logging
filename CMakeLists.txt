@@ -29,10 +29,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED "TRUE")
 # Atom.Logging
 # --------------------------------------------------------------------------------------------------
 
+file(GLOB_RECURSE sources "src/*.cpp")
+
 add_library(atom.logging STATIC)
 target_sources(atom.logging PUBLIC
     FILE_SET modules TYPE CXX_MODULES FILES
-    "src/logging.cpp")
+    "${sources}")
 target_include_directories(atom.logging PRIVATE "src/")
 
 target_link_libraries(atom.logging PUBLIC atom.core)

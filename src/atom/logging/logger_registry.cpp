@@ -1,17 +1,17 @@
-#pragma once
-// import atom.core;
-#include "atom/logging/logger.h"
-#include "atom/logging/logger_factory.h"
-#include "atom/logging/null_logger.h"
+export module atom.logging:logger_registry;
+import :null_logger;
+import :logger;
+import :logger_factory;
+import atom.core;
 
 namespace atom::logging
 {
-    class logger_registration_err: public err
+    export class logger_registration_error: public error
     {
     public:
-        constexpr logger_registration_err(string_view msg, string_view key)
-            : err{ std_string_view((const char*)msg.data().unwrap(), msg.count().unwrap()) }
-            , key{ key }
+        constexpr logger_registration_error(string_view msg, string_view key)
+            : error({ (const char*)msg.data().unwrap(), msg.count().unwrap() })
+            , key(key)
         {}
 
     public:
@@ -26,12 +26,12 @@ namespace atom::logging
     /// - add thread safety.
     /// - add string like template parameter support.
     /// --------------------------------------------------------------------------------------------
-    class logger_registry
+    export class logger_registry
     {
     public:
-        using tcontainer = unordered_map<string, logger_ptr>;
-        using iter_type = typename tcontainer::const_iterator;
-        using iter_end_type = typename tcontainer::const_iterator;
+        using container_type = unordered_map<string, logger_ptr>;
+        using iter_type = typename container_type::const_iterator;
+        using iter_end_type = typename container_type::const_iterator;
 
     public:
         logger_registry()
@@ -46,7 +46,7 @@ namespace atom::logging
         /// # parameters
         /// - `logger`: logger to register.
         /// ----------------------------------------------------------------------------------------
-        auto register_logger(logger_ptr logger) -> result<void, logger_registration_err>
+        auto register_logger(logger_ptr logger) -> result<void, logger_registration_error>
         {
             contracts::debug_expects(logger != nullptr, "cannot register null logger.");
 
@@ -55,7 +55,7 @@ namespace atom::logging
 
             if (_has_logger(key))
             {
-                return logger_registration_err(make_range("logger already registered."), key);
+                return logger_registration_error(make_range("logger already registered."), key);
             }
 
             _register_logger(logger, string(key));
@@ -73,14 +73,15 @@ namespace atom::logging
         /// - `logger`: logger to register.
         /// - `key`: string used as key to register logger.
         /// ----------------------------------------------------------------------------------------
-        auto register_logger(logger_ptr logger, string_view key) -> result<void, logger_registration_err>
+        auto register_logger(logger_ptr logger, string_view key)
+            -> result<void, logger_registration_error>
         {
             contracts::debug_expects(logger != nullptr, "cannot register null logger.");
             contracts::debug_expects(not key.is_empty(), "cannot register logger with null key.");
 
             if (_has_logger(key))
             {
-                return logger_registration_err(make_range("logger already registered."), key);
+                return logger_registration_error(make_range("logger already registered."), key);
             }
 
             _register_logger(logger, string(key));
@@ -93,14 +94,15 @@ namespace atom::logging
         /// # parameters
         /// - `key`: rvalue reference to string, to avoid allocating memory to store the key.
         /// ----------------------------------------------------------------------------------------
-        auto register_logger(logger_ptr logger, string&& key) -> result<void, logger_registration_err>
+        auto register_logger(logger_ptr logger, string&& key)
+            -> result<void, logger_registration_error>
         {
             contracts::debug_expects(logger != nullptr, "cannot register null logger.");
             contracts::debug_expects(not key.is_empty(), "cannot register logger with null key.");
 
             if (_has_logger(key))
             {
-                return logger_registration_err(make_range("logger already registered."), key);
+                return logger_registration_error(make_range("logger already registered."), key);
             }
 
             _register_logger(logger, mov(key));
@@ -396,11 +398,11 @@ namespace atom::logging
         }
 
     protected:
-        tcontainer _loggers;
+        container_type _loggers;
         logger_ptr _default_logger;
     };
 
-    inline auto get_registry() -> logger_registry&
+    export inline auto get_registry() -> logger_registry&
     {
         static logger_registry s_instance;
         return s_instance;

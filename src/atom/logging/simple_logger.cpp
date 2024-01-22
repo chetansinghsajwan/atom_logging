@@ -1,9 +1,12 @@
-#pragma once
-#include "atom/logging/log_target.h"
-#include "atom/logging/log_targets/multi_log_target.h"
-#include "atom/logging/logger.h"
+export module atom.logging:simple_logger;
+import :core;
+import :log_msg;
+import :logger;
+import :log_target;
+import :multi_log_target;
+import atom.core;
 
-namespace atom::logging::internal
+namespace atom::logging
 {
     /// --------------------------------------------------------------------------------------------
     /// --- doc_template
@@ -15,8 +18,9 @@ namespace atom::logging::internal
     template <bool st>
     class simple_logger_template: public logger
     {
-        using multi_log_target = tti::tconditional<st, multi_log_target_st, multi_log_target_mt>;
-        using atomic_log_level = tti::tconditional<st, log_level, atomic<log_level>>;
+        using multi_log_target =
+            tti::conditional_type<st, multi_log_target_st, multi_log_target_mt>;
+        using atomic_log_level = tti::conditional_type<st, log_level, atomic<log_level>>;
 
     public:
         /// ----------------------------------------------------------------------------------------
@@ -158,10 +162,7 @@ namespace atom::logging::internal
         /// ----------------------------------------------------------------------------------------
         atomic_log_level _flush_level;
     };
-}
 
-namespace atom::logging
-{
-    using simple_logger_st = internal::simple_logger_template<true>;
-    using simple_logger_mt = internal::simple_logger_template<false>;
+    export using simple_logger_st = simple_logger_template<true>;
+    export using simple_logger_mt = simple_logger_template<false>;
 }

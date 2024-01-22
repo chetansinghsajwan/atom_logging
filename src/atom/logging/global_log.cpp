@@ -1,5 +1,8 @@
-#pragma once
-#include "atom/logging/logger_registry.h"
+export module atom.logging:global_log;
+import :logger;
+import :core;
+import :log_msg;
+import :logger_registry;
 
 namespace atom::logging
 {
@@ -27,8 +30,8 @@ namespace atom::logging
     /// ----------------------------------------------------------------------------------------
     /// calls log on get_root_logger().
     /// ----------------------------------------------------------------------------------------
-    template <rlog_arg... targs>
-    inline auto log(log_level lvl, log_str<targs...> msg, targs&&... args)
+    template <rlog_arg... arg_types>
+    inline auto log(log_level lvl, log_str<arg_types...> msg, arg_types&&... args)
     {
         get_root_logger()->log(lvl, msg, fwd(args)...);
     }
@@ -36,8 +39,8 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// calls log(log_level::trace, msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <rlog_arg... targs>
-    inline auto log_trace(log_str<targs...> msg, targs&&... args)
+    template <rlog_arg... arg_types>
+    inline auto log_trace(log_str<arg_types...> msg, arg_types&&... args)
     {
         log(log_level::trace, msg, fwd(args)...);
     }
@@ -45,8 +48,8 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// calls log(log_level::debug, msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <rlog_arg... targs>
-    inline auto log_debug(log_str<targs...> msg, targs&&... args)
+    template <rlog_arg... arg_types>
+    inline auto log_debug(log_str<arg_types...> msg, arg_types&&... args)
     {
         log(log_level::debug, msg, fwd(args)...);
     }
@@ -54,8 +57,8 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// calls log(log_level::info, msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <rlog_arg... targs>
-    inline auto log_info(log_str<targs...> msg, targs&&... args)
+    template <rlog_arg... arg_types>
+    inline auto log_info(log_str<arg_types...> msg, arg_types&&... args)
     {
         log(log_level::info, msg, fwd(args)...);
     }
@@ -63,8 +66,8 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// calls log(log_level::warn, msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <rlog_arg... targs>
-    inline auto log_warn(log_str<targs...> msg, targs&&... args)
+    template <rlog_arg... arg_types>
+    inline auto log_warn(log_str<arg_types...> msg, arg_types&&... args)
     {
         log(log_level::warn, msg, fwd(args)...);
     }
@@ -72,8 +75,8 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// calls log(log_level::error, msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <rlog_arg... targs>
-    inline auto log_error(log_str<targs...> msg, targs&&... args)
+    template <rlog_arg... arg_types>
+    inline auto log_error(log_str<arg_types...> msg, arg_types&&... args)
     {
         log(log_level::error, msg, fwd(args)...);
     }
@@ -81,8 +84,8 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// calls log(log_level::fatal, msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <rlog_arg... targs>
-    inline auto log_fatal(log_str<targs...> msg, targs&&... args)
+    template <rlog_arg... arg_types>
+    inline auto log_fatal(log_str<arg_types...> msg, arg_types&&... args)
     {
         log(log_level::fatal, msg, fwd(args)...);
     }
@@ -124,8 +127,8 @@ namespace atom::logging
     /// this is done to afn the use of macros. but if this approach fails we may fallback to
     /// macros.
     /// --------------------------------------------------------------------------------------------
-    template <log_level lvl, rlog_arg... targs>
-    inline auto static_log(log_str<targs...> msg, targs&&... args)
+    template <log_level lvl, rlog_arg... arg_types>
+    inline auto static_log(log_str<arg_types...> msg, arg_types&&... args)
     {
         if constexpr (static_check_log_level<lvl>())
         {
@@ -136,8 +139,8 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// calls static_log<log_level::trace>(msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <rlog_arg... targs>
-    inline auto static_log_trace(log_str<targs...> msg, targs&&... args)
+    template <rlog_arg... arg_types>
+    inline auto static_log_trace(log_str<arg_types...> msg, arg_types&&... args)
     {
         static_log<log_level::trace>(msg, fwd(args)...);
     }
@@ -145,8 +148,8 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// calls static_log<log_level::debug>(msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <rlog_arg... targs>
-    inline auto static_log_debug(log_str<targs...> msg, targs&&... args)
+    template <rlog_arg... arg_types>
+    inline auto static_log_debug(log_str<arg_types...> msg, arg_types&&... args)
     {
         static_log<log_level::debug>(msg, fwd(args)...);
     }
@@ -154,8 +157,8 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// calls static_log<log_level::info>(msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <rlog_arg... targs>
-    inline auto static_log_info(log_str<targs...> msg, targs&&... args)
+    template <rlog_arg... arg_types>
+    inline auto static_log_info(log_str<arg_types...> msg, arg_types&&... args)
     {
         static_log<log_level::info>(msg, fwd(args)...);
     }
@@ -163,8 +166,8 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// calls static_log<log_level::warn>(msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <rlog_arg... targs>
-    inline auto static_log_warn(log_str<targs...> msg, targs&&... args)
+    template <rlog_arg... arg_types>
+    inline auto static_log_warn(log_str<arg_types...> msg, arg_types&&... args)
     {
         static_log<log_level::warn>(msg, fwd(args)...);
     }
@@ -172,8 +175,8 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// calls static_log<log_level::error>(msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <rlog_arg... targs>
-    inline auto static_log_error(log_str<targs...> msg, targs&&... args)
+    template <rlog_arg... arg_types>
+    inline auto static_log_error(log_str<arg_types...> msg, arg_types&&... args)
     {
         static_log<log_level::error>(msg, fwd(args)...);
     }
@@ -181,8 +184,8 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// calls static_log<log_level::fatal>(msg, fwd(args)...).
     /// --------------------------------------------------------------------------------------------
-    template <rlog_arg... targs>
-    inline auto static_log_fatal(log_str<targs...> msg, targs&&... args)
+    template <rlog_arg... arg_types>
+    inline auto static_log_fatal(log_str<arg_types...> msg, arg_types&&... args)
     {
         static_log<log_level::fatal>(msg, fwd(args)...);
     }

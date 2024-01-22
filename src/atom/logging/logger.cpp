@@ -1,11 +1,12 @@
-#pragma once
-// import atom.core;
-
-#include "log_msg.h"
+export module atom.logging:logger;
+import :core;
+import :log_msg;
+import :log_target;
+import atom.core;
 
 namespace atom::logging
 {
-    class logger
+    export class logger
     {
     public:
         /// ----------------------------------------------------------------------------------------
@@ -16,8 +17,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// calls log(log_level::trace, msg, fwd(args)...).
         /// ----------------------------------------------------------------------------------------
-        template <rlog_arg... targs>
-        auto log_trace(log_str<targs...> msg, targs&&... args)
+        template <rlog_arg... arg_types>
+        auto log_trace(log_str<arg_types...> msg, arg_types&&... args)
         {
             log(log_level::trace, msg, fwd(args)...);
         }
@@ -25,8 +26,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// calls log(log_level::debug, msg, fwd(args)...).
         /// ----------------------------------------------------------------------------------------
-        template <rlog_arg... targs>
-        auto log_debug(log_str<targs...> msg, targs&&... args)
+        template <rlog_arg... arg_types>
+        auto log_debug(log_str<arg_types...> msg, arg_types&&... args)
         {
             log(log_level::debug, msg, fwd(args)...);
         }
@@ -34,8 +35,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// calls log(log_level::info, msg, fwd(args)...).
         /// ----------------------------------------------------------------------------------------
-        template <rlog_arg... targs>
-        auto log_info(log_str<targs...> msg, targs&&... args)
+        template <rlog_arg... arg_types>
+        auto log_info(log_str<arg_types...> msg, arg_types&&... args)
         {
             log(log_level::info, msg, fwd(args)...);
         }
@@ -43,8 +44,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// calls log(log_level::warn, msg, fwd(args)...).
         /// ----------------------------------------------------------------------------------------
-        template <rlog_arg... targs>
-        auto log_warn(log_str<targs...> msg, targs&&... args)
+        template <rlog_arg... arg_types>
+        auto log_warn(log_str<arg_types...> msg, arg_types&&... args)
         {
             log(log_level::warn, msg, fwd(args)...);
         }
@@ -52,8 +53,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// calls log(log_level::error, msg, fwd(args)...).
         /// ----------------------------------------------------------------------------------------
-        template <rlog_arg... targs>
-        auto log_error(log_str<targs...> msg, targs&&... args)
+        template <rlog_arg... arg_types>
+        auto log_error(log_str<arg_types...> msg, arg_types&&... args)
         {
             log(log_level::error, msg, fwd(args)...);
         }
@@ -61,8 +62,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// calls log(log_level::fatal, msg, fwd(args)...).
         /// ----------------------------------------------------------------------------------------
-        template <rlog_arg... targs>
-        auto log_fatal(log_str<targs...> msg, targs&&... args)
+        template <rlog_arg... arg_types>
+        auto log_fatal(log_str<arg_types...> msg, arg_types&&... args)
         {
             log(log_level::fatal, msg, fwd(args)...);
         }
@@ -75,8 +76,8 @@ namespace atom::logging
         /// @param[in] msg log message containing format of the msg.
         /// @param[in] args... arguments used with {msg} to construct the formatted message.
         /// ----------------------------------------------------------------------------------------
-        template <rlog_arg... targs>
-        auto log(log_level lvl, log_str<targs...> msg, targs&&... args)
+        template <rlog_arg... arg_types>
+        auto log(log_level lvl, log_str<arg_types...> msg, arg_types&&... args)
         {
             if (check_log_level(lvl))
             {
@@ -123,10 +124,10 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     ///
     /// --------------------------------------------------------------------------------------------
-    template <typename tlogger, typename... targs>
-    logger_ptr make_logger(targs&&... args)
+    template <typename tlogger, typename... arg_types>
+    logger_ptr make_logger(arg_types&&... args)
         requires rderived_from<tlogger, logger>
     {
-        return make_shared<tlogger>(forward<targs>(args)...);
+        return make_shared<tlogger>(forward<arg_types>(args)...);
     }
 }

@@ -1,13 +1,13 @@
-#pragma once
-// import atom.core;
-#include "atom/logging/log_msg.h"
+export module atom.logging:log_target;
+import :log_msg;
+import atom.core;
 
 namespace atom::logging
 {
     /// --------------------------------------------------------------------------------------------
     /// abstract class defining a log target (like a file, console, network).
     /// --------------------------------------------------------------------------------------------
-    class log_target
+    export class log_target
     {
     public:
         /// ----------------------------------------------------------------------------------------
@@ -25,5 +25,5 @@ namespace atom::logging
     /// ptr type used to manage log_target in this logging api. it's recommended to use this
     /// to type to store log_target instance. this keeps compatibility with the logging api.
     /// --------------------------------------------------------------------------------------------
-    using log_target_ptr = shared_ptr<log_target>;
+    export using log_target_ptr = shared_ptr<log_target>;
 }
