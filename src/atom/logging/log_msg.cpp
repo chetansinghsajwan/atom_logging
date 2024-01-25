@@ -50,28 +50,3 @@ namespace atom::logging
         time_point time;
     };
 }
-
-namespace atom
-{
-    template <>
-    class string_view_converter<logging::log_level>
-    {
-    public:
-        constexpr auto convert(logging::log_level lvl) -> string_view
-        {
-            switch (lvl)
-            {
-                case logging::log_level::trace: return make_range("trace"); break;
-                case logging::log_level::debug: return make_range("debug"); break;
-                case logging::log_level::info:  return make_range("info"); break;
-                case logging::log_level::warn:  return make_range("warn"); break;
-                case logging::log_level::error: return make_range("error"); break;
-                case logging::log_level::fatal: return make_range("fatal"); break;
-                case logging::log_level::off:   return make_range("off"); break;
-                default:                        return make_range("unknown");
-            }
-        }
-    };
-
-    static_assert(rstring_fmt_arg_fmtable<logging::log_level>, "log_level is not formattable.");
-}
