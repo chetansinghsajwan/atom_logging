@@ -81,7 +81,7 @@ namespace atom::logging
         {
             if (check_log_level(lvl))
             {
-                string formatted_msg = string_fmter().fmt(msg, fwd(args)...);
+                string formatted_msg = string::format(msg, fwd(args)...);
                 log_msg log_msg{
                     .msg = formatted_msg,
                     .logger_name = name(),

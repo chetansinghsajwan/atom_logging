@@ -4,7 +4,7 @@ import :core;
 import :log_msg;
 import :logger_registry;
 
-namespace atom::logging
+export namespace atom::logging
 {
     inline logger_ptr get_root_logger()
     {
