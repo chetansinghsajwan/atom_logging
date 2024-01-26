@@ -1,5 +1,4 @@
 export module atom.logging:log_msg;
-import :core;
 import atom.core;
 
 namespace atom::logging

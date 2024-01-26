@@ -1,5 +1,4 @@
 export module atom.logging:simple_logger;
-import :core;
 import :log_msg;
 import :logger;
 import :log_target;
