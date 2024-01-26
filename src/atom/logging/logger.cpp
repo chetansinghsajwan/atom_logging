@@ -1,5 +1,4 @@
 export module atom.logging:logger;
-import :core;
 import :log_msg;
 import :log_target;
 import atom.core;
@@ -17,8 +16,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// calls log(log_level::trace, msg, fwd(args)...).
         /// ----------------------------------------------------------------------------------------
-        template <rlog_arg... arg_types>
-        auto log_trace(log_str<arg_types...> msg, arg_types&&... args)
+        template <rstring_formattable... arg_types>
+        auto log_trace(format_string<arg_types...> msg, arg_types&&... args)
         {
             log(log_level::trace, msg, fwd(args)...);
         }
@@ -26,8 +25,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// calls log(log_level::debug, msg, fwd(args)...).
         /// ----------------------------------------------------------------------------------------
-        template <rlog_arg... arg_types>
-        auto log_debug(log_str<arg_types...> msg, arg_types&&... args)
+        template <rstring_formattable... arg_types>
+        auto log_debug(format_string<arg_types...> msg, arg_types&&... args)
         {
             log(log_level::debug, msg, fwd(args)...);
         }
@@ -35,8 +34,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// calls log(log_level::info, msg, fwd(args)...).
         /// ----------------------------------------------------------------------------------------
-        template <rlog_arg... arg_types>
-        auto log_info(log_str<arg_types...> msg, arg_types&&... args)
+        template <rstring_formattable... arg_types>
+        auto log_info(format_string<arg_types...> msg, arg_types&&... args)
         {
             log(log_level::info, msg, fwd(args)...);
         }
@@ -44,8 +43,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// calls log(log_level::warn, msg, fwd(args)...).
         /// ----------------------------------------------------------------------------------------
-        template <rlog_arg... arg_types>
-        auto log_warn(log_str<arg_types...> msg, arg_types&&... args)
+        template <rstring_formattable... arg_types>
+        auto log_warn(format_string<arg_types...> msg, arg_types&&... args)
         {
             log(log_level::warn, msg, fwd(args)...);
         }
@@ -53,8 +52,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// calls log(log_level::error, msg, fwd(args)...).
         /// ----------------------------------------------------------------------------------------
-        template <rlog_arg... arg_types>
-        auto log_error(log_str<arg_types...> msg, arg_types&&... args)
+        template <rstring_formattable... arg_types>
+        auto log_error(format_string<arg_types...> msg, arg_types&&... args)
         {
             log(log_level::error, msg, fwd(args)...);
         }
@@ -62,8 +61,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// calls log(log_level::fatal, msg, fwd(args)...).
         /// ----------------------------------------------------------------------------------------
-        template <rlog_arg... arg_types>
-        auto log_fatal(log_str<arg_types...> msg, arg_types&&... args)
+        template <rstring_formattable... arg_types>
+        auto log_fatal(format_string<arg_types...> msg, arg_types&&... args)
         {
             log(log_level::fatal, msg, fwd(args)...);
         }
@@ -76,8 +75,8 @@ namespace atom::logging
         /// @param[in] msg log message containing format of the msg.
         /// @param[in] args... arguments used with {msg} to construct the formatted message.
         /// ----------------------------------------------------------------------------------------
-        template <rlog_arg... arg_types>
-        auto log(log_level lvl, log_str<arg_types...> msg, arg_types&&... args)
+        template <rstring_formattable... arg_types>
+        auto log(log_level lvl, format_string<arg_types...> msg, arg_types&&... args)
         {
             if (check_log_level(lvl))
             {
