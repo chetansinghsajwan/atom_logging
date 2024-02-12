@@ -28,7 +28,7 @@ namespace atom::logging
         /// @param[in] name name of this logger.
         /// ----------------------------------------------------------------------------------------
         explicit simple_logger_template(string name)
-            : _name(mov(name))
+            : _name(move(name))
             , targets()
         {}
 
@@ -42,7 +42,7 @@ namespace atom::logging
         template <typename trange>
         simple_logger_template(string name, const trange& targets)
             requires(rrange_of<trange, log_target_ptr>)
-            : _name(mov(name))
+            : _name(move(name))
             , targets(targets)
         {}
 

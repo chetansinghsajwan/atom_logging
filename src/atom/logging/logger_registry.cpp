@@ -36,7 +36,7 @@ namespace atom::logging
     public:
         logger_registry()
         {
-            set_default_logger(get_logger_factory().create_logger(make_range("default_logger")));
+            set_default_logger(get_logger_factory().create_logger("default_logger"));
         }
 
     public:
@@ -55,7 +55,7 @@ namespace atom::logging
 
             if (_has_logger(key))
             {
-                return logger_registration_error(make_range("logger already registered."), key);
+                return logger_registration_error("logger already registered.", key);
             }
 
             _register_logger(logger, string(key));
@@ -81,7 +81,7 @@ namespace atom::logging
 
             if (_has_logger(key))
             {
-                return logger_registration_error(make_range("logger already registered."), key);
+                return logger_registration_error("logger already registered.", key);
             }
 
             _register_logger(logger, string(key));
@@ -102,10 +102,10 @@ namespace atom::logging
 
             if (_has_logger(key))
             {
-                return logger_registration_error(make_range("logger already registered."), key);
+                return logger_registration_error("logger already registered.", key);
             }
 
-            _register_logger(logger, mov(key));
+            _register_logger(logger, move(key));
             return success();
         }
 
@@ -150,7 +150,7 @@ namespace atom::logging
             contracts::debug_expects(logger != nullptr, "cannot register null logger.");
             contracts::debug_expects(not key.is_empty(), "cannot register logger with null key.");
 
-            _force_register_logger(logger, mov(key));
+            _force_register_logger(logger, move(key));
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -215,7 +215,7 @@ namespace atom::logging
             if (_has_logger(key))
                 return false;
 
-            _register_logger(logger, mov(key));
+            _register_logger(logger, move(key));
             return true;
         }
 
@@ -343,7 +343,7 @@ namespace atom::logging
             contracts::debug_expects(logger != nullptr);
             contracts::debug_expects(!key.is_empty());
 
-            _loggers.insert({ mov(key), mov(logger) });
+            _loggers.insert({ move(key), move(logger) });
         }
 
         auto _force_register_logger(logger_ptr logger, string key) -> void
@@ -351,7 +351,7 @@ namespace atom::logging
             contracts::debug_expects(logger != nullptr);
             contracts::debug_expects(!key.is_empty());
 
-            _loggers.insert_or_assign(mov(key), mov(logger));
+            _loggers.insert_or_assign(move(key), move(logger));
         }
 
         auto _unregister_logger(string_view key) -> logger_ptr
@@ -362,7 +362,7 @@ namespace atom::logging
                 return nullptr;
             }
 
-            logger_ptr logger = mov(const_cast<logger_ptr&>(it->second));
+            logger_ptr logger = move(const_cast<logger_ptr&>(it->second));
             _loggers.erase(it);
             return logger;
         }
