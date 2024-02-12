@@ -61,5 +61,5 @@ namespace atom::logging
     };
 
     inline logger_ptr null_logger::instance = make_shared<null_logger>();
-    inline const string_view null_logger::_name = make_range("null_logger");
+    inline const string_view null_logger::_name = "null_logger";
 }

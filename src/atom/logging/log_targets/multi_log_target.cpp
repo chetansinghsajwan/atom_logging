@@ -47,7 +47,7 @@ namespace atom::logging
         _multi_log_target_template(const trange& targets)
             requires(rrange_of<trange, log_target_ptr>)
         {
-            _add_targets(mov(targets));
+            _add_targets(move(targets));
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -295,7 +295,7 @@ namespace atom::logging
         {
             contracts::debug_expects(target != nullptr);
 
-            _targets.emplace_back(mov(target));
+            _targets.emplace_back(move(target));
             return true;
         }
 
@@ -319,7 +319,7 @@ namespace atom::logging
             {
                 if (target != nullptr)
                 {
-                    _targets.emplace_back(mov(target));
+                    _targets.emplace_back(move(target));
                     count++;
                 }
             }
