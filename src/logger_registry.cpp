@@ -27,8 +27,8 @@ namespace atom::logging
     /// default_logger is used to log global logs or when categorization is not necessary.
     ///
     /// # to do
+    ///
     /// - add thread safety.
-    /// - add string like template parameter support.
     /// --------------------------------------------------------------------------------------------
     export class logger_registry
     {
@@ -42,7 +42,7 @@ namespace atom::logging
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// get current instance.
+        /// get current instance. by default it is set to `logger_registry` instance.
         /// ----------------------------------------------------------------------------------------
         static auto get_instance() -> logger_registry*
         {
@@ -64,6 +64,11 @@ namespace atom::logging
         {
             _default_logger = logger_factory::get_instance()->create_logger("default_logger");
         }
+
+        /// ----------------------------------------------------------------------------------------
+        /// # virtual destructor
+        /// ----------------------------------------------------------------------------------------
+        virtual ~logger_registry() {}
 
     public:
         /// ----------------------------------------------------------------------------------------
