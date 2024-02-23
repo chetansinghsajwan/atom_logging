@@ -1,5 +1,4 @@
 export module atom.logging:logger_registry;
-import :null_logger;
 import :logger;
 import :logger_factory;
 import atom.core;
