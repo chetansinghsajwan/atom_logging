@@ -10,7 +10,7 @@ namespace atom::logging
     {
     public:
         constexpr logger_registration_error(string_view msg, string_view key)
-            : error({ (const char*)msg.data().unwrap(), msg.count().unwrap() })
+            : error({ (const char*)msg.data().to_unwrapped(), msg.count().to_unwrapped() })
             , key(key)
         {}
 
