@@ -32,7 +32,6 @@ export namespace atom::logging
     /// ----------------------------------------------------------------------------------------
     template <typename... arg_types>
     inline auto log(log_level lvl, format_string<arg_types...> msg, arg_types&&... args)
-        requires(rstring_formattable<arg_types> and ...)
     {
         get_root_logger()->log(lvl, msg, fwd(args)...);
     }
@@ -42,7 +41,6 @@ export namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     template <typename... arg_types>
     inline auto log_trace(format_string<arg_types...> msg, arg_types&&... args)
-        requires(rstring_formattable<arg_types> and ...)
     {
         log(log_level::trace, msg, fwd(args)...);
     }
@@ -52,7 +50,6 @@ export namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     template <typename... arg_types>
     inline auto log_debug(format_string<arg_types...> msg, arg_types&&... args)
-        requires(rstring_formattable<arg_types> and ...)
     {
         log(log_level::debug, msg, fwd(args)...);
     }
@@ -62,7 +59,6 @@ export namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     template <typename... arg_types>
     inline auto log_info(format_string<arg_types...> msg, arg_types&&... args)
-        requires(rstring_formattable<arg_types> and ...)
     {
         log(log_level::info, msg, fwd(args)...);
     }
@@ -72,7 +68,6 @@ export namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     template <typename... arg_types>
     inline auto log_warn(format_string<arg_types...> msg, arg_types&&... args)
-        requires(rstring_formattable<arg_types> and ...)
     {
         log(log_level::warn, msg, fwd(args)...);
     }
@@ -82,7 +77,6 @@ export namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     template <typename... arg_types>
     inline auto log_error(format_string<arg_types...> msg, arg_types&&... args)
-        requires(rstring_formattable<arg_types> and ...)
     {
         log(log_level::error, msg, fwd(args)...);
     }
@@ -92,7 +86,6 @@ export namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     template <typename... arg_types>
     inline auto log_fatal(format_string<arg_types...> msg, arg_types&&... args)
-        requires(rstring_formattable<arg_types> and ...)
     {
         log(log_level::fatal, msg, fwd(args)...);
     }
@@ -136,7 +129,6 @@ export namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     template <log_level lvl, typename... arg_types>
     inline auto static_log(format_string<arg_types...> msg, arg_types&&... args)
-        requires(rstring_formattable<arg_types> and ...)
     {
         if constexpr (static_check_log_level<lvl>())
         {
@@ -149,7 +141,6 @@ export namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     template <typename... arg_types>
     inline auto static_log_trace(format_string<arg_types...> msg, arg_types&&... args)
-        requires(rstring_formattable<arg_types> and ...)
     {
         static_log<log_level::trace>(msg, fwd(args)...);
     }
@@ -159,7 +150,6 @@ export namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     template <typename... arg_types>
     inline auto static_log_debug(format_string<arg_types...> msg, arg_types&&... args)
-        requires(rstring_formattable<arg_types> and ...)
     {
         static_log<log_level::debug>(msg, fwd(args)...);
     }
@@ -169,7 +159,6 @@ export namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     template <typename... arg_types>
     inline auto static_log_info(format_string<arg_types...> msg, arg_types&&... args)
-        requires(rstring_formattable<arg_types> and ...)
     {
         static_log<log_level::info>(msg, fwd(args)...);
     }
@@ -179,7 +168,6 @@ export namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     template <typename... arg_types>
     inline auto static_log_warn(format_string<arg_types...> msg, arg_types&&... args)
-        requires(rstring_formattable<arg_types> and ...)
     {
         static_log<log_level::warn>(msg, fwd(args)...);
     }
@@ -189,7 +177,6 @@ export namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     template <typename... arg_types>
     inline auto static_log_error(format_string<arg_types...> msg, arg_types&&... args)
-        requires(rstring_formattable<arg_types> and ...)
     {
         static_log<log_level::error>(msg, fwd(args)...);
     }
@@ -199,7 +186,6 @@ export namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     template <typename... arg_types>
     inline auto static_log_fatal(format_string<arg_types...> msg, arg_types&&... args)
-        requires(rstring_formattable<arg_types> and ...)
     {
         static_log<log_level::fatal>(msg, fwd(args)...);
     }
