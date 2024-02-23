@@ -52,7 +52,7 @@ namespace atom::logging
         ///
         /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
-        auto name() const -> string_view override final
+        auto get_name() const -> string_view override final
         {
             return _name;
         }

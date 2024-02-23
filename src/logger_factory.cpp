@@ -8,7 +8,7 @@ namespace atom::logging
     export class logger_factory
     {
     public:
-        auto create_logger(string name) -> logger_ptr
+        auto create_logger(string name) -> logger*
         {
             return make_logger<simple_logger_st>(move(name));
         }

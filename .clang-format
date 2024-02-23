@@ -145,7 +145,7 @@ BreakBeforeTernaryOperators: true
 BreakStringLiterals: true
 BreakConstructorInitializers: BeforeComma
 BreakInheritanceList: BeforeComma
-AllowBreakBeforeNoexceptSpecifier: Never
+# AllowBreakBeforeNoexceptSpecifier: Never
 RequiresClausePosition: OwnLine
 
 # --------------------------------------------------------------------------------------------------

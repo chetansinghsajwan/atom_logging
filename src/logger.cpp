@@ -11,7 +11,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// get the name of the logger.
         /// ----------------------------------------------------------------------------------------
-        virtual auto name() const -> string_view = 0;
+        virtual auto get_name() const -> string_view = 0;
 
         /// ----------------------------------------------------------------------------------------
         /// calls log(log_level::trace, msg, fwd(args)...).
@@ -83,7 +83,7 @@ namespace atom::logging
                 string formatted_msg = string::format(msg, fwd(args)...);
                 log_msg log_msg{
                     .msg = formatted_msg,
-                    .logger_name = name(),
+                    .logger_name = get_name(),
                     .lvl = lvl,
                     .time = time::now(),
                 };
@@ -123,10 +123,10 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     ///
     /// --------------------------------------------------------------------------------------------
-    template <typename tlogger, typename... arg_types>
-    logger_ptr make_logger(arg_types&&... args)
-        requires rderived_from<tlogger, logger>
+    template <typename logger_type, typename... arg_types>
+    auto make_logger(arg_types&&... args) -> logger*
+        requires rderived_from<logger_type, logger>
     {
-        return make_shared<tlogger>(forward<arg_types>(args)...);
+        return new logger_type(forward<arg_types>(args)...);
     }
 }
