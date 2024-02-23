@@ -17,13 +17,13 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// default constructs null_logger.
         /// ----------------------------------------------------------------------------------------
-        constexpr null_logger() {}
+        null_logger() {}
 
     public:
         /// ----------------------------------------------------------------------------------------
         /// returns name of the null_logger.
         /// ----------------------------------------------------------------------------------------
-        constexpr virtual auto get_name() const -> string_view override
+        virtual auto get_name() const -> string_view override final
         {
             return _name;
         }
@@ -31,17 +31,17 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// does nothing.
         /// ----------------------------------------------------------------------------------------
-        constexpr virtual auto log(log_msg& log_msg) -> void override {}
+        virtual auto log(log_msg& log_msg) -> void override final {}
 
         /// ----------------------------------------------------------------------------------------
         /// does nothing.
         /// ----------------------------------------------------------------------------------------
-        constexpr virtual auto flush() -> void override {}
+        virtual auto flush() -> void override final {}
 
         /// ----------------------------------------------------------------------------------------
         /// always returns false to avoid constructing log msg.
         /// ----------------------------------------------------------------------------------------
-        constexpr virtual auto check_log_level(log_level lvl) const -> bool override
+        virtual auto check_log_level(log_level lvl) const -> bool override final
         {
             return false;
         }
@@ -51,15 +51,14 @@ namespace atom::logging
         /// static instance of this type because this type is stateless.
         /// it's recommended to use this instead of creating one each time.
         /// ----------------------------------------------------------------------------------------
-        static logger_ptr instance;
+        static logger* instance;
 
     private:
         /// ----------------------------------------------------------------------------------------
         /// name of the null_logger.
         /// ----------------------------------------------------------------------------------------
-        static const string_view _name;
+        static inline string_view _name = "null_logger";
     };
 
-    inline logger_ptr null_logger::instance = make_shared<null_logger>();
-    inline const string_view null_logger::_name = "null_logger";
+    logger* null_logger::instance = new null_logger();
 }

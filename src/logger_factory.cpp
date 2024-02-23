@@ -10,7 +10,7 @@ namespace atom::logging
     public:
         auto create_logger(string name) -> logger*
         {
-            return make_logger<simple_logger_st>(move(name));
+            return new simple_logger_st(move(name));
         }
     };
 
@@ -20,7 +20,7 @@ namespace atom::logging
         return instance;
     }
 
-    export inline auto create_logger(auto&&... args) -> logger_ptr
+    export inline auto create_logger(auto&&... args) -> logger*
     {
         return get_logger_factory().create_logger(fwd(args)...);
     }
