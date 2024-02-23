@@ -23,7 +23,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// returns name of the null_logger.
         /// ----------------------------------------------------------------------------------------
-        constexpr virtual auto name() const -> string_view override
+        constexpr virtual auto get_name() const -> string_view override
         {
             return _name;
         }

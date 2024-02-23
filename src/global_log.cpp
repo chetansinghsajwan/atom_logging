@@ -6,9 +6,9 @@ import atom.core;
 
 export namespace atom::logging
 {
-    inline logger_ptr get_root_logger()
+    auto get_root_logger() -> logger*
     {
-        return get_registry().get_default_logger();
+        return logger_registry::get_instance()->get_default();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

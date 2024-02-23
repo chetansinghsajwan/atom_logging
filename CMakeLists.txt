@@ -36,7 +36,7 @@ target_sources(atom.logging PUBLIC
     FILE_SET modules TYPE CXX_MODULES FILES
     "${sources}")
 
-target_link_libraries(atom.logging PRIVATE atom.core)
+target_link_libraries(atom.logging PUBLIC atom.core)
 
 # --------------------------------------------------------------------------------------------------
 # atom.logging Tests
@@ -45,7 +45,7 @@ target_link_libraries(atom.logging PRIVATE atom.core)
 file(GLOB_RECURSE test_sources "tests/*.cpp")
 
 add_executable(atom.logging.tests "${test_sources}")
-target_link_libraries(atom.logging.tests PRIVATE atom.logging)
+target_link_libraries(atom.logging.tests PUBLIC atom.logging)
 target_link_libraries(atom.logging.tests PRIVATE Catch2::Catch2WithMain)
 
 add_test(atom.logging.tests atom.logging.tests)
