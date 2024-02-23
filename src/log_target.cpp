@@ -1,6 +1,5 @@
 export module atom.logging:log_target;
 import :log_msg;
-import atom.core;
 
 namespace atom::logging
 {
@@ -20,10 +19,4 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         virtual auto flush() -> void = 0;
     };
-
-    /// --------------------------------------------------------------------------------------------
-    /// ptr type used to manage log_target in this logging api. it's recommended to use this
-    /// to type to store log_target instance. this keeps compatibility with the logging api.
-    /// --------------------------------------------------------------------------------------------
-    export using log_target_ptr = shared_ptr<log_target>;
 }

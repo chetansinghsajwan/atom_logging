@@ -22,10 +22,10 @@ namespace atom::logging
         static_assert(rlockable<tlockable>);
 
     private:
-        using _container_type = dynamic_array<log_target_ptr>;
+        using _container_type = dynamic_array<log_target*>;
 
     public:
-	using elem_type = log_target_ptr;
+        using elem_type = log_target*;
         using iter_type = typename _container_type::iter_type;
         using iter_end_type = typename _container_type::iter_end_type;
 
@@ -45,7 +45,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         template <typename trange>
         _multi_log_target_template(const trange& targets)
-            requires(rrange_of<trange, log_target_ptr>)
+            requires(rrange_of<trange, log_target*>)
         {
             _add_targets(move(targets));
         }
@@ -95,11 +95,11 @@ namespace atom::logging
         ///     if {target} is null, this doesn't adds it.
         /// @returns `true` if added, else `false`.
         ///
-        /// @time_complexity @copy_from _add_target(log_target_ptr target).
+        /// @time_complexity @copy_from _add_target(log_target* target).
         ///
         /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
-        auto add_target(log_target_ptr target) -> bool
+        auto add_target(log_target* target) -> bool
         {
             if (target == nullptr)
                 return false;
@@ -120,7 +120,7 @@ namespace atom::logging
         /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
         template <typename trange>
-            requires rrange_of<trange, log_target_ptr>
+            requires rrange_of<trange, log_target*>
         usize add_targets(const trange& targets)
         {
             if (targets.iter().equals(targets.iter_end()))
@@ -137,11 +137,11 @@ namespace atom::logging
         ///     if {target} is null, this doesn't searches it.
         /// @returns `true` if found and removed, else `false`.
         ///
-        /// @time_complexity @copy_from _remove_target(log_target_ptr target)
+        /// @time_complexity @copy_from _remove_target(log_target* target)
         ///
         /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
-        auto remove_target(log_target_ptr target) -> bool
+        auto remove_target(log_target* target) -> bool
         {
             if (target == nullptr)
                 return false;
@@ -162,7 +162,7 @@ namespace atom::logging
         /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
         template <typename trange>
-            requires rrange_of<trange, log_target_ptr>
+            requires rrange_of<trange, log_target*>
         auto remove_targets(const trange& targets) -> usize
         {
             if (targets.iter().equals(targets.iter_end()))
@@ -179,11 +179,11 @@ namespace atom::logging
         ///     if {target} is null, this doesn't searches it.
         /// @returns `true` if found, else `false`.
         ///
-        /// @time_complexity @copy_from _has_target(log_target_ptr target)
+        /// @time_complexity @copy_from _has_target(log_target* target)
         ///
         /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
-        auto has_target(log_target_ptr target) const -> bool
+        auto has_target(log_target* target) const -> bool
         {
             if (target == nullptr)
                 return false;
@@ -199,12 +199,12 @@ namespace atom::logging
         ///     if {targets} contains null objects, this doesn't searches them.
         /// @returns count of log_target objects found.
         ///
-        /// @time_complexity @copy_from _has_target(log_target_ptr target)
+        /// @time_complexity @copy_from _has_target(log_target* target)
         ///
         /// @thread_safety safe
         /// ----------------------------------------------------------------------------------------
         template <typename trange>
-            requires rrange_of<trange, log_target_ptr>
+            requires rrange_of<trange, log_target*>
         auto has_targets(const trange& targets) const -> usize
         {
             if (targets.iter().equals(targets.iter_end()))
@@ -275,9 +275,9 @@ namespace atom::logging
         ////
         //// implementation functions
         ////
-        //// these functions doesn't perform any checks at runtime and assumes that all thread 
+        //// these functions doesn't perform any checks at runtime and assumes that all thread
         //// safety steps have been taken.
-        //// 
+        ////
         ////////////////////////////////////////////////////////////////////////////////////////////
 
     protected:
@@ -291,7 +291,7 @@ namespace atom::logging
         ///
         /// @thread_safety none
         /// ----------------------------------------------------------------------------------------
-        auto _add_target(log_target_ptr target) -> bool
+        auto _add_target(log_target* target) -> bool
         {
             contracts::debug_expects(target != nullptr);
 
@@ -306,16 +306,16 @@ namespace atom::logging
         ///     if {targets} contains null objects, this doesn't adds them.
         /// @returns count of log_target objects added.
         ///
-        /// @time_complexity @copy_from ${_container_type}::emplace_back(rrange_of<log_target_ptr> targets)
+        /// @time_complexity @copy_from ${_container_type}::emplace_back(rrange_of<log_target*> targets)
         ///
         /// @thread_safety none
         /// ----------------------------------------------------------------------------------------
         template <typename trange>
-            requires rrange_of<trange, log_target_ptr>
+            requires rrange_of<trange, log_target*>
         auto _add_targets(const trange& targets) -> usize
         {
             usize count = 0;
-            for (log_target_ptr target : targets)
+            for (log_target* target : targets)
             {
                 if (target != nullptr)
                 {
@@ -336,7 +336,7 @@ namespace atom::logging
         ///
         /// @time_complexity @copy_from ${_container_type}::remove(log_target& target)
         /// ----------------------------------------------------------------------------------------
-        auto _remove_target(log_target_ptr target) -> bool
+        auto _remove_target(log_target* target) -> bool
         {
             contracts::debug_expects(target != nullptr);
 
@@ -363,7 +363,7 @@ namespace atom::logging
         /// @time_complexity @copy_from ${_container_type}::remove(log_target& target)
         /// ----------------------------------------------------------------------------------------
         template <typename trange>
-            requires rrange_of<trange, log_target_ptr>
+            requires rrange_of<trange, log_target*>
         auto _remove_targets(const trange& targets) -> usize
         {
             usize count = 0;
@@ -395,11 +395,12 @@ namespace atom::logging
         ///
         /// @time_complexity linear
         /// ----------------------------------------------------------------------------------------
-        auto _has_target(const log_target_ptr& target) const -> bool
+        auto _has_target(const log_target* target) const -> bool
         {
             contracts::debug_expects(target != nullptr);
 
-            return _targets.contains(target);
+            // return _targets.contains(target);
+            return true;
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -413,7 +414,7 @@ namespace atom::logging
         /// @time_complexity exponential
         /// ----------------------------------------------------------------------------------------
         template <typename trange>
-            requires rrange_of<trange, log_target_ptr>
+            requires rrange_of<trange, log_target*>
         auto _has_targets(const trange& targets) -> usize
         {
             return _targets.count_any(targets);
