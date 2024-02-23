@@ -5,6 +5,9 @@ import atom.core;
 
 namespace atom::logging
 {
+    /// --------------------------------------------------------------------------------------------
+    /// error when logger registration fails.
+    /// --------------------------------------------------------------------------------------------
     export class logger_registration_error: public error
     {
     public:
@@ -30,11 +33,17 @@ namespace atom::logging
     export class logger_registry
     {
     public:
+        /// ----------------------------------------------------------------------------------------
+        /// set a new instance.
+        /// ----------------------------------------------------------------------------------------
         static auto set_instance(logger_registry* instance) -> void
         {
             _instance = instance;
         }
 
+        /// ----------------------------------------------------------------------------------------
+        /// get current instance.
+        /// ----------------------------------------------------------------------------------------
         static auto get_instance() -> logger_registry*
         {
             return _instance;
@@ -44,11 +53,16 @@ namespace atom::logging
         static logger_registry* _instance;
 
     public:
+        /// ----------------------------------------------------------------------------------------
+        /// # default constructor
+        ///
+        /// creates and sets default logger.
+        /// ----------------------------------------------------------------------------------------
         logger_registry()
             : _loggers()
             , _default_logger()
         {
-            _default_logger = get_logger_factory().create_logger("default_logger");
+            _default_logger = logger_factory::get_instance()->create_logger("default_logger");
         }
 
     public:
