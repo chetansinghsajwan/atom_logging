@@ -41,7 +41,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         template <typename trange>
         simple_logger_template(string name, const trange& targets)
-            requires(rrange_of<trange, log_target_ptr>)
+            requires(rrange_of<trange, log_target*>)
             : _name(move(name))
             , targets(targets)
         {}
