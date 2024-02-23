@@ -9,15 +9,31 @@ namespace atom::logging
     /// null_logger is used in cases where it's not appropriate to return nullptr.
     ///
     /// null_logger is stateless and doesn't do anything except refusing every log request.
-    /// damn rude nigga!.
     /// --------------------------------------------------------------------------------------------
     export class null_logger final: public logger
     {
     public:
         /// ----------------------------------------------------------------------------------------
-        /// default constructs null_logger.
+        /// returns the static instance of `null_logger`.
         /// ----------------------------------------------------------------------------------------
-        null_logger() {}
+        static auto get_instance() -> null_logger*
+        {
+            static null_logger instance;
+            return &instance;
+        }
+
+    public:
+        /// ----------------------------------------------------------------------------------------
+        /// # default constructor
+        /// ----------------------------------------------------------------------------------------
+        null_logger()
+            : logger()
+        {}
+
+        /// ----------------------------------------------------------------------------------------
+        /// # destructor
+        /// ----------------------------------------------------------------------------------------
+        ~null_logger() {}
 
     public:
         /// ----------------------------------------------------------------------------------------
@@ -25,7 +41,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         virtual auto get_name() const -> string_view override final
         {
-            return _name;
+            return "null_logger";
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -45,20 +61,5 @@ namespace atom::logging
         {
             return false;
         }
-
-    public:
-        /// ----------------------------------------------------------------------------------------
-        /// static instance of this type because this type is stateless.
-        /// it's recommended to use this instead of creating one each time.
-        /// ----------------------------------------------------------------------------------------
-        static logger* instance;
-
-    private:
-        /// ----------------------------------------------------------------------------------------
-        /// name of the null_logger.
-        /// ----------------------------------------------------------------------------------------
-        static inline string_view _name = "null_logger";
     };
-
-    logger* null_logger::instance = new null_logger();
 }
