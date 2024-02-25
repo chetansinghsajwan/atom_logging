@@ -90,8 +90,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// gets the registered logger with key `name` or creates one and returns it.
         /// ----------------------------------------------------------------------------------------
-        static auto get_or_create_logger(const creation_options& options)
-            -> logger*
+        static auto get_or_create_logger(const creation_options& options) -> logger*
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
