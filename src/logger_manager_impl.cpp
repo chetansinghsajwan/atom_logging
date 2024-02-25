@@ -1,7 +1,7 @@
 export module atom.logging:logger_manager_impl;
 import :logger;
+import :logger;
 import :log_target;
-import :logging_errors;
 import atom.core;
 
 namespace atom::logging
@@ -13,13 +13,55 @@ namespace atom::logging
     {
     public:
         /// ----------------------------------------------------------------------------------------
+        ///
+        /// ----------------------------------------------------------------------------------------
+        struct creation_options
+        {
+            string_view name;
+            initializer_list<log_target*> targets;
+            bool register_logger = true;
+            bool try_register = true;
+            bool force_register = false;
+            string_view key;
+        };
+
+        /// ----------------------------------------------------------------------------------------
+        ///
+        /// ----------------------------------------------------------------------------------------
+        struct registration_options
+        {
+            logger* logger;
+            string_view key;
+            bool force_register = false;
+        };
+
+        /// ----------------------------------------------------------------------------------------
+        /// error when logger registration fails.
+        /// ----------------------------------------------------------------------------------------
+        class registration_error: public error
+        {
+        public:
+            constexpr registration_error(string_view msg)
+                : error(msg)
+                , key()
+            {}
+
+            constexpr registration_error(string_view msg, string_view key)
+                : error(msg)
+                , key(key)
+            {}
+
+        public:
+            string_view key;
+        };
+
+    public:
+        /// ----------------------------------------------------------------------------------------
         /// # default constructor
         ///
         /// creates and sets default logger.
         /// ----------------------------------------------------------------------------------------
-        logger_manager_impl()
-            : _loggers()
-        {}
+        logger_manager_impl() {}
 
         /// ----------------------------------------------------------------------------------------
         /// # virtual destructor
@@ -30,202 +72,43 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         ///
         /// ----------------------------------------------------------------------------------------
-        auto create_logger(string_view name, initializer_list<log_target*> targets) -> logger*
-        {
-            return nullptr;
-        }
+        virtual auto create_logger(const creation_options& options)
+            -> result<logger*, registration_error> = 0;
 
         /// ----------------------------------------------------------------------------------------
         /// registers `logger` with its name as the key.
         /// ----------------------------------------------------------------------------------------
-        auto register_logger(logger* logger) -> result<void, logger_registration_error>
-        {
-            contracts::debug_expects(logger != nullptr);
-
-            string_view key = logger->get_name();
-            contracts::debug_expects(not key.is_empty());
-
-            if (_has_logger(key))
-            {
-                return logger_registration_error(
-                    "a logger with this key is already registered.", key);
-            }
-
-            _register_logger(logger, key);
-            return success();
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// registers `logger` with the specified `key`.
-        /// ----------------------------------------------------------------------------------------
-        auto register_logger_with_key(logger* logger, string_view key)
-            -> result<void, logger_registration_error>
-        {
-            contracts::debug_expects(logger != nullptr);
-            contracts::debug_expects(not key.is_empty());
-
-            if (_has_logger(key))
-            {
-                return logger_registration_error(
-                    "a logger with this key is already registered.", key);
-            }
-
-            _register_logger(logger, key);
-            return success();
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// registers `logger` with its name as the key. if a logger with the same key is already
-        /// registered, then unregisters it and registers this.
-        /// ----------------------------------------------------------------------------------------
-        auto register_logger_forced(logger* logger)
-        {
-            contracts::debug_expects(logger != nullptr);
-
-            string_view key = logger->get_name();
-            contracts::debug_expects(not key.is_empty());
-
-            _register_logger_forced(logger, key);
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// registers `logger` with the specified `key`. if a logger with the same key is already
-        /// registered, then unregisters it and registers this.
-        /// ----------------------------------------------------------------------------------------
-        auto register_logger_with_key_forced(logger* logger, string_view key)
-        {
-            contracts::debug_expects(logger != nullptr);
-            contracts::debug_expects(not key.is_empty());
-
-            _register_logger_forced(logger, key);
-        }
+        virtual auto register_logger(const registration_options& options)
+            -> result<void, registration_error> = 0;
 
         /// ----------------------------------------------------------------------------------------
         /// unregisters the logger registered with the `key`.
         /// ----------------------------------------------------------------------------------------
-        auto unregister_logger(string_view key) -> bool
-        {
-            contracts::debug_expects(not key.is_empty());
-
-            return _unregister_logger(key) != nullptr;
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// unregisters all loggers.
-        /// ----------------------------------------------------------------------------------------
-        auto unregister_all_loggers() -> void
-        {
-            _loggers.clear();
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// unregisters and returns the logger registered with `key`.
-        /// ----------------------------------------------------------------------------------------
-        auto unregister_and_get_logger(string_view key) -> logger*
-        {
-            contracts::debug_expects(not key.is_empty());
-
-            return _unregister_logger(key);
-        }
+        virtual auto unregister_logger(string_view key) -> logger* = 0;
 
         /// ----------------------------------------------------------------------------------------
         /// get the logger registered with the `key`.
         /// ----------------------------------------------------------------------------------------
-        auto get_logger(string_view key) const -> logger*
-        {
-            contracts::debug_expects(not key.is_empty());
-
-            return _get_logger(key);
-        }
+        virtual auto get_logger(string_view key) const -> logger* = 0;
 
         /// ----------------------------------------------------------------------------------------
         ///
         /// ----------------------------------------------------------------------------------------
-        auto get_or_create_logger(string_view name, initializer_list<log_target*> targets)
-            -> logger*
-        {
-            return nullptr;
-        }
+        virtual auto get_or_create_logger(const creation_options& options) -> logger* = 0;
 
         /// ----------------------------------------------------------------------------------------
         /// returns `true` if a logger is registered with `key`.
         /// ----------------------------------------------------------------------------------------
-        auto has_logger(string_view key) const -> bool
-        {
-            contracts::debug_expects(not key.is_empty());
-
-            return _has_logger(key);
-        }
+        virtual auto has_logger(string_view key) const -> bool = 0;
 
         /// ----------------------------------------------------------------------------------------
         /// gets default_logger if already created before, else creates it and returns it.
         /// ----------------------------------------------------------------------------------------
-        auto get_or_create_default_logger() -> logger*
-        {
-            if (_default_logger == nullptr)
-            {
-                _default_logger = get_or_create_logger("default_logger", {});
-            }
+        virtual auto init_default_logger() -> logger* = 0;
 
-            return _default_logger;
-        }
-
-    protected:
-        auto _register_logger(logger* logger, string key) -> void
-        {
-            _loggers.insert({ move(key), move(logger) });
-        }
-
-        auto _register_logger_forced(logger* logger, string key) -> void
-        {
-            _loggers.insert_or_assign(move(key), move(logger));
-        }
-
-        auto _unregister_logger(string_view key) -> logger*
-        {
-            for (auto it = _loggers.cbegin(); it != _loggers.cend(); it++)
-            {
-                if (it->first == key)
-                {
-                    logger* logger = it->second;
-                    _loggers.erase(it);
-                    return logger;
-                }
-            }
-
-            return nullptr;
-        }
-
-        auto _get_logger(string_view key) const -> logger*
-        {
-            for (auto pair : _loggers)
-            {
-                if (pair.first == key)
-                {
-                    return pair.second;
-                }
-            }
-
-            return nullptr;
-        }
-
-        auto _has_logger(string_view key) const -> bool
-        {
-            return _get_logger(key) != nullptr;
-        }
-
-    protected:
-        unordered_map<string, logger*> _loggers;
-        logger* _default_logger;
+        /// ----------------------------------------------------------------------------------------
+        ///
+        /// ----------------------------------------------------------------------------------------
+        virtual auto set_default_logger(logger* logger_) -> logger* = 0;
     };
-
-    /// --------------------------------------------------------------------------------------------
-    ///
-    /// --------------------------------------------------------------------------------------------
-    template <bool st>
-    class default_logger_manager_impl: public logger_manager_impl
-    {};
-
-    using default_logger_manager_impl_st = default_logger_manager_impl<true>;
-    using default_logger_manager_impl_mt = default_logger_manager_impl<false>;
 }

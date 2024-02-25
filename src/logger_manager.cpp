@@ -2,7 +2,7 @@ export module atom.logging:logger_manager;
 import :logger;
 import :log_target;
 import :logger_manager_impl;
-import :logging_errors;
+import :default_logger_manager_impl;
 import atom.core;
 
 namespace atom::logging
@@ -12,6 +12,11 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     export class logger_manager
     {
+    public:
+        using creation_options = logger_manager_impl::creation_options;
+        using registration_options = logger_manager_impl::registration_options;
+        using registration_error = logger_manager_impl::registration_error;
+
     public:
         /// ----------------------------------------------------------------------------------------
         /// # default constructor
@@ -74,96 +79,44 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// creates a `logger` object with `name` and registers with `name` as key.
         /// ----------------------------------------------------------------------------------------
-        static auto create_logger(string_view name, initializer_list<log_target*> targets)
+        static auto create_logger(const creation_options& options)
+            -> result<logger*, registration_error>
+        {
+            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
+
+            return _impl->create_logger(options);
+        }
+
+        /// ----------------------------------------------------------------------------------------
+        /// gets the registered logger with key `name` or creates one and returns it.
+        /// ----------------------------------------------------------------------------------------
+        static auto get_or_create_logger(const creation_options& options)
             -> logger*
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
-            return _impl->create_logger(name, targets);
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// creates a `logger` object with `name` but doesn't registers it.
-        /// ----------------------------------------------------------------------------------------
-        static auto create_unregistered_logger(
-            string_view name, initializer_list<log_target*> targets) -> logger*
-        {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
-
-            return _impl->create_logger(name, targets);
+            return _impl->get_or_create_logger(options);
         }
 
         /// ----------------------------------------------------------------------------------------
         /// registers `logger` with its name as the key.
         /// ----------------------------------------------------------------------------------------
-        static auto register_logger(logger* logger) -> result<void, logger_registration_error>
+        static auto register_logger(const registration_options& options)
+            -> result<void, registration_error>
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
-            return _impl->register_logger(logger);
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// registers `logger` with the specified `key`.
-        /// ----------------------------------------------------------------------------------------
-        static auto register_with_key_logger(logger* logger, string_view key)
-            -> result<void, logger_registration_error>
-        {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
-
-            return _impl->register_logger_with_key(logger, key);
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// registers `logger` with its name as the key. if a logger with the same key is already
-        /// registered, then unregisters it and registers this.
-        /// ----------------------------------------------------------------------------------------
-        static auto register_forced_logger(logger* logger)
-        {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
-
-            return _impl->register_logger_forced(logger);
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// registers `logger` with the specified `key`. if a logger with the same key is already
-        /// registered, then unregisters it and registers this.
-        /// ----------------------------------------------------------------------------------------
-        static auto register_with_key_forced_logger(logger* logger, string_view key)
-        {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
-
-            return _impl->register_logger_with_key_forced(logger, key);
+            return _impl->register_logger(options);
         }
 
         /// ----------------------------------------------------------------------------------------
         /// unregisters the logger registered with the `key`.
         /// ----------------------------------------------------------------------------------------
-        static auto unregister_logger(string_view key) -> bool
+        static auto unregister_logger(string_view key) -> logger*
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
             return _impl->unregister_logger(key);
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// unregisters all loggers.
-        /// ----------------------------------------------------------------------------------------
-        static auto unregister_all_loggers() -> void
-        {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
-
-            _impl->unregister_all_loggers();
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// unregisters and returns the logger registered with `key`.
-        /// ----------------------------------------------------------------------------------------
-        static auto unregister_and_get_logger(string_view key) -> logger*
-        {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
-
-            return _impl->unregister_and_get_logger(key);
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -174,17 +127,6 @@ namespace atom::logging
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
             return _impl->get_logger(key);
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// gets the registered logger with key `name` or creates and registers one and returns it.
-        /// ----------------------------------------------------------------------------------------
-        static auto get_or_create_logger(string_view name, initializer_list<log_target*> targets)
-            -> logger*
-        {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
-
-            return _impl->get_or_create_logger(name, targets);
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -204,7 +146,7 @@ namespace atom::logging
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
-            _default_logger = logger;
+            _default_logger = _impl->set_default_logger(logger);
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -231,7 +173,7 @@ namespace atom::logging
         static auto _initialize(logger_manager_impl* impl) -> void
         {
             _impl = impl;
-            _default_logger = _impl->get_or_create_default_logger();
+            _default_logger = _impl->init_default_logger();
         }
 
         static auto _finalize() -> void
