@@ -74,7 +74,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// creates a `logger` object with `name` and registers with `name` as key.
         /// ----------------------------------------------------------------------------------------
-        static auto create(string_view name, initializer_list<log_target*> targets) -> logger*
+        static auto create_logger(string_view name, initializer_list<log_target*> targets)
+            -> logger*
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
@@ -84,8 +85,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// creates a `logger` object with `name` but doesn't registers it.
         /// ----------------------------------------------------------------------------------------
-        static auto create_unregistered(string_view name, initializer_list<log_target*> targets)
-            -> logger*
+        static auto create_unregistered_logger(
+            string_view name, initializer_list<log_target*> targets) -> logger*
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
@@ -95,7 +96,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// registers `logger` with its name as the key.
         /// ----------------------------------------------------------------------------------------
-        static auto register_(logger* logger) -> result<void, logger_registration_error>
+        static auto register_logger(logger* logger) -> result<void, logger_registration_error>
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
@@ -105,7 +106,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// registers `logger` with the specified `key`.
         /// ----------------------------------------------------------------------------------------
-        static auto register_with_key(logger* logger, string_view key)
+        static auto register_with_key_logger(logger* logger, string_view key)
             -> result<void, logger_registration_error>
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
@@ -117,7 +118,7 @@ namespace atom::logging
         /// registers `logger` with its name as the key. if a logger with the same key is already
         /// registered, then unregisters it and registers this.
         /// ----------------------------------------------------------------------------------------
-        static auto register_forced(logger* logger)
+        static auto register_forced_logger(logger* logger)
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
@@ -128,7 +129,7 @@ namespace atom::logging
         /// registers `logger` with the specified `key`. if a logger with the same key is already
         /// registered, then unregisters it and registers this.
         /// ----------------------------------------------------------------------------------------
-        static auto register_with_key_forced(logger* logger, string_view key)
+        static auto register_with_key_forced_logger(logger* logger, string_view key)
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
@@ -138,7 +139,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// unregisters the logger registered with the `key`.
         /// ----------------------------------------------------------------------------------------
-        static auto unregister(string_view key) -> bool
+        static auto unregister_logger(string_view key) -> bool
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
@@ -148,7 +149,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// unregisters all loggers.
         /// ----------------------------------------------------------------------------------------
-        static auto unregister_all() -> void
+        static auto unregister_all_loggers() -> void
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
@@ -158,7 +159,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// unregisters and returns the logger registered with `key`.
         /// ----------------------------------------------------------------------------------------
-        static auto unregister_and_get(string_view key) -> logger*
+        static auto unregister_and_get_logger(string_view key) -> logger*
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
@@ -168,7 +169,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// get the logger registered with the `key`.
         /// ----------------------------------------------------------------------------------------
-        static auto get(string_view key) -> logger*
+        static auto get_logger(string_view key) -> logger*
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
@@ -178,7 +179,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// gets the registered logger with key `name` or creates and registers one and returns it.
         /// ----------------------------------------------------------------------------------------
-        static auto get_or_create(string_view name, initializer_list<log_target*> targets)
+        static auto get_or_create_logger(string_view name, initializer_list<log_target*> targets)
             -> logger*
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
@@ -189,7 +190,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// returns `true` if a logger is registered with `key`.
         /// ----------------------------------------------------------------------------------------
-        static auto has(string_view key) -> bool
+        static auto has_logger(string_view key) -> bool
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
@@ -199,7 +200,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// sets the default logger.
         /// ----------------------------------------------------------------------------------------
-        static auto set_default(logger* logger) -> void
+        static auto set_default_logger(logger* logger) -> void
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
@@ -209,7 +210,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// returns the default logger.
         /// ----------------------------------------------------------------------------------------
-        static auto get_default() -> logger*
+        static auto get_default_logger() -> logger*
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
@@ -219,7 +220,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// returns `true` if the default logger is not null.
         /// ----------------------------------------------------------------------------------------
-        static auto has_default() -> bool
+        static auto has_default_logger() -> bool
         {
             contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
