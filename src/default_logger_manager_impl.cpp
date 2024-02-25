@@ -33,9 +33,24 @@ namespace atom::logging
 
     public:
         /// ----------------------------------------------------------------------------------------
+        /// creates a `simple_logger_st` instance.
         ///
+        /// @param options.name name of the logger to create
+        ///
+        /// @param options.targets list of targets to add to the created logger.
+        ///
+        /// @param options.register_logger if `true`, registers the created logger.
+        ///
+        /// @param options.try_register if `true` and registration is not possible, returns the
+        ///     created logger instead of error.
+        ///
+        /// @param options.force_register if `true` and another logger is registerd with this key,
+        ///     unregisters that logger and registers this.
+        ///
+        /// @param options.key key used to register the logger. if key is empty, uses
+        ///     `options.name` as the key.
         /// ----------------------------------------------------------------------------------------
-        auto create_logger(const creation_options& options)
+        virtual auto create_logger(const creation_options& options)
             -> result<logger*, registration_error> override
         {
             if (not options.register_logger)
@@ -68,7 +83,23 @@ namespace atom::logging
         }
 
         /// ----------------------------------------------------------------------------------------
+        /// if a logger with key `options.key` exists, returns it else creates a new logger returns
+        /// it.
         ///
+        /// @param options.name name of the logger to create
+        ///
+        /// @param options.targets list of targets to add to the created logger.
+        ///
+        /// @param options.register_logger if `true`, registers the created logger.
+        ///
+        /// @param options.try_register if `true` and registration is not possible, returns the
+        ///     created logger instead of error.
+        ///
+        /// @param options.force_register if `true` and another logger is registerd with this key,
+        ///     unregisters that logger and registers this.
+        ///
+        /// @param options.key key used to register the logger. if key is empty, uses
+        ///     `options.name` as the key.
         /// ----------------------------------------------------------------------------------------
         virtual auto get_or_create_logger(const creation_options& options) -> logger* override
         {
@@ -85,9 +116,21 @@ namespace atom::logging
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// registers `logger` with its name as the key.
+        /// registers `logger` with its the specified key.
+        ///
+        /// @param options.logger logger to register.
+        ///
+        /// @param options.key key used to register the logger. if key is empty,
+        ///     `options.logger->get_name()` is used as the key.
+        ///
+        /// @throws registration_error if `options.logger` is null.
+        ///
+        /// @throws registration_error if `options.key` is empty.
+        ///
+        /// @throws registration_error if `options.force_register` is `false` and another logger is
+        ///     already registerd.
         /// ----------------------------------------------------------------------------------------
-        auto register_logger(const registration_options& options)
+        virtual auto register_logger(const registration_options& options)
             -> result<void, registration_error> override
         {
             if (options.logger == nullptr)
@@ -116,7 +159,7 @@ namespace atom::logging
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// unregisters the logger registered with the `key`.
+        /// unregisters the logger registered with the `key` and returns it.
         /// ----------------------------------------------------------------------------------------
         virtual auto unregister_logger(string_view key) -> logger* override
         {

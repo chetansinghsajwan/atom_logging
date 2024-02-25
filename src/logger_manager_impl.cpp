@@ -13,26 +13,26 @@ namespace atom::logging
     {
     public:
         /// ----------------------------------------------------------------------------------------
-        ///
+        /// options used during logger creation.
         /// ----------------------------------------------------------------------------------------
         struct creation_options
         {
-            string_view name;
-            initializer_list<log_target*> targets;
-            bool register_logger = true;
-            bool try_register = true;
-            bool force_register = false;
-            string_view key;
+            string_view name;                      // name of the logger.
+            initializer_list<log_target*> targets; // targets to add into logger.
+            bool register_logger = true;           // should the logger be registered.
+            bool try_register = true;              // if registration fails, do not return error.
+            bool force_register = false;           // force register the logger.
+            string_view key;                       // key used to register the logger.
         };
 
         /// ----------------------------------------------------------------------------------------
-        ///
+        /// options used during registering logger.
         /// ----------------------------------------------------------------------------------------
         struct registration_options
         {
-            logger* logger;
-            string_view key;
-            bool force_register = false;
+            logger* logger;              // logger to register.
+            string_view key;             // key used to register the logger.
+            bool force_register = false; // force register the logger.
         };
 
         /// ----------------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ namespace atom::logging
             {}
 
         public:
-            string_view key;
+            string_view key; // key used during registration.
         };
 
     public:
@@ -70,7 +70,7 @@ namespace atom::logging
 
     public:
         /// ----------------------------------------------------------------------------------------
-        ///
+        /// creates a logger with name `options.name` and returns it.
         /// ----------------------------------------------------------------------------------------
         virtual auto create_logger(const creation_options& options)
             -> result<logger*, registration_error> = 0;
@@ -92,7 +92,7 @@ namespace atom::logging
         virtual auto get_logger(string_view key) const -> logger* = 0;
 
         /// ----------------------------------------------------------------------------------------
-        ///
+        /// gets the logger registered with key `options.key`, else creates one and returns it.
         /// ----------------------------------------------------------------------------------------
         virtual auto get_or_create_logger(const creation_options& options) -> logger* = 0;
 
@@ -107,7 +107,8 @@ namespace atom::logging
         virtual auto init_default_logger() -> logger* = 0;
 
         /// ----------------------------------------------------------------------------------------
-        ///
+        /// sets the default logger and returns the same. the returned value is then catched inside
+        /// `logger_manager`. this is useful when you want to avoid setting the defualt logger null.
         /// ----------------------------------------------------------------------------------------
         virtual auto set_default_logger(logger* logger_) -> logger* = 0;
     };
