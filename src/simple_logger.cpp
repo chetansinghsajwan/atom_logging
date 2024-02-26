@@ -115,7 +115,7 @@ namespace atom::logging
         auto remove_target(log_target* target) -> void
         {
             lock_guard guard(_lock);
-            _targets.remove_find(target);
+            _targets.remove_one_find(target);
         }
 
         auto has_target(log_target* target) const -> bool

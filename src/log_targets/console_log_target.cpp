@@ -70,8 +70,8 @@ namespace atom::logging
                 file = _stderr;
             }
 
-            ::fwrite(formatted_msg.data().to_unwrapped(), sizeof(char),
-                formatted_msg.count().to_unwrapped(), file);
+            ::fwrite(formatted_msg.get_data().to_unwrapped(), sizeof(char),
+                formatted_msg.get_count().to_unwrapped(), file);
         }
 
         /// ----------------------------------------------------------------------------------------
