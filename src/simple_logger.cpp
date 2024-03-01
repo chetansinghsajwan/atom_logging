@@ -181,7 +181,7 @@ namespace atom::logging
         /// @param[in] targets `log_target` objects to add.
         /// ----------------------------------------------------------------------------------------
         simple_logger(string name, initializer_list<log_target*> targets)
-            : _impl(move(name), make_range(targets))
+            : _impl(move(name), range_from(targets))
         {}
 
         /// ----------------------------------------------------------------------------------------
@@ -285,7 +285,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         auto add_targets(initializer_list<log_target*> targets) -> void
         {
-            return _impl.add_targets(make_range(targets));
+            return _impl.add_targets(range_from(targets));
         }
 
         /// ----------------------------------------------------------------------------------------
