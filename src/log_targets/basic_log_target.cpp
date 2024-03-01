@@ -35,14 +35,12 @@ namespace atom::logging
         {
             if (check_log_level(log_msg.lvl))
             {
-                // to do: add chrono support for atom.fmt.
-                // string result = string_fmter().fmt("[{}] [{}] {}: {}\n",
+                // todo: add chrono support for atom.fmt.
+                // string result = string::format("[{}] [{}] {}: {}\n",
                 //     log_msg.time, log_msg.lvl, log_msg.logger_name, log_msg.msg);
 
-                // string result = string_fmter().fmt(
-                //     "[{}] {}: {}\n", log_msg.lvl, log_msg.logger_name, log_msg.msg);
-
-                string result;
+                string result = string::format(
+                    "{}: {}\n", log_msg.logger_name, log_msg.msg);
 
                 _has_written = true;
                 _write(log_msg, result);
