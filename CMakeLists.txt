@@ -18,9 +18,7 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(atom_core catch2)
-FetchContent_GetProperties(atom_core)
 
-include("${atom_core_SOURCE_DIR}/cmake/enable_modules.cmake")
 enable_testing()
 set(CMAKE_CXX_STANDARD "23")
 set(CMAKE_CXX_STANDARD_REQUIRED "TRUE")
@@ -30,8 +28,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED "TRUE")
 # --------------------------------------------------------------------------------------------------
 
 add_library(atom.logging STATIC)
-target_sources(atom.logging PRIVATE "src/logging.cpp")
-target_include_directories(atom.logging PUBLIC "include")
+target_sources(atom.logging PRIVATE "source/atom.logging.cpp")
+target_include_directories(atom.logging PUBLIC "include/")
 target_link_libraries(atom.logging PUBLIC atom.core)
 
 # --------------------------------------------------------------------------------------------------
