@@ -1,7 +1,7 @@
-export module atom.logging:basic_log_target;
-import :log_msg;
-import :log_target;
-import atom.core;
+#pragma once
+#include "atom/logging/log_msg.h"
+#include "atom/logging/log_target.h"
+#include "atom.core.h"
 
 namespace atom::logging
 {
@@ -14,7 +14,7 @@ namespace atom::logging
     /// - add thread safety.
     /// - make default log and flush level global.
     /// --------------------------------------------------------------------------------------------
-    export class basic_log_target: public log_target
+    class basic_log_target: public log_target
     {
     public:
         /// ----------------------------------------------------------------------------------------

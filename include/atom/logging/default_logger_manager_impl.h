@@ -1,11 +1,10 @@
-export module atom.logging:default_logger_manager_impl;
-import :logger;
-import :logger;
-import :log_target;
-import :logger_manager_impl;
-import :console_log_target;
-import :simple_logger;
-import atom.core;
+#pragma once
+#include "atom/logging/logger.h"
+#include "atom/logging/log_target.h"
+#include "atom/logging/logger_manager_impl.h"
+#include "atom/logging/simple_logger.h"
+#include "atom/logging/log_targets/console_log_target.h"
+#include "atom.core.h"
 
 namespace atom::logging
 {

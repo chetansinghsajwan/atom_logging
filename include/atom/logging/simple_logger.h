@@ -1,8 +1,9 @@
-export module atom.logging:simple_logger;
-import :log_msg;
-import :logger;
-import :log_target;
-import atom.core;
+#pragma once
+#include "atom/logging/logger.h"
+#include "atom/logging/log_target.h"
+#include "atom/logging/log_msg.h"
+
+#include <initializer_list>
 
 namespace atom::logging
 {
@@ -283,7 +284,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         ///
         /// ----------------------------------------------------------------------------------------
-        auto add_targets(initializer_list<log_target*> targets) -> void
+        auto add_targets(std::initializer_list<log_target*> targets) -> void
         {
             return _impl.add_targets(range_from(targets));
         }
@@ -316,6 +317,6 @@ namespace atom::logging
         impl_type _impl;
     };
 
-    export using simple_logger_st = simple_logger<_simple_logger_impl_st>;
-    export using simple_logger_mt = simple_logger<_simple_logger_impl_mt>;
+    using simple_logger_st = simple_logger<_simple_logger_impl_st>;
+    using simple_logger_mt = simple_logger<_simple_logger_impl_mt>;
 }

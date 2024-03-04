@@ -1,0 +1,9 @@
+#pragma once
+#include "atom/logging/logger.h";
+#include "atom/logging/log_msg.h";
+#include "atom/logging/log_target.h";
+#include "atom/logging/log_targets/basic_log_target.h";
+#include "atom/logging/log_targets/console_log_target.h";
+#include "atom/logging/logger_manager.h";
+#include "atom/logging/null_logger.h";
+#include "atom/logging/simple_logger.h";

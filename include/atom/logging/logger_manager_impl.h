@@ -1,15 +1,14 @@
-export module atom.logging:logger_manager_impl;
-import :logger;
-import :logger;
-import :log_target;
-import atom.core;
+#pragma once
+#include "atom/logging/logger.h"
+#include "atom/logging/log_target.h"
+#include "atom.core.h"
 
 namespace atom::logging
 {
     /// --------------------------------------------------------------------------------------------
     /// implementation logic for `logger_manager`.
     /// --------------------------------------------------------------------------------------------
-    export class logger_manager_impl
+    class logger_manager_impl
     {
     public:
         /// ----------------------------------------------------------------------------------------
