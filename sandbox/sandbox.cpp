@@ -1,5 +1,5 @@
-import atom.core;
-import atom.logging;
+#include "atom.core.h"
+#include "atom.logging.h"
 
 using namespace atom;
 using namespace atom::logging;
