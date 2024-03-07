@@ -67,8 +67,7 @@ namespace atom::logging
                 file = _stderr;
             }
 
-            ::fwrite(formatted_msg.get_data(), sizeof(char),
-                formatted_msg.get_count().to_unwrapped(), file);
+            ::fwrite(formatted_msg.get_data(), sizeof(char), formatted_msg.get_count(), file);
         }
 
         /// ----------------------------------------------------------------------------------------

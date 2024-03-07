@@ -34,7 +34,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         static auto initialize() -> void
         {
-            contracts::expects(not is_initialized(), "`logger_manager` is already initialized.");
+            ATOM_EXPECTS(not is_initialized(), "`logger_manager` is already initialized.");
 
             _initialize(new default_logger_manager_impl_st());
         }
@@ -44,8 +44,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         static auto initialize_with_impl(logger_manager_impl* impl) -> void
         {
-            contracts::expects(impl != nullptr, "cannot initialize `logger_manager` with null"
-                                                "implementation instance");
+            ATOM_EXPECTS(impl != nullptr, "cannot initialize `logger_manager` with null"
+                                          "implementation instance");
 
             _initialize(impl);
         }
@@ -55,7 +55,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         static auto finalize() -> void
         {
-            contracts::expects(is_initialized(), "`logger_manager` is not initialized yet.");
+            ATOM_EXPECTS(is_initialized(), "`logger_manager` is not initialized yet.");
 
             _finalize();
         }
@@ -82,7 +82,7 @@ namespace atom::logging
         static auto create_logger(const creation_options& options)
             -> result<logger*, registration_error>
         {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
+            ATOM_DEBUG_EXPECTS(is_initialized(), "`logger_manager` is not initialized yet.");
 
             return _impl->create_logger(options);
         }
@@ -92,7 +92,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         static auto get_or_create_logger(const creation_options& options) -> logger*
         {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
+            ATOM_DEBUG_EXPECTS(is_initialized(), "`logger_manager` is not initialized yet.");
 
             return _impl->get_or_create_logger(options);
         }
@@ -103,7 +103,7 @@ namespace atom::logging
         static auto register_logger(const registration_options& options)
             -> result<void, registration_error>
         {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
+            ATOM_DEBUG_EXPECTS(is_initialized(), "`logger_manager` is not initialized yet.");
 
             return _impl->register_logger(options);
         }
@@ -113,7 +113,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         static auto unregister_logger(string_view key) -> logger*
         {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
+            ATOM_DEBUG_EXPECTS(is_initialized(), "`logger_manager` is not initialized yet.");
 
             return _impl->unregister_logger(key);
         }
@@ -123,7 +123,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         static auto get_logger(string_view key) -> logger*
         {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
+            ATOM_DEBUG_EXPECTS(is_initialized(), "`logger_manager` is not initialized yet.");
 
             return _impl->get_logger(key);
         }
@@ -133,7 +133,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         static auto has_logger(string_view key) -> bool
         {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
+            ATOM_DEBUG_EXPECTS(is_initialized(), "`logger_manager` is not initialized yet.");
 
             return _impl->has_logger(key);
         }
@@ -143,7 +143,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         static auto set_default_logger(logger* logger) -> void
         {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
+            ATOM_DEBUG_EXPECTS(is_initialized(), "`logger_manager` is not initialized yet.");
 
             _default_logger = _impl->set_default_logger(logger);
         }
@@ -153,7 +153,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         static auto get_default_logger() -> logger*
         {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
+            ATOM_DEBUG_EXPECTS(is_initialized(), "`logger_manager` is not initialized yet.");
 
             return _default_logger;
         }
@@ -163,7 +163,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         static auto has_default_logger() -> bool
         {
-            contracts::debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
+            ATOM_DEBUG_EXPECTS(is_initialized(), "`logger_manager` is not initialized yet.");
 
             return _default_logger != nullptr;
         }
