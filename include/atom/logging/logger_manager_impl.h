@@ -29,7 +29,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         struct registration_options
         {
-            logger* logger;              // logger to register.
+            class logger* logger;              // logger to register.
             string_view key;             // key used to register the logger.
             bool force_register = false; // force register the logger.
         };
@@ -109,6 +109,6 @@ namespace atom::logging
         /// sets the default logger and returns the same. the returned value is then catched inside
         /// `logger_manager`. this is useful when you want to avoid setting the defualt logger null.
         /// ----------------------------------------------------------------------------------------
-        virtual auto set_default_logger(logger* logger_) -> logger* = 0;
+        virtual auto set_default_logger(class logger* logger) -> class logger* = 0;
     };
 }
