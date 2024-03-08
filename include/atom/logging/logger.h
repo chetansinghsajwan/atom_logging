@@ -30,7 +30,7 @@ namespace atom::logging
         template <typename... arg_types>
         auto log_trace(format_string<arg_types...> msg, arg_types&&... args)
         {
-            log(log_level::trace, msg, forward<arg_types>(args)...);
+            log(log_level::trace, msg, atom::forward<arg_types>(args)...);
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ namespace atom::logging
         template <typename... arg_types>
         auto log_debug(format_string<arg_types...> msg, arg_types&&... args)
         {
-            log(log_level::debug, msg, forward<arg_types>(args)...);
+            log(log_level::debug, msg, atom::forward<arg_types>(args)...);
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ namespace atom::logging
         template <typename... arg_types>
         auto log_info(format_string<arg_types...> msg, arg_types&&... args)
         {
-            log(log_level::info, msg, forward<arg_types>(args)...);
+            log(log_level::info, msg, atom::forward<arg_types>(args)...);
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ namespace atom::logging
         template <typename... arg_types>
         auto log_warn(format_string<arg_types...> msg, arg_types&&... args)
         {
-            log(log_level::warn, msg, forward<arg_types>(args)...);
+            log(log_level::warn, msg, atom::forward<arg_types>(args)...);
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ namespace atom::logging
         template <typename... arg_types>
         auto log_error(format_string<arg_types...> msg, arg_types&&... args)
         {
-            log(log_level::error, msg, forward<arg_types>(args)...);
+            log(log_level::error, msg, atom::forward<arg_types>(args)...);
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ namespace atom::logging
         template <typename... arg_types>
         auto log_fatal(format_string<arg_types...> msg, arg_types&&... args)
         {
-            log(log_level::fatal, msg, forward<arg_types>(args)...);
+            log(log_level::fatal, msg, atom::forward<arg_types>(args)...);
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ namespace atom::logging
         {
             if (check_log_level(lvl))
             {
-                string formatted_msg = string::format(msg, forward<arg_types>(args)...);
+                string formatted_msg = string::format(msg, atom::forward<arg_types>(args)...);
                 log_msg log_msg{
                     .msg = formatted_msg,
                     .logger_name = get_name(),
