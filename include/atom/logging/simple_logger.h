@@ -11,8 +11,8 @@ namespace atom::logging
     class _simple_logger_impl
     {
         using this_type = _simple_logger_impl;
-        using atomic_log_level_type = tti::conditional_type<st, log_level, atomic<log_level>>;
-        using lockable_type = tti::conditional_type<st, null_lockable, simple_mutex>;
+        using atomic_log_level_type = typeinfo::conditional_type<st, log_level, atomic<log_level>>;
+        using lockable_type = typeinfo::conditional_type<st, null_lockable, simple_mutex>;
 
     public:
         explicit _simple_logger_impl(string name)
@@ -22,7 +22,7 @@ namespace atom::logging
 
         template <typename range_type>
         _simple_logger_impl(string name, range_type&& targets)
-            requires(rrange_of<pure_type<range_type>, log_target*>)
+            requires(rrange_of<typeinfo::get_pure<range_type>, log_target*>)
             : _name(move(name))
             , _targets(forward<range_type>(targets))
         {}
@@ -107,7 +107,7 @@ namespace atom::logging
 
         template <typename range_type>
         auto add_targets(range_type&& targets) -> void
-            requires rrange_of<pure_type<range_type>, log_target*>
+            requires rrange_of<typeinfo::get_pure<range_type>, log_target*>
         {
             lock_guard guard(_lock);
             _targets.insert_range_back(forward<range_type>(targets));
@@ -171,7 +171,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         template <typename range_type>
         simple_logger(string name, range_type&& targets)
-            requires(rrange_of<pure_type<range_type>, log_target*>)
+            requires(rrange_of<typeinfo::get_pure<range_type>, log_target*>)
             : _impl(move(name), forward<range_type>(targets))
         {}
 
@@ -276,7 +276,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         template <typename range_type>
         auto add_targets(range_type&& targets) -> void
-            requires rrange_of<pure_type<range_type>, log_target*>
+            requires rrange_of<typeinfo::get_pure<range_type>, log_target*>
         {
             return _impl.add_targets(forward<range_type>(targets));
         }
