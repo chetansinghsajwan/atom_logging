@@ -15,11 +15,12 @@
             
             packages = with pkgs; [
                 cmake
+                cmake-format
                 gnumake
                 ninja
-		        gcc13
-		        clang_17
-		        clang-tools_17
+                gcc13
+                clang_17
+                clang-tools_17
             ];
         };
     };
