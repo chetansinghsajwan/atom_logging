@@ -1,21 +1,25 @@
 cmake_minimum_required(VERSION 3.5)
-project(atom.logging VERSION 0.1.0 LANGUAGES CXX)
+project(
+    atom.logging
+    VERSION 0.1.0
+    LANGUAGES CXX)
 
 include(FetchContent)
+set(FETCHCONTENT_QUIET "OFF")
 
 FetchContent_Declare(
     atom_core
     GIT_REPOSITORY "https://github.com/shifu-dev/atom.core.git"
-    GIT_TAG        "dev"
-    GIT_SHALLOW    true
-)
+    GIT_TAG "dev"
+    GIT_SHALLOW true
+    GIT_PROGRESS true)
 
 FetchContent_Declare(
     catch2
     GIT_REPOSITORY "https://github.com/catchorg/Catch2.git"
-    GIT_TAG        "v3.5.1"
-    GIT_SHALLOW    true
-)
+    GIT_TAG "v3.5.1"
+    GIT_SHALLOW true
+    GIT_PROGRESS true)
 
 FetchContent_MakeAvailable(atom_core catch2)
 
@@ -49,7 +53,6 @@ add_test(atom.logging.tests atom.logging.tests)
 # --------------------------------------------------------------------------------------------------
 
 add_executable(atom.logging.sandbox)
-target_sources(atom.logging.sandbox PRIVATE
-    "sandbox/sandbox.cpp")
+target_sources(atom.logging.sandbox PRIVATE "sandbox/sandbox.cpp")
 
 target_link_libraries(atom.logging.sandbox PRIVATE atom.logging)
