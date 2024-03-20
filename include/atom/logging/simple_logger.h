@@ -18,6 +18,8 @@ namespace atom::logging
         explicit _simple_logger_impl(string name)
             : _name(move(name))
             , _targets()
+            , _log_level(log_level::info)
+            , _flush_level(log_level::info)
         {}
 
         template <typename range_type>
