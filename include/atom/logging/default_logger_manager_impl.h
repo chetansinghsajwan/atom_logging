@@ -49,8 +49,8 @@ namespace atom::logging
         /// @param options.key key used to register the logger. if key is empty, uses
         ///     `options.name` as the key.
         /// ----------------------------------------------------------------------------------------
-        virtual auto create_logger(const creation_options& options)
-            -> result<logger*, registration_error> override
+        virtual auto create_logger(
+            const creation_options& options) -> result<logger*, registration_error> override
         {
             if (not options.register_logger)
                 return _create_logger(options.name, options.targets);
@@ -129,8 +129,8 @@ namespace atom::logging
         /// @throws registration_error if `options.force_register` is `false` and another logger is
         ///     already registerd.
         /// ----------------------------------------------------------------------------------------
-        virtual auto register_logger(const registration_options& options)
-            -> result<void, registration_error> override
+        virtual auto register_logger(
+            const registration_options& options) -> result<void, registration_error> override
         {
             if (options.logger == nullptr)
                 return registration_error("cannot register null logger.");
@@ -144,7 +144,7 @@ namespace atom::logging
             if (options.force_register)
             {
                 _register_logger_forced(options.logger, options_key);
-                return success();
+                return result_void();
             }
 
             bool registered = _register_logger(options.logger, options_key);
@@ -154,7 +154,7 @@ namespace atom::logging
                     "a logger with this key is already registered.", options_key);
             }
 
-            return success();
+            return result_void();
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -211,7 +211,14 @@ namespace atom::logging
         auto _create_logger(string_view name, initializer_list<log_target*> targets) -> logger*
         {
             simple_logger_st* logger = new simple_logger_st(name);
-            logger->add_target(new console_log_target());
+            logger->set_log_level(log_level::trace);
+            logger->set_flush_level(log_level::trace);
+
+            console_log_target* console = new console_log_target();
+            console->set_log_level(log_level::trace);
+            console->set_flush_level(log_level::trace);
+
+            logger->add_target(console);
             logger->add_targets(targets);
 
             return logger;
