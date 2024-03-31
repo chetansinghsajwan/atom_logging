@@ -24,7 +24,7 @@ namespace atom::logging
 
         template <typename range_type>
         _simple_logger_impl(string name, range_type&& targets)
-            requires(is_range_of<typename typeinfo<range_type>::pure_t, log_target*>)
+            requires(is_range_of<typename typeinfo<range_type>::pure_t::value_t, log_target*>)
             : _name(move(name))
             , _targets(forward<range_type>(targets))
         {}
@@ -109,7 +109,7 @@ namespace atom::logging
 
         template <typename range_type>
         auto add_targets(range_type&& targets) -> void
-            requires is_range_of<typename typeinfo<range_type>::pure_t, log_target*>
+            requires is_range_of<typename typeinfo<range_type>::pure_t::value_t, log_target*>
         {
             lock_guard guard(_lock);
             _targets.insert_range_back(forward<range_type>(targets));
@@ -173,7 +173,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         template <typename range_type>
         simple_logger(string name, range_type&& targets)
-            requires(is_range_of<typename typeinfo<range_type>::pure_t, log_target*>)
+            requires(is_range_of<typename typeinfo<range_type>::pure_t::value_t, log_target*>)
             : _impl(move(name), forward<range_type>(targets))
         {}
 
@@ -278,7 +278,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         template <typename range_type>
         auto add_targets(range_type&& targets) -> void
-            requires is_range_of<typename typeinfo<range_type>::pure_t, log_target*>
+            requires is_range_of<typename typeinfo<range_type>::pure_t::value_t, log_target*>
         {
             return _impl.add_targets(forward<range_type>(targets));
         }
