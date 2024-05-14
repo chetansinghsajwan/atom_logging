@@ -1,7 +1,7 @@
 #pragma once
 #include "atom/logging/log_msg.h"
 #include "atom/logging/log_target.h"
-#include "atom.core.h"
+// import atom.core;
 
 namespace atom::logging
 {

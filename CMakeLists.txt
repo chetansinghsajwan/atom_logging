@@ -32,9 +32,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED "TRUE")
 # --------------------------------------------------------------------------------------------------
 
 add_library(atom.logging STATIC)
-target_sources(atom.logging PRIVATE "source/atom.logging.cpp")
-target_include_directories(atom.logging PUBLIC "include/")
-target_link_libraries(atom.logging PUBLIC atom.core)
+target_sources(atom.logging PUBLIC FILE_SET CXX_MODULES FILES "source/atom.logging.cppm")
+target_include_directories(atom.logging PRIVATE "include/")
+target_link_libraries(atom.logging PRIVATE atom.core)
 
 # --------------------------------------------------------------------------------------------------
 # atom.logging Tests
@@ -43,7 +43,7 @@ target_link_libraries(atom.logging PUBLIC atom.core)
 file(GLOB_RECURSE test_sources "tests/*.cpp")
 
 add_executable(atom.logging.tests "${test_sources}")
-target_link_libraries(atom.logging.tests PUBLIC atom.logging)
+target_link_libraries(atom.logging.tests PRIVATE atom.logging)
 target_link_libraries(atom.logging.tests PRIVATE Catch2::Catch2WithMain)
 
 add_test(atom.logging.tests atom.logging.tests)
@@ -53,6 +53,6 @@ add_test(atom.logging.tests atom.logging.tests)
 # --------------------------------------------------------------------------------------------------
 
 add_executable(atom.logging.sandbox)
-target_sources(atom.logging.sandbox PRIVATE "sandbox/sandbox.cpp")
+target_sources(atom.logging.sandbox PRIVATE FILE_SET CXX_MODULES FILES "sandbox/sandbox.cpp")
 
 target_link_libraries(atom.logging.sandbox PRIVATE atom.logging)
