@@ -1,10 +1,11 @@
 #pragma once
+// import atom.core;
+
 #include "atom/logging/logger.h"
 #include "atom/logging/log_target.h"
 #include "atom/logging/logger_manager_impl.h"
 #include "atom/logging/simple_logger.h"
 #include "atom/logging/log_targets/console_log_target.h"
-#include "atom.core.h"
 
 namespace atom::logging
 {

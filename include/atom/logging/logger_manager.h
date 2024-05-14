@@ -3,7 +3,7 @@
 #include "atom/logging/log_target.h"
 #include "atom/logging/logger_manager_impl.h"
 #include "atom/logging/default_logger_manager_impl.h"
-#include "atom.core.h"
+// import atom.core;
 
 namespace atom::logging
 {

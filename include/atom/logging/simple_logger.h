@@ -3,7 +3,7 @@
 #include "atom/logging/log_target.h"
 #include "atom/logging/log_msg.h"
 
-#include <initializer_list>
+// import std;
 
 namespace atom::logging
 {

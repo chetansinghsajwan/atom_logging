@@ -1,7 +1,7 @@
+// #include "stdio.h"
+
 #pragma once
 #include "atom/logging/log_targets/basic_log_target.h"
-
-#include "stdio.h"
 
 namespace atom::logging
 {
