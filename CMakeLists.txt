@@ -13,7 +13,7 @@ find_package(Catch2 REQUIRED)
 
 add_library(atom.logging STATIC)
 
-file(GLOB_RECURSE modules "source/*.cppm" "include/*.cppm")
+file(GLOB_RECURSE modules "sources/*.cppm")
 target_sources(atom.logging PUBLIC FILE_SET CXX_MODULES FILES ${modules})
 target_link_libraries(atom.logging PUBLIC atom::atom.core)
 target_compile_features(atom.logging PUBLIC "cxx_std_23")
