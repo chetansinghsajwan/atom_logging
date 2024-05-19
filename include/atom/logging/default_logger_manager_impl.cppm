@@ -1,18 +1,19 @@
-#pragma once
-// import atom.core;
+export module atom.logging:default_logger_manager_impl;
 
-#include "atom/logging/logger.h"
-#include "atom/logging/log_target.h"
-#include "atom/logging/logger_manager_impl.h"
-#include "atom/logging/simple_logger.h"
-#include "atom/logging/log_targets/console_log_target.h"
+import atom.core;
+import :logger;
+import :log_msg;
+import :log_target;
+import :logger_manager_impl;
+import :simple_logger;
+import :log_targets.console_log_target;
 
 namespace atom::logging
 {
     /// --------------------------------------------------------------------------------------------
     ///
     /// --------------------------------------------------------------------------------------------
-    template <bool st>
+    export template <bool st>
     class default_logger_manager_impl: public logger_manager_impl
     {
     public:
@@ -273,6 +274,6 @@ namespace atom::logging
         logger* _default_logger;
     };
 
-    using default_logger_manager_impl_st = default_logger_manager_impl<true>;
-    using default_logger_manager_impl_mt = default_logger_manager_impl<false>;
+    export using default_logger_manager_impl_st = default_logger_manager_impl<true>;
+    export using default_logger_manager_impl_mt = default_logger_manager_impl<false>;
 }

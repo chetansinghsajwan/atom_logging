@@ -1,16 +1,17 @@
-#pragma once
-#include "atom/logging/logger.h"
-#include "atom/logging/log_target.h"
-#include "atom/logging/logger_manager_impl.h"
-#include "atom/logging/default_logger_manager_impl.h"
-// import atom.core;
+export module atom.logging:logger_manager;
+
+import atom.core;
+import :logger;
+import :log_target;
+import :logger_manager_impl;
+import :default_logger_manager_impl;
 
 namespace atom::logging
 {
     /// --------------------------------------------------------------------------------------------
     /// provides registration and creation abstraction layer.
     /// --------------------------------------------------------------------------------------------
-    class logger_manager
+    export class logger_manager
     {
     public:
         using creation_options = logger_manager_impl::creation_options;

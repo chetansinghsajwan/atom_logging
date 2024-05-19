@@ -1,12 +1,13 @@
-#pragma once
-// import atom.core;
+export module atom.logging:log_msg;
+
+import atom.core;
 
 namespace atom::logging
 {
     /// --------------------------------------------------------------------------------------------
     /// log_level is used to define the level of the log.
     /// --------------------------------------------------------------------------------------------
-    enum class log_level : byte
+    export enum class log_level : byte
     {
         trace,
         debug,
@@ -22,7 +23,7 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// lightweight object containing all the details of the log.
     /// --------------------------------------------------------------------------------------------
-    class log_msg
+    export class log_msg
     {
     public:
         /// ----------------------------------------------------------------------------------------

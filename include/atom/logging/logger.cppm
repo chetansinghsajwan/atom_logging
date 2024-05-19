@@ -1,11 +1,12 @@
-#pragma once
-#include "atom/logging/log_msg.h"
-#include "atom/logging/log_target.h"
-// import atom.core;
+export module atom.logging:logger;
+
+import atom.core;
+import :log_msg;
+import :log_target;
 
 namespace atom::logging
 {
-    class logger
+    export class logger
     {
     public:
         /// ----------------------------------------------------------------------------------------
