@@ -8,16 +8,17 @@
         ]
       },
       "locked": {
-        "dirtyRev": "bc9f53e9350bb31fb9f67b5bea69060d1fddf81f-dirty",
-        "dirtyShortRev": "bc9f53e-dirty",
-        "lastModified": 1716068433,
-        "narHash": "sha256-3r8HR/rrpd+iIquzm7Riq9G1L944VOSaUmtjIOVn3jc=",
-        "type": "git",
-        "url": "file:../atom.core"
+        "lastModified": 1716114293,
+        "narHash": "sha256-Xy18dkzyxjBOSdx2r+xbizJc5RQGzDcPZOd/kb/69fo=",
+        "owner": "shifu-dev",
+        "repo": "atom.core",
+        "rev": "b6c35afa5c5b1ca571177791e9741d8c56560611",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:../atom.core"
+        "owner": "shifu-dev",
+        "repo": "atom.core",
+        "type": "github"
       }
     },
     "cpptrace": {

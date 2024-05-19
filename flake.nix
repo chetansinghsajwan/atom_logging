@@ -4,8 +4,7 @@
     inputs = {
         nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-        # atom_core.url = "github:shifu-dev/atom.core";
-        atom_core.url = "git+file:../atom.core";
+        atom_core.url = "github:shifu-dev/atom.core";
         atom_core.inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -67,5 +66,6 @@
         };
 
         devShells.${system}.default = derivation;
+        packages.${system}.default = derivation;
     };
 }
