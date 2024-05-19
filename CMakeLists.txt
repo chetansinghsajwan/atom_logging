@@ -39,3 +39,29 @@ add_test(atom.logging.tests atom.logging.tests)
 add_executable(atom.logging.sandbox)
 target_sources(atom.logging.sandbox PRIVATE FILE_SET CXX_MODULES FILES "sandbox/sandbox.cpp")
 target_link_libraries(atom.logging.sandbox PRIVATE atom.logging)
+
+# --------------------------------------------------------------------------------------------------
+# install phase
+# --------------------------------------------------------------------------------------------------
+
+include(CMakePackageConfigHelpers)
+
+write_basic_package_version_file(
+    "atom_logging-config-version.cmake"
+    VERSION ${PACKAGE_VERSION}
+    COMPATIBILITY AnyNewerVersion)
+
+install(
+    TARGETS atom.logging
+    EXPORT atom_logging-targets
+    FILE_SET CXX_MODULES DESTINATION "lib")
+
+install(
+    EXPORT atom_logging-targets
+    FILE "atom_logging-targets.cmake" DESTINATION "cmake/"
+    NAMESPACE "atom::")
+
+install(FILES
+    "cmake/atom_logging-config.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/atom_logging-config-version.cmake"
+    DESTINATION "cmake/")
