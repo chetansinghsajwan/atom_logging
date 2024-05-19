@@ -1,6 +1,8 @@
-#pragma once
-#include "atom/logging/logger.h"
-#include "atom/logging/log_msg.h"
+export module atom.logging:null_logger;
+
+import atom.core;
+import :logger;
+import :log_msg;
 
 namespace atom::logging
 {
@@ -9,7 +11,7 @@ namespace atom::logging
     ///
     /// null_logger is stateless and doesn't do anything except refusing every log request.
     /// --------------------------------------------------------------------------------------------
-    class null_logger final: public logger
+    export class null_logger final: public logger
     {
     public:
         /// ----------------------------------------------------------------------------------------

@@ -1,9 +1,10 @@
-#pragma once
-#include "atom/logging/logger.h"
-#include "atom/logging/log_target.h"
-#include "atom/logging/log_msg.h"
+export module atom.logging:simple_logger;
 
-// import std;
+import std;
+import atom.core;
+import :logger;
+import :log_target;
+import :log_msg;
 
 namespace atom::logging
 {
@@ -152,7 +153,7 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// basic logger type.
     /// --------------------------------------------------------------------------------------------
-    template <typename impl_type>
+    export template <typename impl_type>
     class simple_logger: public logger
     {
     public:
@@ -319,6 +320,6 @@ namespace atom::logging
         impl_type _impl;
     };
 
-    using simple_logger_st = simple_logger<_simple_logger_impl_st>;
-    using simple_logger_mt = simple_logger<_simple_logger_impl_mt>;
+    export using simple_logger_st = simple_logger<_simple_logger_impl_st>;
+    export using simple_logger_mt = simple_logger<_simple_logger_impl_mt>;
 }

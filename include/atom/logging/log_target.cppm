@@ -1,12 +1,13 @@
-#pragma once
-#include "atom/logging/log_msg.h"
+export module atom.logging:log_target;
+
+import :log_msg;
 
 namespace atom::logging
 {
     /// --------------------------------------------------------------------------------------------
     /// abstract class defining a log target (like a file, console, network).
     /// --------------------------------------------------------------------------------------------
-    class log_target
+    export class log_target
     {
     public:
         /// ----------------------------------------------------------------------------------------
