@@ -8,26 +8,29 @@
         atom_core.inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    outputs = { self, nixpkgs, atom_core }:
+    outputs = inputs:
     let
         system = "x86_64-linux";
-        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = inputs.nixpkgs.legacyPackages.${system};
         lib = pkgs.lib;
         stdenv = pkgs.llvmPackages_18.libcxxStdenv;
-        atom_core_package = atom_core.packages.${system}.default;
-    in rec
-    {
+        atom_core_pkg = inputs.atom_core.packages.${system}.default;
+
+        clang_scan_deps_include_paths = inputs.atom_core.clang_scan_deps_include_paths +
+            " -I ${atom_core_pkg}/include";
+
         derivation = stdenv.mkDerivation {
 
             name = "atom.logging";
 
             src = ./.;
 
+            propagatedBuildInputs = with pkgs; [
+                atom_core_pkg
+            ];
+
             nativeBuildInputs = with pkgs; [
-                atom_core_package
                 catch2_3
-                fmt
-                magic-enum
 
                 cmake
                 cmake-format
@@ -36,36 +39,29 @@
             ];
 
             configurePhase = ''
-                cmake -S . -B build
+                cmake -S . -B build \
+                    -D atom_core_DIR:PATH=${atom_core_pkg};
             '';
 
             buildPhase = ''
-                cmake --build build --target atom.logging
+                cmake --build build --target atom.logging;
             '';
 
             installPhase = ''
-                cmake --install build --prefix $out
+                cmake --install build --prefix $out;
             '';
 
-            CXXFLAGS = lib.strings.concatStrings [
-                " -I ${atom_core_package}/include"
-                " -I /nix/store/csml9b5w7z51yc7hxgd2ax4m6vj36iyq-libcxx-18.1.5-dev/include"
-                " -I /nix/store/2sf9x4kf8lihldhnhp2b8q3ybas3p83l-compiler-rt-libc-18.1.5-dev/include"
-                " -I /nix/store/hrssqr2jypca2qcqyy1xmfdw71nv6n14-catch2-3.5.2/include"
-                " -I /nix/store/zc8xnz48ca61zjplxc3zz1ha3zss046p-fmt-10.2.1-dev/include"
-                " -I /nix/store/2j35qpxbprdgcixyg70lyy6m0yay9352-magic-enum-0.9.5/include"
-                " -I /nix/store/k3701zl6gmx3la7y4dnflcvf3xfy88kh-python3-3.11.9/include"
-                " -I /nix/store/csml9b5w7z51yc7hxgd2ax4m6vj36iyq-libcxx-18.1.5-dev/include/c++/v1"
-                " -I /nix/store/fymdqlxx6zsqvlmfwls3h2fly9kz0vcf-clang-wrapper-18.1.5/resource-root/include"
-                " -I /nix/store/s3pvsv4as7mc8i2nwnk2hnsyi2qdj4bq-glibc-2.39-31-dev/include"
-            ];
-
+            CXXFLAGS = clang_scan_deps_include_paths;
             CMAKE_GENERATOR = "Ninja";
             CMAKE_BUILD_TYPE = "Debug";
             CMAKE_EXPORT_COMPILE_COMMANDS = "true";
         };
+    in
+    {
+        inherit clang_scan_deps_include_paths;
 
         devShells.${system}.default = derivation;
+
         packages.${system}.default = derivation;
     };
 }
