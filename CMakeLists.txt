@@ -43,7 +43,7 @@ endif()
 
 add_executable(atom.logging.sandbox)
 target_sources(atom.logging.sandbox PRIVATE FILE_SET CXX_MODULES FILES "sandbox/sandbox.cpp")
-target_link_libraries(atom.logging.sandbox PRIVATE atom.logging)
+target_link_libraries(atom.logging.sandbox PRIVATE atom::atom.core atom.logging)
 
 # --------------------------------------------------------------------------------------------------
 # install phase
