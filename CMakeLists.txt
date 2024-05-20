@@ -4,8 +4,9 @@ project(
     VERSION 0.1.0
     LANGUAGES CXX)
 
+option(ATOM_LOGGING_BUILD_TESTS "Enable this to build tests." OFF)
+
 find_package(atom_core REQUIRED)
-find_package(Catch2 REQUIRED)
 
 # --------------------------------------------------------------------------------------------------
 # atom.logging
@@ -19,18 +20,22 @@ target_link_libraries(atom.logging PUBLIC atom::atom.core)
 target_compile_features(atom.logging PUBLIC "cxx_std_23")
 
 # --------------------------------------------------------------------------------------------------
-# atom.logging Tests
+# atom.logging.tests
 # --------------------------------------------------------------------------------------------------
 
-add_executable(atom.logging.tests)
+if (ATOM_LOGGING_BUILD_TESTS)
+    find_package(Catch2 REQUIRED)
 
-file(GLOB_RECURSE test_sources "tests/*.cpp")
-target_sources(atom.logging.tests PRIVATE ${test_sources})
+    add_executable(atom.logging.tests)
 
-target_link_libraries(atom.logging.tests PRIVATE atom.logging)
-target_link_libraries(atom.logging.tests PRIVATE Catch2::Catch2WithMain)
+    file(GLOB_RECURSE test_sources "tests/*.cpp")
+    target_sources(atom.logging.tests PRIVATE ${test_sources})
 
-add_test(atom.logging.tests atom.logging.tests)
+    target_link_libraries(atom.logging.tests PRIVATE atom.logging)
+    target_link_libraries(atom.logging.tests PRIVATE Catch2::Catch2WithMain)
+
+    add_test(atom.logging.tests atom.logging.tests)
+endif()
 
 # --------------------------------------------------------------------------------------------------
 # atom.logging.sandbox
