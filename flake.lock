@@ -3,16 +3,18 @@
     "atom_core": {
       "inputs": {
         "cpptrace": "cpptrace",
+        "libdwarf-lite": "libdwarf-lite",
         "nixpkgs": [
           "nixpkgs"
-        ]
+        ],
+        "zstd": "zstd"
       },
       "locked": {
-        "lastModified": 1716114293,
-        "narHash": "sha256-Xy18dkzyxjBOSdx2r+xbizJc5RQGzDcPZOd/kb/69fo=",
+        "lastModified": 1716197449,
+        "narHash": "sha256-amoD5d0+xplpNguvXkqi3ZPkzLkc+WOs+kXIrshdpZ0=",
         "owner": "shifu-dev",
         "repo": "atom.core",
-        "rev": "b6c35afa5c5b1ca571177791e9741d8c56560611",
+        "rev": "e76b25e58a9e3a6cbe7949d7696ebc38d35bb13a",
         "type": "github"
       },
       "original": {
@@ -37,13 +39,30 @@
         "type": "github"
       }
     },
+    "libdwarf-lite": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1714245344,
+        "narHash": "sha256-jcdBQGukZIDEltlx306IWgKQ2IqbE29T8sa0zTSDrxw=",
+        "owner": "jeremy-rifkin",
+        "repo": "libdwarf-lite",
+        "rev": "87401f22cd05628d23059cb29ee6448a55c3a88a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jeremy-rifkin",
+        "ref": "v0.9.2",
+        "repo": "libdwarf-lite",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1715961556,
-        "narHash": "sha256-+NpbZRCRisUHKQJZF3CT+xn14ZZQO+KjxIIanH3Pvn4=",
+        "lastModified": 1716137900,
+        "narHash": "sha256-sowPU+tLQv8GlqtVtsXioTKeaQvlMz/pefcdwg8MvfM=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "4a6b83b05df1a8bd7d99095ec4b4d271f2956b64",
+        "rev": "6c0b7a92c30122196a761b440ac0d46d3d9954f1",
         "type": "github"
       },
       "original": {
@@ -57,6 +76,23 @@
       "inputs": {
         "atom_core": "atom_core",
         "nixpkgs": "nixpkgs"
+      }
+    },
+    "zstd": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1680639232,
+        "narHash": "sha256-tHHHIsQU7vJySrVhJuMKUSq11MzkmC+Pcsj00uFJdnQ=",
+        "owner": "facebook",
+        "repo": "zstd",
+        "rev": "63779c798237346c2b245c546c40b72a5a5913fe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "facebook",
+        "ref": "v1.5.5",
+        "repo": "zstd",
+        "type": "github"
       }
     }
   },
