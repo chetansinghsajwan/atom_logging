@@ -13,6 +13,7 @@ find_package(atom_core REQUIRED)
 # --------------------------------------------------------------------------------------------------
 
 add_library(atom.logging STATIC)
+add_library(atom::atom.logging ALIAS atom.logging)
 
 file(GLOB_RECURSE modules "sources/*.cppm")
 target_sources(atom.logging PUBLIC FILE_SET CXX_MODULES FILES ${modules})
