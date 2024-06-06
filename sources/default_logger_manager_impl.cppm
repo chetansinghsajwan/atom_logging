@@ -57,7 +57,7 @@ namespace atom::logging
             if (not options.register_logger)
                 return _create_logger(options.name, options.targets);
 
-            string_view options_key = options.key.is_empty() ? options.name : options.key;
+            string_view options_key = options.key | ranges::is_empty() ? options.name : options.key;
 
             bool already_registered = _has_logger(options_key);
             if (not already_registered)
@@ -104,7 +104,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         virtual auto get_or_create_logger(const creation_options& options) -> logger* override
         {
-            string_view options_key = options.key.is_empty() ? options.name : options.key;
+            string_view options_key = options.key | ranges::is_empty() ? options.name : options.key;
             logger* logger_ = _get_logger(options_key);
 
             if (logger_ == nullptr)
@@ -138,9 +138,9 @@ namespace atom::logging
                 return registration_error("cannot register null logger.");
 
             string_view options_key =
-                options.key.is_empty() ? options.logger->get_name() : options.key;
+                options.key | ranges::is_empty() ? options.logger->get_name() : options.key;
 
-            if (options_key.is_empty())
+            if (options_key | ranges::is_empty())
                 return registration_error("cannot register logger for empty key.");
 
             if (options.force_register)
@@ -164,7 +164,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         virtual auto unregister_logger(string_view key) -> logger* override
         {
-            if (key.is_empty())
+            if (key | ranges::is_empty())
                 return nullptr;
 
             return _unregister_logger(key);
@@ -175,7 +175,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         virtual auto get_logger(string_view key) const -> logger* override
         {
-            if (key.is_empty())
+            if (key | ranges::is_empty())
                 return nullptr;
 
             return _get_logger(key);
@@ -186,7 +186,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         virtual auto has_logger(string_view key) const -> bool override
         {
-            if (key.is_empty())
+            if (key | ranges::is_empty())
                 return false;
 
             return _has_logger(key);
