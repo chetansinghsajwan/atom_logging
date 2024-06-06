@@ -1,4 +1,4 @@
-export module atom.logging:log_target;
+export module atom.logging:log_typearget;
 
 import :log_msg;
 
@@ -7,7 +7,7 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// abstract class defining a log target (like a file, console, network).
     /// --------------------------------------------------------------------------------------------
-    export class log_target
+    export class log_typearget
     {
     public:
         /// ----------------------------------------------------------------------------------------

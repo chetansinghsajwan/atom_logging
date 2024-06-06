@@ -2,7 +2,7 @@ export module atom.logging:logger;
 
 import atom.core;
 import :log_msg;
-import :log_target;
+import :log_typearget;
 
 namespace atom::logging
 {
@@ -29,7 +29,7 @@ namespace atom::logging
         /// calls `log(log_level::trace, msg, forward<arg_types>(args)...)`.
         /// ----------------------------------------------------------------------------------------
         template <typename... arg_types>
-        auto log_trace(format_string<arg_types...> msg, arg_types&&... args)
+        auto log_typerace(format_string<arg_types...> msg, arg_types&&... args)
         {
             log(log_level::trace, msg, atom::forward<arg_types>(args)...);
         }
