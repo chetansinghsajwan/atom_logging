@@ -1,4 +1,4 @@
-export module atom.logging:log_targets;
+export module atom.logging:log_typeargets;
 
-export import :log_targets.basic_log_target;
-export import :log_targets.console_log_target;
+export import :log_typeargets.basic_log_typearget;
+export import :log_typeargets.console_log_typearget;

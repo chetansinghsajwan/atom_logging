@@ -3,10 +3,10 @@ export module atom.logging:default_logger_manager_impl;
 import atom.core;
 import :logger;
 import :log_msg;
-import :log_target;
+import :log_typearget;
 import :logger_manager_impl;
 import :simple_logger;
-import :log_targets.console_log_target;
+import :log_typeargets.console_log_typearget;
 
 namespace atom::logging
 {
@@ -210,18 +210,18 @@ namespace atom::logging
         }
 
     protected:
-        auto _create_logger(string_view name, initializer_list<log_target*> targets) -> logger*
+        auto _create_logger(string_view name, initializer_list<log_typearget*> targets) -> logger*
         {
             simple_logger_st* logger = new simple_logger_st(name);
             logger->set_log_level(log_level::trace);
             logger->set_flush_level(log_level::trace);
 
-            console_log_target* console = new console_log_target();
+            console_log_typearget* console = new console_log_typearget();
             console->set_log_level(log_level::trace);
             console->set_flush_level(log_level::trace);
 
-            logger->add_target(console);
-            logger->add_targets(targets);
+            logger->add_typearget(console);
+            logger->add_typeargets(targets);
 
             return logger;
         }

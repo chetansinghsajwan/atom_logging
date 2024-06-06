@@ -1,23 +1,23 @@
-export module atom.logging:log_targets.console_log_target;
+export module atom.logging:log_typeargets.console_log_typearget;
 
 import atom.core;
 import :log_msg;
-import :log_targets.basic_log_target;
+import :log_typeargets.basic_log_typearget;
 
 namespace atom::logging
 {
     /// --------------------------------------------------------------------------------------------
-    /// console_log_target logs to console using stdout and stderr.
+    /// console_log_typearget logs to console using stdout and stderr.
     /// --------------------------------------------------------------------------------------------
-    export class console_log_target: public basic_log_target
+    export class console_log_typearget: public basic_log_typearget
     {
     public:
         /// ----------------------------------------------------------------------------------------
-        /// default constructs the console_log_target.
+        /// default constructs the console_log_typearget.
         ///
         /// error_log_level is set to log_level::error.
         /// ----------------------------------------------------------------------------------------
-        console_log_target()
+        console_log_typearget()
             : _stdout(stdout)
             , _stderr(stderr)
             , _err_log_level(log_level::error)
