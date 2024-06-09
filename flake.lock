@@ -10,11 +10,11 @@
         "zstd": "zstd"
       },
       "locked": {
-        "lastModified": 1716743376,
-        "narHash": "sha256-mhFdgs525UmLEw/Zo0ly4ohvze4sNiwWPEWO0iBEXsY=",
+        "lastModified": 1717959085,
+        "narHash": "sha256-+5Rz5xCe6OJ8MFBX5RTkn1+WRL/aFfoydvMrxXYBQJ0=",
         "owner": "shifu-dev",
         "repo": "atom.core",
-        "rev": "a35eaff05e8b22d331ebd813aa3480baf20423c0",
+        "rev": "b233f6be6bf07d0905011f056f3dc54ed77f409e",
         "type": "github"
       },
       "original": {
