@@ -46,7 +46,7 @@ namespace atom::logging
         static auto initialize_with_impl(logger_manager_impl* impl) -> void
         {
             contract_expects(impl != nullptr, "cannot initialize `logger_manager` with null"
-                                          "implementation instance");
+                                              "implementation instance");
 
             _initialize(impl);
         }
@@ -80,8 +80,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// creates a `logger` object with `name` and registers with `name` as key.
         /// ----------------------------------------------------------------------------------------
-        static auto create_logger(const creation_options& options)
-            -> result<logger*, registration_error>
+        static auto create_logger(
+            const creation_options& options) -> result<logger*, registration_error>
         {
             contract_debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 
@@ -101,8 +101,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// registers `logger` with its name as the key.
         /// ----------------------------------------------------------------------------------------
-        static auto register_logger(const registration_options& options)
-            -> result<void, registration_error>
+        static auto register_logger(
+            const registration_options& options) -> result<void, registration_error>
         {
             contract_debug_expects(is_initialized(), "`logger_manager` is not initialized yet.");
 

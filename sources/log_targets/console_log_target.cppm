@@ -58,8 +58,8 @@ namespace atom::logging
         ///
         /// if {should_log_as_error(log_msg.lvl) == true}, writes the message to stderr else to stdout.
         /// ----------------------------------------------------------------------------------------
-        virtual auto _write(const log_msg& log_msg, string_view formatted_msg)
-            -> void override final
+        virtual auto _write(
+            const log_msg& log_msg, string_view formatted_msg) -> void override final
         {
             FILE* file = _stdout;
 

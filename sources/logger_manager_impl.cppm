@@ -17,12 +17,12 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         struct creation_options
         {
-            string_view name;                      // name of the logger.
+            string_view name;                         // name of the logger.
             initializer_list<log_typearget*> targets; // targets to add into logger.
-            bool register_logger = true;           // should the logger be registered.
-            bool try_register = true;              // if registration fails, do not return error.
-            bool force_register = false;           // force register the logger.
-            string_view key;                       // key used to register the logger.
+            bool register_logger = true;              // should the logger be registered.
+            bool try_register = true;                 // if registration fails, do not return error.
+            bool force_register = false;              // force register the logger.
+            string_view key;                          // key used to register the logger.
         };
 
         /// ----------------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         struct registration_options
         {
-            class logger* logger;              // logger to register.
+            class logger* logger;        // logger to register.
             string_view key;             // key used to register the logger.
             bool force_register = false; // force register the logger.
         };
@@ -72,14 +72,14 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// creates a logger with name `options.name` and returns it.
         /// ----------------------------------------------------------------------------------------
-        virtual auto create_logger(const creation_options& options)
-            -> result<logger*, registration_error> = 0;
+        virtual auto create_logger(
+            const creation_options& options) -> result<logger*, registration_error> = 0;
 
         /// ----------------------------------------------------------------------------------------
         /// registers `logger` with its name as the key.
         /// ----------------------------------------------------------------------------------------
-        virtual auto register_logger(const registration_options& options)
-            -> result<void, registration_error> = 0;
+        virtual auto register_logger(
+            const registration_options& options) -> result<void, registration_error> = 0;
 
         /// ----------------------------------------------------------------------------------------
         /// unregisters the logger registered with the `key`.
