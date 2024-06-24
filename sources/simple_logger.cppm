@@ -12,7 +12,8 @@ namespace atom::logging
     class _simple_logger_impl
     {
         using this_type = _simple_logger_impl;
-        using atomic_log_level_type = type_utils::conditional_type<st, log_level, atomic<log_level>>;
+        using atomic_log_level_type =
+            type_utils::conditional_type<st, log_level, atomic<log_level>>;
         using lockable_type = type_utils::conditional_type<st, null_lockable, simple_mutex>;
 
     public:
@@ -25,7 +26,8 @@ namespace atom::logging
 
         template <typename range_type>
         _simple_logger_impl(string name, range_type&& targets)
-            requires(ranges::is_range_of<typename type_info<range_type>::pure_type::value_type, log_typearget*>)
+            requires(ranges::is_range_of<typename type_info<range_type>::pure_type::value_type,
+                        log_typearget*>)
             : _name(move(name))
             , _typeargets(forward<range_type>(targets))
         {}
@@ -110,7 +112,8 @@ namespace atom::logging
 
         template <typename range_type>
         auto add_typeargets(range_type&& targets) -> void
-            requires ranges::is_range_of<typename type_info<range_type>::pure_type::value_type, log_typearget*>
+            requires ranges::is_range_of<typename type_info<range_type>::pure_type::value_type,
+                log_typearget*>
         {
             lock_guard guard(_lock);
             _typeargets.insert_range_back(forward<range_type>(targets));
@@ -174,7 +177,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         template <typename range_type>
         simple_logger(string name, range_type&& targets)
-            requires(ranges::is_range_of<typename type_info<range_type>::pure_type::value_type, log_typearget*>)
+            requires(ranges::is_range_of<typename type_info<range_type>::pure_type::value_type,
+                log_typearget*>)
             : _impl(move(name), forward<range_type>(targets))
         {}
 
@@ -279,7 +283,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         template <typename range_type>
         auto add_typeargets(range_type&& targets) -> void
-            requires ranges::is_range_of<typename type_info<range_type>::pure_type::value_type, log_typearget*>
+            requires ranges::is_range_of<typename type_info<range_type>::pure_type::value_type,
+                log_typearget*>
         {
             return _impl.add_typeargets(forward<range_type>(targets));
         }
