@@ -146,7 +146,7 @@ namespace atom::logging
             if (options.force_register)
             {
                 _register_logger_forced(options.logger, options_key);
-                return result_void();
+                return { create_from_void };
             }
 
             bool registered = _register_logger(options.logger, options_key);
@@ -156,7 +156,7 @@ namespace atom::logging
                     "a logger with this key is already registered.", options_key);
             }
 
-            return result_void();
+            return { create_from_void };
         }
 
         /// ----------------------------------------------------------------------------------------
