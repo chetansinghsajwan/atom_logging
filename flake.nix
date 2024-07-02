@@ -4,8 +4,15 @@
     inputs = {
         nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-        atom_core.url = "github:shifu-dev/atom.core";
-        atom_core.inputs.nixpkgs.follows = "nixpkgs";
+        atom_doc = {
+            url = "github:shifu-dev/atom-doc";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+
+        atom_core = {
+            url = "github:shifu-dev/atom.core";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
     };
 
     outputs = inputs:
@@ -14,6 +21,7 @@
         pkgs = inputs.nixpkgs.legacyPackages.${system};
         lib = pkgs.lib;
         stdenv = pkgs.llvmPackages_18.libcxxStdenv;
+        atom_doc_pkg = inputs.atom_doc.packages.${system}.default;
         atom_core_env = inputs.atom_core.env.${system}.default;
         atom_core_pkg = inputs.atom_core.packages.${system}.default;
     in rec
@@ -21,7 +29,6 @@
         env.${system}.default = rec {
 
             name = "atom-logging";
-
             src = ./.;
 
             propagatedBuildInputs = with pkgs; [
@@ -29,6 +36,7 @@
             ];
 
             nativeBuildInputs = with pkgs; [
+                atom_doc_pkg
                 catch2_3
 
                 cmake
@@ -62,6 +70,7 @@
                 CMAKE_GENERATOR = "Ninja";
                 CMAKE_BUILD_TYPE = "Debug";
                 CMAKE_EXPORT_COMPILE_COMMANDS = "true";
+                ATOM_DOC_DOXYFILE_DIR = atom_doc_pkg;
             };
         };
 
