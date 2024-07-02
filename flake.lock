@@ -23,6 +23,26 @@
         "type": "github"
       }
     },
+    "atom_doc": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1719939226,
+        "narHash": "sha256-8fiuN2FyiKn5bfLaAOvKhzr9tKjc7zrRBd+1Exza/3s=",
+        "owner": "shifu-dev",
+        "repo": "atom-doc",
+        "rev": "f1b869bf23cc5725107f3d01f17b0889b6ff755a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "shifu-dev",
+        "repo": "atom-doc",
+        "type": "github"
+      }
+    },
     "cpptrace": {
       "flake": false,
       "locked": {
@@ -75,6 +95,7 @@
     "root": {
       "inputs": {
         "atom_core": "atom_core",
+        "atom_doc": "atom_doc",
         "nixpkgs": "nixpkgs"
       }
     },
