@@ -1,5 +1,5 @@
 {
-    description = "atom.logging";
+    description = "atom_logging";
 
     inputs = {
         nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -10,7 +10,7 @@
         };
 
         atom_core = {
-            url = "github:shifu-dev/atom.core";
+            url = "github:shifu-dev/atom_core";
             inputs.nixpkgs.follows = "nixpkgs";
         };
     };
@@ -28,7 +28,7 @@
     {
         env.${system}.default = rec {
 
-            name = "atom-logging";
+            name = "atom_logging";
             src = ./.;
 
             propagatedBuildInputs = with pkgs; [
@@ -51,7 +51,7 @@
             '';
 
             buildPhase = ''
-                cmake --build build --target atom.logging;
+                cmake --build build --target atom_logging;
             '';
 
             installPhase = ''
