@@ -1,4 +1,4 @@
-export module atom.logging:log_typearget;
+export module atom_logging:log_typearget;
 
 import :log_msg;
 

@@ -1,6 +1,6 @@
-export module atom.logging:log_typeargets.basic_log_typearget;
+export module atom_logging:log_typeargets.basic_log_typearget;
 
-import atom.core;
+import atom_core;
 import :log_msg;
 import :log_typearget;
 

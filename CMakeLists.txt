@@ -1,53 +1,54 @@
 cmake_minimum_required(VERSION 3.28 FATAL_ERROR)
-project(
-    atom.logging
-    VERSION 0.1.0
-    LANGUAGES CXX)
-
-option(ATOM_LOGGING_BUILD_TESTS "Enable this to build tests." OFF)
-
-find_package(atom_core REQUIRED)
+project("atom_logging" VERSION "0.1.0")
+enable_language(CXX)
 
 # --------------------------------------------------------------------------------------------------
-# atom.logging
+# options
 # --------------------------------------------------------------------------------------------------
 
-add_library(atom.logging STATIC)
-add_library(atom::atom.logging ALIAS atom.logging)
-
-file(GLOB_RECURSE modules "sources/*.cppm")
-target_sources(atom.logging PUBLIC FILE_SET CXX_MODULES FILES ${modules})
-target_link_libraries(atom.logging PUBLIC atom::atom.core)
-target_compile_features(atom.logging PUBLIC "cxx_std_23")
+option(atom_logging_build_tests "Enable this to build tests." OFF)
 
 # --------------------------------------------------------------------------------------------------
-# atom.logging.tests
+# atom_logging
 # --------------------------------------------------------------------------------------------------
 
-if (ATOM_LOGGING_BUILD_TESTS)
+find_package("atom_core" REQUIRED)
+
+add_library(atom_logging STATIC)
+
+file(GLOB_RECURSE atom_logging_modules "sources/*.cppm")
+target_sources(atom_logging PUBLIC FILE_SET CXX_MODULES FILES "${atom_logging_modules}")
+target_link_libraries(atom_logging PUBLIC "atom_core")
+target_compile_features(atom_logging PUBLIC "cxx_std_20")
+
+# --------------------------------------------------------------------------------------------------
+# tests
+# --------------------------------------------------------------------------------------------------
+
+if (atom_logging_build_tests)
     find_package(Catch2 REQUIRED)
 
-    add_executable(atom.logging.tests)
+    add_executable(atom_logging_tests)
 
-    file(GLOB_RECURSE test_sources "tests/*.cpp")
-    target_sources(atom.logging.tests PRIVATE ${test_sources})
+    file(GLOB_RECURSE atom_logging_test_sources "tests/*.cpp")
+    target_sources(atom_logging_tests PRIVATE "${atom_logging_test_sources}")
 
-    target_link_libraries(atom.logging.tests PRIVATE atom.logging)
-    target_link_libraries(atom.logging.tests PRIVATE Catch2::Catch2WithMain)
+    target_link_libraries(atom_logging_tests PRIVATE "atom_logging")
+    target_link_libraries(atom_logging_tests PRIVATE "Catch2::Catch2WithMain")
 
-    add_test(atom.logging.tests atom.logging.tests)
+    add_test(atom_logging_tests atom_logging_tests)
 endif()
 
 # --------------------------------------------------------------------------------------------------
-# atom.logging.sandbox
+# sandbox
 # --------------------------------------------------------------------------------------------------
 
-add_executable(atom.logging.sandbox)
-target_sources(atom.logging.sandbox PRIVATE FILE_SET CXX_MODULES FILES "sandbox/sandbox.cpp")
-target_link_libraries(atom.logging.sandbox PRIVATE atom::atom.core atom.logging)
+add_executable(atom_logging_sandbox)
+target_sources(atom_logging_sandbox PRIVATE FILE_SET CXX_MODULES FILES "sandbox/sandbox.cpp")
+target_link_libraries(atom_logging_sandbox PRIVATE atom_core atom_logging)
 
 # --------------------------------------------------------------------------------------------------
-# install phase
+# install
 # --------------------------------------------------------------------------------------------------
 
 include(CMakePackageConfigHelpers)
@@ -58,14 +59,13 @@ write_basic_package_version_file(
     COMPATIBILITY AnyNewerVersion)
 
 install(
-    TARGETS atom.logging
+    TARGETS atom_logging
     EXPORT atom_logging-targets
     FILE_SET CXX_MODULES DESTINATION "lib")
 
 install(
     EXPORT atom_logging-targets
-    FILE "atom_logging-targets.cmake" DESTINATION "cmake/"
-    NAMESPACE "atom::")
+    FILE "atom_logging-targets.cmake" DESTINATION "cmake/")
 
 install(FILES
     "cmake/atom_logging-config.cmake"

@@ -1,3 +1,3 @@
-# Atom.Logging
+# atom_logging
 
-C++ Logging library using [`Atom.Core`](github.com/shifu-dev/Atom.Core.git).
+C++ Logging library using [`atom_core`](github.com/shifu-dev/atom_core.git).

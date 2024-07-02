@@ -1,7 +1,7 @@
-export module atom.logging:simple_logger;
+export module atom_logging:simple_logger;
 
 import std;
-import atom.core;
+import atom_core;
 import :logger;
 import :log_typearget;
 import :log_msg;

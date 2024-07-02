@@ -1,6 +1,6 @@
-export module atom.logging:log_msg;
+export module atom_logging:log_msg;
 
-import atom.core;
+import atom_core;
 
 namespace atom::logging
 {
