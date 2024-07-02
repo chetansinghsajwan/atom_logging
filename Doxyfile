@@ -1,7 +1,7 @@
 @INCLUDE_PATH = "$(ATOM_DOC_DOXYFILE_DIR)"
 @INCLUDE = "Doxyfile"
 
-PROJECT_NAME           = "atom-logging"
+PROJECT_NAME           = "atom_logging"
 PROJECT_NUMBER         = "0.1.0"
 PROJECT_BRIEF          = ""
 PROJECT_LOGO           = ""

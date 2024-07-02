@@ -1,4 +1,4 @@
-export module atom.logging;
+export module atom_logging;
 
 export import :logger;
 export import :null_logger;

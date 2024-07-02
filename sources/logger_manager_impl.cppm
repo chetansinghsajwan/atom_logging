@@ -1,6 +1,6 @@
-export module atom.logging:logger_manager_impl;
+export module atom_logging:logger_manager_impl;
 
-import atom.core;
+import atom_core;
 import :logger;
 import :log_typearget;
 

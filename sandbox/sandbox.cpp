@@ -1,6 +1,6 @@
-export module atom.logging.sandbox;
-import atom.core;
-import atom.logging;
+export module atom_logging.sandbox;
+import atom_core;
+import atom_logging;
 
 using namespace atom;
 using namespace atom::logging;
