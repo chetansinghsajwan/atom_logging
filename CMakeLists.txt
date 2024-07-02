@@ -6,6 +6,7 @@ enable_language(CXX)
 # options
 # --------------------------------------------------------------------------------------------------
 
+option(atom_logging_build_docs "Enable this to build docs." OFF)
 option(atom_logging_build_tests "Enable this to build tests." OFF)
 
 # --------------------------------------------------------------------------------------------------
@@ -20,6 +21,19 @@ file(GLOB_RECURSE atom_logging_modules "sources/*.cppm")
 target_sources(atom_logging PUBLIC FILE_SET CXX_MODULES FILES "${atom_logging_modules}")
 target_link_libraries(atom_logging PUBLIC "atom_core")
 target_compile_features(atom_logging PUBLIC "cxx_std_20")
+
+# --------------------------------------------------------------------------------------------------
+# docs
+# --------------------------------------------------------------------------------------------------
+
+if(atom_logging_build_docs)
+    find_package("Doxygen" REQUIRED)
+
+    doxygen_add_docs(atom_logging_docs
+        "${atom_logging_modules}"
+        CONFIG_FILE "${CMAKE_CURRENT_LIST_DIR}/Doxyfile"
+        USE_STAMP_FILE)
+endif()
 
 # --------------------------------------------------------------------------------------------------
 # tests
