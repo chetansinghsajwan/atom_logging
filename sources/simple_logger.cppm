@@ -3,7 +3,7 @@ export module atom_logging:simple_logger;
 import std;
 import atom_core;
 import :logger;
-import :log_typearget;
+import :log_target;
 import :log_msg;
 
 namespace atom::logging
@@ -19,7 +19,7 @@ namespace atom::logging
     public:
         explicit _simple_logger_impl(string name)
             : _name{ move(name) }
-            , _typeargets{}
+            , _targets{}
             , _log_level{ log_level::info }
             , _flush_level{ log_level::info }
         {}
@@ -27,9 +27,9 @@ namespace atom::logging
         template <typename range_type>
         _simple_logger_impl(string name, range_type&& targets)
             requires(ranges::const_range_concept<
-                        typename type_info<range_type>::pure_type::value_type, log_typearget*>)
+                        typename type_info<range_type>::pure_type::value_type, log_target*>)
             : _name(move(name))
-            , _typeargets(forward<range_type>(targets))
+            , _targets(forward<range_type>(targets))
         {}
 
         _simple_logger_impl(const this_type& that) = delete;
@@ -50,14 +50,14 @@ namespace atom::logging
         {
             lock_guard guard(_lock);
 
-            for (log_typearget* target : _typeargets)
+            for (log_target* target : _targets)
             {
                 target->write(log_msg);
             }
 
             if (check_flush_level(log_msg.lvl))
             {
-                for (log_typearget* target : _typeargets)
+                for (log_target* target : _targets)
                 {
                     target->flush();
                 }
@@ -68,7 +68,7 @@ namespace atom::logging
         {
             lock_guard guard(_lock);
 
-            for (log_typearget* target : _typeargets)
+            for (log_target* target : _targets)
             {
                 target->flush();
             }
@@ -104,31 +104,31 @@ namespace atom::logging
             return lvl != log_level::off && lvl >= _flush_level;
         }
 
-        auto add_typearget(log_typearget* target) -> void
+        auto add_target(log_target* target) -> void
         {
             lock_guard guard(_lock);
-            _typeargets.emplace_last(target);
+            _targets.emplace_last(target);
         }
 
         template <typename range_type>
-        auto add_typeargets(range_type&& targets) -> void
+        auto add_targets(range_type&& targets) -> void
             requires ranges::const_range_concept<
-                typename type_info<range_type>::pure_type::value_type, log_typearget*>
+                typename type_info<range_type>::pure_type::value_type, log_target*>
         {
             lock_guard guard(_lock);
-            _typeargets.insert_range_last(std::forward<range_type>(targets));
+            _targets.insert_range_last(std::forward<range_type>(targets));
         }
 
-        auto remove_typearget(log_typearget* target) -> void
+        auto remove_target(log_target* target) -> void
         {
             lock_guard guard(_lock);
-            _typeargets.remove_one_find(target);
+            _targets.remove_one_find(target);
         }
 
-        auto has_typearget(log_typearget* target) const -> bool
+        auto has_target(log_target* target) const -> bool
         {
             lock_guard guard(_lock);
-            for (log_typearget* value : _typeargets)
+            for (log_target* value : _targets)
             {
                 if (value == target)
                     return true;
@@ -137,16 +137,16 @@ namespace atom::logging
             return false;
         }
 
-        auto get_typeargets() const -> array_view<log_typearget*>
+        auto get_targets() const -> array_view<log_target*>
         {
-            return _typeargets;
+            return _targets;
         }
 
     private:
         const string _name;
         atomic_log_level_type _log_level;
         atomic_log_level_type _flush_level;
-        dynamic_array<log_typearget*> _typeargets;
+        dynamic_array<log_target*> _targets;
         lockable_type _lock;
     };
 
@@ -170,26 +170,26 @@ namespace atom::logging
         {}
 
         /// ----------------------------------------------------------------------------------------
-        /// constructs and adds `log_typearget` objects.
+        /// constructs and adds `log_target` objects.
         ///
         /// @param[in] name name of this logger.
-        /// @param[in] targets `log_typearget` objects to add.
+        /// @param[in] targets `log_target` objects to add.
         /// ----------------------------------------------------------------------------------------
         template <typename range_type>
         simple_logger(string name, range_type&& targets)
             requires(
                 ranges::const_range_concept<typename type_info<range_type>::pure_type::value_type,
-                    log_typearget*>)
+                    log_target*>)
             : _impl(move(name), forward<range_type>(targets))
         {}
 
         /// ----------------------------------------------------------------------------------------
-        /// constructs and adds `log_typearget` objects.
+        /// constructs and adds `log_target` objects.
         ///
         /// @param[in] name name of this logger.
-        /// @param[in] targets `log_typearget` objects to add.
+        /// @param[in] targets `log_target` objects to add.
         /// ----------------------------------------------------------------------------------------
-        simple_logger(string name, initializer_list<log_typearget*> targets)
+        simple_logger(string name, initializer_list<log_target*> targets)
             : _impl{ move(name), targets }
         {}
 
@@ -208,7 +208,7 @@ namespace atom::logging
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// writes to all log_typearget objects.
+        /// writes to all log_target objects.
         /// ----------------------------------------------------------------------------------------
         auto log(log_msg& log_msg) -> void override
         {
@@ -216,7 +216,7 @@ namespace atom::logging
         }
 
         /// ----------------------------------------------------------------------------------------
-        /// flushes all log_typearget objects.
+        /// flushes all log_target objects.
         /// ----------------------------------------------------------------------------------------
         auto flush() -> void override
         {
@@ -274,52 +274,52 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         ///
         /// ----------------------------------------------------------------------------------------
-        auto add_typearget(log_typearget* target) -> void
+        auto add_target(log_target* target) -> void
         {
-            return _impl.add_typearget(target);
+            return _impl.add_target(target);
         }
 
         /// ----------------------------------------------------------------------------------------
         ///
         /// ----------------------------------------------------------------------------------------
         template <typename range_type>
-        auto add_typeargets(range_type&& targets) -> void
+        auto add_targets(range_type&& targets) -> void
             requires ranges::const_range_concept<
-                typename type_info<range_type>::pure_type::value_type, log_typearget*>
+                typename type_info<range_type>::pure_type::value_type, log_target*>
         {
-            return _impl.add_typeargets(forward<range_type>(targets));
+            return _impl.add_targets(forward<range_type>(targets));
         }
 
         /// ----------------------------------------------------------------------------------------
         ///
         /// ----------------------------------------------------------------------------------------
-        auto add_typeargets(std::initializer_list<log_typearget*> targets) -> void
+        auto add_targets(std::initializer_list<log_target*> targets) -> void
         {
-            return _impl.add_typeargets(targets);
+            return _impl.add_targets(targets);
         }
 
         /// ----------------------------------------------------------------------------------------
         ///
         /// ----------------------------------------------------------------------------------------
-        auto remove_typearget(log_typearget* target) -> void
+        auto remove_target(log_target* target) -> void
         {
-            return _impl.remove_typearget(target);
+            return _impl.remove_target(target);
         }
 
         /// ----------------------------------------------------------------------------------------
         ///
         /// ----------------------------------------------------------------------------------------
-        auto get_typeargets() const -> array_view<log_typearget*>
+        auto get_targets() const -> array_view<log_target*>
         {
-            return _impl.get_typeargets();
+            return _impl.get_targets();
         }
 
         /// ----------------------------------------------------------------------------------------
         ///
         /// ----------------------------------------------------------------------------------------
-        auto has_typearget(log_typearget* target) const -> bool
+        auto has_target(log_target* target) const -> bool
         {
-            return _impl.has_typearget(target);
+            return _impl.has_target(target);
         }
 
     private:

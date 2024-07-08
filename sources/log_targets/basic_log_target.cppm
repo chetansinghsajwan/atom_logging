@@ -1,13 +1,13 @@
-export module atom_logging:log_typeargets.basic_log_typearget;
+export module atom_logging:log_targets.basic_log_target;
 
 import atom_core;
 import :log_msg;
-import :log_typearget;
+import :log_target;
 
 namespace atom::logging
 {
     /// --------------------------------------------------------------------------------------------
-    /// base class for log_typeargets with base functionality like formatting, thread safety and
+    /// base class for log_targets with base functionality like formatting, thread safety and
     /// level filtering.
     ///
     /// # to do
@@ -15,13 +15,13 @@ namespace atom::logging
     /// - add thread safety.
     /// - make default log and flush level global.
     /// --------------------------------------------------------------------------------------------
-    export class basic_log_typearget: public log_typearget
+    export class basic_log_target: public log_target
     {
     public:
         /// ----------------------------------------------------------------------------------------
         /// # default constructor
         /// ----------------------------------------------------------------------------------------
-        basic_log_typearget()
+        basic_log_target()
             : _log_level(log_level::debug)
             , _flush_level(log_level::info)
             , _has_written(false)
