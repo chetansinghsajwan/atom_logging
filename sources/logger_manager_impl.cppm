@@ -2,7 +2,7 @@ export module atom_logging:logger_manager_impl;
 
 import atom_core;
 import :logger;
-import :log_typearget;
+import :log_target;
 
 namespace atom::logging
 {
@@ -18,7 +18,7 @@ namespace atom::logging
         struct creation_options
         {
             string_view name;                         // name of the logger.
-            initializer_list<log_typearget*> targets; // targets to add into logger.
+            initializer_list<log_target*> targets; // targets to add into logger.
             bool register_logger = true;              // should the logger be registered.
             bool try_register = true;                 // if registration fails, do not return error.
             bool force_register = false;              // force register the logger.

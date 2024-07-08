@@ -2,7 +2,7 @@ export module atom_logging:logger;
 
 import atom_core;
 import :log_msg;
-import :log_typearget;
+import :log_target;
 
 namespace atom::logging
 {
