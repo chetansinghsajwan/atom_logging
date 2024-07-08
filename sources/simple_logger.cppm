@@ -18,16 +18,16 @@ namespace atom::logging
 
     public:
         explicit _simple_logger_impl(string name)
-            : _name(move(name))
-            , _typeargets()
-            , _log_level(log_level::info)
-            , _flush_level(log_level::info)
+            : _name{ move(name) }
+            , _typeargets{}
+            , _log_level{ log_level::info }
+            , _flush_level{ log_level::info }
         {}
 
         template <typename range_type>
         _simple_logger_impl(string name, range_type&& targets)
-            requires(ranges::is_range_of<typename type_info<range_type>::pure_type::value_type,
-                        log_typearget*>)
+            requires(ranges::const_range_concept<
+                        typename type_info<range_type>::pure_type::value_type, log_typearget*>)
             : _name(move(name))
             , _typeargets(forward<range_type>(targets))
         {}
@@ -107,16 +107,16 @@ namespace atom::logging
         auto add_typearget(log_typearget* target) -> void
         {
             lock_guard guard(_lock);
-            _typeargets.emplace_back(target);
+            _typeargets.emplace_last(target);
         }
 
         template <typename range_type>
         auto add_typeargets(range_type&& targets) -> void
-            requires ranges::is_range_of<typename type_info<range_type>::pure_type::value_type,
-                log_typearget*>
+            requires ranges::const_range_concept<
+                typename type_info<range_type>::pure_type::value_type, log_typearget*>
         {
             lock_guard guard(_lock);
-            _typeargets.insert_range_back(forward<range_type>(targets));
+            _typeargets.insert_range_last(std::forward<range_type>(targets));
         }
 
         auto remove_typearget(log_typearget* target) -> void
@@ -177,8 +177,9 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         template <typename range_type>
         simple_logger(string name, range_type&& targets)
-            requires(ranges::is_range_of<typename type_info<range_type>::pure_type::value_type,
-                log_typearget*>)
+            requires(
+                ranges::const_range_concept<typename type_info<range_type>::pure_type::value_type,
+                    log_typearget*>)
             : _impl(move(name), forward<range_type>(targets))
         {}
 
@@ -189,7 +190,7 @@ namespace atom::logging
         /// @param[in] targets `log_typearget` objects to add.
         /// ----------------------------------------------------------------------------------------
         simple_logger(string name, initializer_list<log_typearget*> targets)
-            : _impl(move(name), ranges::from(targets))
+            : _impl{ move(name), targets }
         {}
 
         /// ----------------------------------------------------------------------------------------
@@ -283,8 +284,8 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         template <typename range_type>
         auto add_typeargets(range_type&& targets) -> void
-            requires ranges::is_range_of<typename type_info<range_type>::pure_type::value_type,
-                log_typearget*>
+            requires ranges::const_range_concept<
+                typename type_info<range_type>::pure_type::value_type, log_typearget*>
         {
             return _impl.add_typeargets(forward<range_type>(targets));
         }
@@ -294,7 +295,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         auto add_typeargets(std::initializer_list<log_typearget*> targets) -> void
         {
-            return _impl.add_typeargets(ranges::from(targets));
+            return _impl.add_typeargets(targets);
         }
 
         /// ----------------------------------------------------------------------------------------
