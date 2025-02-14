@@ -8,6 +8,7 @@ enable_language(CXX)
 
 option(atom_logging_build_docs "Enable this to build docs." OFF)
 option(atom_logging_build_tests "Enable this to build tests." OFF)
+option(atom_logging_enable_install "Enable this to allow install." OFF)
 
 # --------------------------------------------------------------------------------------------------
 # atom_logging
@@ -29,17 +30,15 @@ target_compile_features(atom_logging PUBLIC "cxx_std_20")
 if(atom_logging_build_docs)
     find_package("Doxygen" REQUIRED)
 
-    doxygen_add_docs(atom_logging_docs
-        "${atom_logging_modules}"
-        CONFIG_FILE "${CMAKE_CURRENT_LIST_DIR}/Doxyfile"
-        USE_STAMP_FILE)
+    doxygen_add_docs(atom_logging_docs "${atom_logging_modules}" CONFIG_FILE
+                     "${CMAKE_CURRENT_LIST_DIR}/Doxyfile" USE_STAMP_FILE)
 endif()
 
 # --------------------------------------------------------------------------------------------------
 # tests
 # --------------------------------------------------------------------------------------------------
 
-if (atom_logging_build_tests)
+if(atom_logging_build_tests)
     find_package(Catch2 REQUIRED)
 
     add_executable(atom_logging_tests)
@@ -65,23 +64,26 @@ target_link_libraries(atom_logging_sandbox PRIVATE atom_core atom_logging)
 # install
 # --------------------------------------------------------------------------------------------------
 
-include(CMakePackageConfigHelpers)
+if(atom_logging_enable_install)
+    include(CMakePackageConfigHelpers)
 
-write_basic_package_version_file(
-    "atom_logging-config-version.cmake"
-    VERSION ${PACKAGE_VERSION}
-    COMPATIBILITY AnyNewerVersion)
+    write_basic_package_version_file(
+        "atom_logging-config-version.cmake"
+        VERSION ${PACKAGE_VERSION}
+        COMPATIBILITY AnyNewerVersion)
 
-install(
-    TARGETS atom_logging
-    EXPORT atom_logging-targets
-    FILE_SET CXX_MODULES DESTINATION "lib")
+    install(
+        TARGETS atom_logging
+        EXPORT atom_logging-targets
+        FILE_SET CXX_MODULES
+        DESTINATION "lib")
 
-install(
-    EXPORT atom_logging-targets
-    FILE "atom_logging-targets.cmake" DESTINATION "cmake/")
+    install(
+        EXPORT atom_logging-targets
+        FILE "atom_logging-targets.cmake"
+        DESTINATION "cmake/")
 
-install(FILES
-    "cmake/atom_logging-config.cmake"
-    "${CMAKE_CURRENT_BINARY_DIR}/atom_logging-config-version.cmake"
-    DESTINATION "cmake/")
+    install(FILES "cmake/atom_logging-config.cmake"
+                  "${CMAKE_CURRENT_BINARY_DIR}/atom_logging-config-version.cmake"
+            DESTINATION "cmake/")
+endif()
