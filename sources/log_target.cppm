@@ -5,9 +5,9 @@ import :log_msg;
 namespace atom::logging
 {
     /// --------------------------------------------------------------------------------------------
-    /// abstract class defining a log target (like a file, console, network).
+    /// abstract struct defining a log target (like a file, console, network).
     /// --------------------------------------------------------------------------------------------
-    export class log_target
+    export struct log_target
     {
     public:
         /// ----------------------------------------------------------------------------------------

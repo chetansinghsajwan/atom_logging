@@ -14,7 +14,7 @@ namespace atom::logging
     ///
     /// --------------------------------------------------------------------------------------------
     export template <bool st>
-    class default_logger_manager_impl: public logger_manager_impl
+    struct default_logger_manager_impl: public logger_manager_impl
     {
     public:
         /// ----------------------------------------------------------------------------------------

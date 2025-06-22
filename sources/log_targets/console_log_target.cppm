@@ -9,7 +9,7 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// console_log_target logs to console using stdout and stderr.
     /// --------------------------------------------------------------------------------------------
-    export class console_log_target: public basic_log_target
+    export struct console_log_target: public basic_log_target
     {
     public:
         /// ----------------------------------------------------------------------------------------

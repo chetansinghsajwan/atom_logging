@@ -11,7 +11,7 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// provides registration and creation abstraction layer.
     /// --------------------------------------------------------------------------------------------
-    export class logger_manager
+    export struct logger_manager
     {
     public:
         using creation_options = logger_manager_impl::creation_options;

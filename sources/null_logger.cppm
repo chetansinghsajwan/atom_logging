@@ -11,7 +11,7 @@ namespace atom::logging
     ///
     /// null_logger is stateless and doesn't do anything except refusing every log request.
     /// --------------------------------------------------------------------------------------------
-    export class null_logger final: public logger
+    export struct null_logger final: public logger
     {
     public:
         /// ----------------------------------------------------------------------------------------

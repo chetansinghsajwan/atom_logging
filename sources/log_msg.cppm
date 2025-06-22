@@ -7,7 +7,7 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// log_level is used to define the level of the log.
     /// --------------------------------------------------------------------------------------------
-    export enum class log_level: byte
+    export enum struct log_level: byte
     {
         trace,
         debug,
@@ -23,7 +23,7 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// lightweight object containing all the details of the log.
     /// --------------------------------------------------------------------------------------------
-    export class log_msg
+    export struct log_msg
     {
     public:
         /// ----------------------------------------------------------------------------------------

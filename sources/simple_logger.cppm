@@ -9,7 +9,7 @@ import :log_msg;
 namespace atom::logging
 {
     template <bool st>
-    class _simple_logger_impl
+    struct _simple_logger_impl
     {
         using this_type = _simple_logger_impl;
         using atomic_log_level_type =
@@ -157,7 +157,7 @@ namespace atom::logging
     /// basic logger type.
     /// --------------------------------------------------------------------------------------------
     export template <typename impl_type>
-    class simple_logger: public logger
+    struct simple_logger: public logger
     {
     public:
         /// ----------------------------------------------------------------------------------------

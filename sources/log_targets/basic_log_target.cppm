@@ -7,7 +7,7 @@ import :log_target;
 namespace atom::logging
 {
     /// --------------------------------------------------------------------------------------------
-    /// base class for log_targets with base functionality like formatting, thread safety and
+    /// base struct for log_targets with base functionality like formatting, thread safety and
     /// level filtering.
     ///
     /// # to do
@@ -15,7 +15,7 @@ namespace atom::logging
     /// - add thread safety.
     /// - make default log and flush level global.
     /// --------------------------------------------------------------------------------------------
-    export class basic_log_target: public log_target
+    export struct basic_log_target: public log_target
     {
     public:
         /// ----------------------------------------------------------------------------------------

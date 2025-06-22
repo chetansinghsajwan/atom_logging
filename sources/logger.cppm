@@ -6,7 +6,7 @@ import :log_target;
 
 namespace atom::logging
 {
-    export class logger
+    export struct logger
     {
     public:
         /// ----------------------------------------------------------------------------------------

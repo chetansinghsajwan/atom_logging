@@ -9,7 +9,7 @@ namespace atom::logging
     /// --------------------------------------------------------------------------------------------
     /// implementation logic for `logger_manager`.
     /// --------------------------------------------------------------------------------------------
-    export class logger_manager_impl
+    export struct logger_manager_impl
     {
     public:
         /// ----------------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         struct registration_options
         {
-            class logger* logger;        // logger to register.
+            struct logger* logger;        // logger to register.
             string_view key;             // key used to register the logger.
             bool force_register = false; // force register the logger.
         };
@@ -38,7 +38,7 @@ namespace atom::logging
         /// ----------------------------------------------------------------------------------------
         /// error when logger registration fails.
         /// ----------------------------------------------------------------------------------------
-        class registration_error: public error
+        struct registration_error: public error
         {
         public:
             constexpr registration_error(string_view msg)
@@ -110,6 +110,6 @@ namespace atom::logging
         /// sets the default logger and returns the same. the returned value is then catched inside
         /// `logger_manager`. this is useful when you want to avoid setting the defualt logger null.
         /// ----------------------------------------------------------------------------------------
-        virtual auto set_default_logger(class logger* logger) -> class logger* = 0;
+        virtual auto set_default_logger(struct logger* logger) -> struct logger* = 0;
     };
 }
